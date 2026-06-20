@@ -1,10 +1,12 @@
-# World Cup Intelligence System
+# Floodlit — World Cup Intelligence System
 
 A public-facing World Cup dashboard combining live match data, Claude-powered
 tactical analysis, and computer-vision formation analysis. Built to be genuinely
 useful and shareable during a live tournament.
 
-> Built in strict phases per `handoff`. **Phase 1 (Data Layer) is complete.**
+**Live:** <https://worldcup-sable.vercel.app>
+
+> Built in strict phases per the handoff. **All five phases complete and deployed.**
 
 ## Stack
 
@@ -74,7 +76,9 @@ for every response.
 - [x] **Phase 3 — Computer Vision** (screenshot → formation analysis, FastAPI in `cv-service/`)
 - [x] **Phase 4 — Shareable Cards** (`next/og` match report cards at `/api/og/match/[id]`)
 - [x] **Phase 5 — Public Web App** ("FLOODLIT CHALK" tactics-cam UI: `/`, `/match/[id]`, `/standings`)
-- [ ] Deploy (Vercel + Railway) and Phase-5 rate limiting (Upstash) — not yet wired
+- [x] **Deployed** — Vercel (<https://worldcup-sable.vercel.app>), auto-deploys from GitHub `main`.
+      Vision runs in-process via `lib/vision.ts` (the `cv-service/` FastAPI worker is optional — see `DEPLOY.md`).
+- [ ] Phase-5 rate limiting (Upstash) — not yet wired
 
 ## Design
 
