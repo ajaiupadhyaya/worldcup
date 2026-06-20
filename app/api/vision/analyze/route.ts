@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server";
 import { getMatch } from "@/lib/data";
 import { matchContext } from "@/lib/claude";
+import { analyzeFrame, hasAnthropicKey } from "@/lib/vision";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const CV_SERVICE_URL = process.env.CV_SERVICE_URL ?? "http://localhost:8000";
 const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
+type MediaType = "image/png" | "image/jpeg" | "image/webp" | "image/gif";
+
+// Optional external FastAPI CV service. When CV_SERVICE_URL is set, the frame
+// is forwarded there; otherwise it's analyzed in-process via Claude vision
+// (the default production path on Vercel).
+const CV_SERVICE_URL = process.env.CV_SERVICE_URL;
 
 /**
  * POST multipart/form-data with an `image` file (and optional `matchId` for
- * context). Forwards the frame to the FastAPI CV service and returns its
- * structured tactical read.
+ * context). Returns a structured tactical read of the frame.
  */
 export async function POST(req: Request) {
   let form: FormData;
@@ -35,8 +40,11 @@ export async function POST(req: Request) {
       { status: 415 },
     );
   }
+  if (!CV_SERVICE_URL && !hasAnthropicKey()) {
+    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 503 });
+  }
 
-  // Optionally enrich with match context so the CV read is grounded.
+  // Optionally enrich with match context so the read is grounded.
   let context: string | undefined;
   const matchId = form.get("matchId");
   if (typeof matchId === "string" && matchId) {
@@ -51,34 +59,40 @@ export async function POST(req: Request) {
   const buffer = Buffer.from(await image.arrayBuffer());
   const imageBase64 = buffer.toString("base64");
 
-  let cvRes: Response;
-  try {
-    cvRes = await fetch(`${CV_SERVICE_URL}/analyze-frame`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Forward the shared secret when configured (CV service enforces it).
-        ...(process.env.CV_SHARED_SECRET ? { "X-CV-Token": process.env.CV_SHARED_SECRET } : {}),
-      },
-      body: JSON.stringify({
-        image_base64: imageBase64,
-        media_type: image.type || undefined,
-        match_context: context,
-      }),
-      signal: AbortSignal.timeout(55_000),
-    });
-  } catch (err) {
-    // Log internals server-side; don't leak the internal URL/error to clients.
-    console.error("CV service unreachable", CV_SERVICE_URL, err);
-    return NextResponse.json({ error: "Vision service unavailable" }, { status: 502 });
+  // External service path (only when explicitly configured).
+  if (CV_SERVICE_URL) {
+    try {
+      const cvRes = await fetch(`${CV_SERVICE_URL}/analyze-frame`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(process.env.CV_SHARED_SECRET ? { "X-CV-Token": process.env.CV_SHARED_SECRET } : {}),
+        },
+        body: JSON.stringify({ image_base64: imageBase64, media_type: image.type, match_context: context }),
+        signal: AbortSignal.timeout(55_000),
+      });
+      const payload = await cvRes.json().catch(() => ({ error: "CV service returned non-JSON" }));
+      if (!cvRes.ok) {
+        return NextResponse.json(
+          { error: payload?.detail ?? payload?.error ?? "CV analysis failed" },
+          { status: cvRes.status },
+        );
+      }
+      return NextResponse.json(payload, { headers: { "Cache-Control": "no-store" } });
+    } catch (err) {
+      console.error("CV service unreachable", err);
+      return NextResponse.json({ error: "Vision service unavailable" }, { status: 502 });
+    }
   }
 
-  const payload = await cvRes.json().catch(() => ({ error: "CV service returned non-JSON" }));
-  if (!cvRes.ok) {
-    return NextResponse.json(
-      { error: payload?.detail ?? payload?.error ?? "CV analysis failed" },
-      { status: cvRes.status },
-    );
+  // In-process path: call Claude vision directly.
+  try {
+    const result = await analyzeFrame(imageBase64, image.type as MediaType, context);
+    return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
+  } catch (err) {
+    console.error("vision analyze failed", err);
+    const message = (err as Error).message;
+    const status = message.includes("declined") ? 422 : 502;
+    return NextResponse.json({ error: message }, { status });
   }
-  return NextResponse.json(payload, { headers: { "Cache-Control": "no-store" } });
 }

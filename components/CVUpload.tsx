@@ -43,10 +43,8 @@ export function CVUpload({ matchId }: { matchId: string }) {
       if (!res.ok) {
         setError(
           res.status === 503
-            ? "The vision service needs an ANTHROPIC_API_KEY."
-            : res.status === 502
-              ? "The CV microservice isn't running. Start it: cd cv-service && uv run uvicorn main:app --port 8000"
-              : json.error || "Analysis failed.",
+            ? "Vision analysis needs an ANTHROPIC_API_KEY."
+            : json.error || "Analysis failed — try a clearer broadcast frame.",
         );
       } else {
         setResult(json);

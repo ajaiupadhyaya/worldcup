@@ -1,16 +1,22 @@
 # Deploy
 
-Two services: the **Next.js app** on Vercel and the **CV microservice** on
-Railway. They talk over HTTPS, authenticated by a shared secret.
+The **Next.js app** (Vercel) is the whole production deployment. The computer-
+vision feature runs **in-process** by default — `/api/vision/analyze` calls
+Claude vision directly (`lib/vision.ts`), so no second service is required.
 
 ```
- Browser ──► Vercel (Next.js)  ──► Railway (FastAPI CV)
-                │  X-CV-Token         │
-                └─► Anthropic / API-Football / ESPN
+ Browser ──► Vercel (Next.js) ──► Anthropic / API-Football / ESPN
+                                   (vision in-process via lib/vision.ts)
 ```
 
-## 1. CV service → Railway
+The standalone FastAPI service in `cv-service/` remains as an optional external
+worker: set `CV_SERVICE_URL` (+ matching `CV_SHARED_SECRET`) and the route
+forwards to it instead. Useful for local dev or a dedicated host. The Railway
+config below applies only if you take that path.
 
+## 1. (Optional) CV service → Railway
+
+Only if you want the standalone FastAPI worker instead of in-process vision.
 Root directory: `cv-service/` (Nixpacks builds from `requirements.txt`,
 `.python-version`, and `Procfile`).
 
