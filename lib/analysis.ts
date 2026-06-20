@@ -1,0 +1,92 @@
+// Analysis orchestration (Phase 2).
+// Bridges the data layer (lib/data) and the Claude engine (lib/claude), with a
+// caching policy tuned per analysis type:
+//   - post-match breakdown: generate ONCE, cache for a day (immutable result)
+//   - pre-match preview: cache 30 min, regenerate when lineups change
+//   - live commentary: regenerate every 15 minutes
+
+import { cache } from "./cache";
+import { getMatch } from "./data";
+import * as claude from "./claude";
+import type { Match } from "./types";
+
+export interface AnalysisResult {
+  matchId: string;
+  type: "breakdown" | "preview" | "live";
+  text: string;
+  model: string;
+  generatedAt: string;
+}
+
+const DAY = 24 * 60 * 60;
+const PREVIEW_TTL = 30 * 60;
+const LIVE_TTL = 15 * 60;
+
+function result(matchId: string, type: AnalysisResult["type"], text: string): AnalysisResult {
+  return {
+    matchId,
+    type,
+    text,
+    model: claude.ANALYSIS_MODEL,
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+/** A short signature of lineup state so previews regenerate when XIs change. */
+function lineupSignature(match: Match): string {
+  if (!match.lineups) return "none";
+  const ids = (xi: { id: string }[]) => xi.map((p) => p.id).sort().join(",");
+  return `${ids(match.lineups.home.startingXI)}|${ids(match.lineups.away.startingXI)}`;
+}
+
+export async function getBreakdown(matchId: string, force = false): Promise<AnalysisResult> {
+  const key = `analysis:breakdown:${matchId}`;
+  if (!force) {
+    const hit = cache.get<AnalysisResult>(key);
+    if (hit) return hit;
+  }
+  const { data: match } = await getMatch(matchId);
+  if (match.status !== "finished") {
+    throw new Error("Breakdown is only available for finished matches");
+  }
+  const text = await claude.postMatchBreakdown(match);
+  const res = result(matchId, "breakdown", text);
+  cache.set(key, res, DAY);
+  return res;
+}
+
+export async function getPreview(matchId: string, force = false): Promise<AnalysisResult> {
+  const { data: match } = await getMatch(matchId);
+  const sig = lineupSignature(match);
+  const key = `analysis:preview:${matchId}:${sig}`;
+  if (!force) {
+    const hit = cache.get<AnalysisResult>(key);
+    if (hit) return hit;
+  }
+  const text = await claude.preMatchPreview(match);
+  const res = result(matchId, "preview", text);
+  cache.set(key, res, PREVIEW_TTL);
+  return res;
+}
+
+export async function getLive(matchId: string, force = false): Promise<AnalysisResult> {
+  const key = `analysis:live:${matchId}`;
+  if (!force) {
+    const hit = cache.get<AnalysisResult>(key);
+    if (hit) return hit;
+  }
+  const { data: match } = await getMatch(matchId);
+  if (match.status !== "live") {
+    throw new Error("Live commentary is only available for live matches");
+  }
+  const text = await claude.liveCommentary(match);
+  const res = result(matchId, "live", text);
+  cache.set(key, res, LIVE_TTL);
+  return res;
+}
+
+/** Returns the match (for Q&A context) — throws if not found. */
+export async function matchForQA(matchId: string): Promise<Match> {
+  const { data } = await getMatch(matchId);
+  return data;
+}

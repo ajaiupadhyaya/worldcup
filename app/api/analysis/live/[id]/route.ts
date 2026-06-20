@@ -1,0 +1,23 @@
+import { NextResponse } from "next/server";
+import { getLive } from "@/lib/analysis";
+import { hasAnthropicKey } from "@/lib/claude";
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+// GET returns the latest live tactical observation (regenerated every 15 min).
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  if (!hasAnthropicKey()) {
+    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 503 });
+  }
+  try {
+    const analysis = await getLive(id);
+    return NextResponse.json(analysis, { headers: { "Cache-Control": "no-store" } });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+  }
+}

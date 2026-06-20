@@ -47,13 +47,41 @@ export default function DevPage() {
     loadAll();
   }, []);
 
+  const [analysis, setAnalysis] = useState<string | null>(null);
+  const [analyzing, setAnalyzing] = useState(false);
+
   async function inspect(id: string) {
     setSelectedId(id);
     setSelected(null);
+    setAnalysis(null);
     try {
       setSelected(await getJSON<DataEnvelope<Match>>(`/api/matches/${id}`));
     } catch (e) {
       setError((e as Error).message);
+    }
+  }
+
+  // Phase 2 confirmation: pick the right analysis endpoint for the match status.
+  async function analyze() {
+    if (!selected) return;
+    setAnalyzing(true);
+    setAnalysis(null);
+    const id = selected.data.id;
+    const status = selected.data.status;
+    const route =
+      status === "finished"
+        ? { url: `/api/analysis/match/${id}`, method: "POST" }
+        : status === "live"
+          ? { url: `/api/analysis/live/${id}`, method: "GET" }
+          : { url: `/api/analysis/preview/${id}`, method: "POST" };
+    try {
+      const res = await fetch(route.url, { method: route.method });
+      const json = await res.json();
+      setAnalysis(res.ok ? json.text : `⚠️ ${json.error}`);
+    } catch (e) {
+      setAnalysis(`⚠️ ${(e as Error).message}`);
+    } finally {
+      setAnalyzing(false);
     }
   }
 
@@ -175,10 +203,26 @@ export default function DevPage() {
         {/* Raw JSON of selected match */}
         {selectedId && (
           <section>
-            <h2 className="mb-2 text-zinc-400 uppercase tracking-wide text-xs">
-              Match {selectedId} — raw{" "}
-              {selected && `· src=${selected.source} · cached=${selected.cached}`}
-            </h2>
+            <div className="mb-2 flex items-center justify-between">
+              <h2 className="text-zinc-400 uppercase tracking-wide text-xs">
+                Match {selectedId} — raw{" "}
+                {selected && `· src=${selected.source} · cached=${selected.cached}`}
+              </h2>
+              {selected && (
+                <button
+                  onClick={analyze}
+                  disabled={analyzing}
+                  className="rounded border border-emerald-700 px-3 py-1 text-emerald-300 hover:bg-emerald-900/30 disabled:opacity-50"
+                >
+                  {analyzing ? "analyzing…" : "🧠 Claude analysis"}
+                </button>
+              )}
+            </div>
+            {analysis && (
+              <div className="mb-3 whitespace-pre-wrap rounded border border-emerald-800 bg-emerald-950/20 p-3 text-emerald-100">
+                {analysis}
+              </div>
+            )}
             <pre className="max-h-[480px] overflow-auto rounded border border-zinc-800 bg-black p-3 text-xs">
               {selected ? JSON.stringify(selected.data, null, 2) : "loading…"}
             </pre>
