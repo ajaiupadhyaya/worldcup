@@ -77,12 +77,15 @@ export async function getMatch(id: string): Promise<DataEnvelope<Match>> {
   const hit = cache.get<{ value: Match; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
-  const { value, source } = await withFallback(
-    () => af.getMatch(id),
-    () => espn.getMatch(id),
-  );
-  cache.set(key, { value, source }, singleMatchTtl(value));
-  return envelope(value, source, false);
+  // Match IDs are namespaced per provider (an ESPN event id and an API-Football
+  // fixture id can collide on the same number for different matches). The detail
+  // MUST come from the same source serving the fixture list, or we'd fetch an
+  // unrelated match — so there is NO cross-source fallback here. `getMatches()`
+  // is cached, so resolving the active source is cheap.
+  const listSource = (await getMatches()).source;
+  const value = listSource === "api-football" ? await af.getMatch(id) : await espn.getMatch(id);
+  cache.set(key, { value, source: listSource }, singleMatchTtl(value));
+  return envelope(value, listSource, false);
 }
 
 export async function getStandings(): Promise<DataEnvelope<Standing[]>> {
