@@ -55,7 +55,8 @@ async function af<T>(path: string, params: Record<string, string | number>): Pro
 function num(v: unknown): number {
   if (v === null || v === undefined) return 0;
   if (typeof v === "string") {
-    const n = parseFloat(v.replace("%", ""));
+    // Strip thousands separators and percent signs ("1,234" / "57%").
+    const n = parseFloat(v.replace(/[,%]/g, ""));
     return Number.isFinite(n) ? n : 0;
   }
   return Number.isFinite(v as number) ? (v as number) : 0;
@@ -74,7 +75,9 @@ function mapTeam(raw: any, group?: string): Team {
 function mapStatus(short: string | undefined): Match["status"] {
   // API-Football short status codes.
   const live = ["1H", "2H", "HT", "ET", "BT", "P", "LIVE", "INT"];
-  const finished = ["FT", "AET", "PEN", "AWD", "WO"];
+  // ABD (abandoned) is terminal — treat as finished, not upcoming.
+  // PST/CANC/SUSP/TBD/NS intentionally fall through to "scheduled".
+  const finished = ["FT", "AET", "PEN", "AWD", "WO", "ABD"];
   if (finished.includes(short ?? "")) return "finished";
   if (live.includes(short ?? "")) return "live";
   return "scheduled";
@@ -137,7 +140,10 @@ function mapStats(raw: any[], homeTeamId?: string): MatchStats | undefined {
   if (!raw?.length) return undefined;
   const homeBlock =
     raw.find((b) => String(b?.team?.id) === String(homeTeamId)) ?? raw[0];
-  const awayBlock = raw.find((b) => b !== homeBlock) ?? raw[1] ?? raw[0];
+  // The genuinely-other block, or undefined when only one team's stats exist
+  // (early live minutes) — never fall back to homeBlock, which would mirror
+  // home stats onto away.
+  const awayBlock = raw.find((b) => b !== homeBlock);
   const h = homeBlock?.statistics ?? [];
   const a = awayBlock?.statistics ?? [];
   return {
@@ -165,7 +171,7 @@ function mapPlayer(p: any): Player {
 }
 
 function mapLineups(raw: any[], homeTeamId?: string): { home: Lineup; away: Lineup } | undefined {
-  if (raw?.length < 2) return undefined;
+  if (!raw || raw.length < 2) return undefined;
   const homeBlock = raw.find((b) => String(b?.team?.id) === String(homeTeamId)) ?? raw[0];
   const awayBlock = raw.find((b) => b !== homeBlock) ?? raw[1];
   const toLineup = (b: any): Lineup => ({

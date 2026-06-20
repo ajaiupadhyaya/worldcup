@@ -30,8 +30,12 @@ export function useMatch(id: string) {
   return useQuery({
     queryKey: ["match", id],
     queryFn: () => fetchJSON<DataEnvelope<Match>>(`/api/matches/${id}`),
-    refetchInterval: (query) =>
-      query.state.data?.data.status === "live" ? LIVE_POLL : false,
+    // Live: fast poll. Finished: stop. Scheduled: slow poll so a viewer waiting
+    // at the page sees the match flip to live at kickoff.
+    refetchInterval: (query) => {
+      const status = query.state.data?.data.status;
+      return status === "live" ? LIVE_POLL : status === "finished" ? false : SLOW_POLL;
+    },
   });
 }
 

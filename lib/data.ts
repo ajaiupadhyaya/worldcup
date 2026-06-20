@@ -19,10 +19,16 @@ function envelope<T>(data: T, source: DataSource, cached: boolean): DataEnvelope
 async function withFallback<T>(
   primary: () => Promise<T>,
   fallback: () => Promise<T>,
+  // For list endpoints, an empty primary result (e.g. wrong league/season or a
+  // soft quota failure) is treated as a miss so ESPN still gets a chance.
+  emptyIsMiss = false,
 ): Promise<{ value: T; source: DataSource }> {
   if (af.hasApiFootballKey()) {
     try {
-      return { value: await primary(), source: "api-football" };
+      const value = await primary();
+      const empty = emptyIsMiss && Array.isArray(value) && value.length === 0;
+      if (!empty) return { value, source: "api-football" };
+      console.warn("[data] API-Football returned empty; trying ESPN");
     } catch (err) {
       console.warn("[data] API-Football failed, falling back to ESPN:", (err as Error).message);
     }
@@ -30,9 +36,17 @@ async function withFallback<T>(
   return { value: await fallback(), source: "espn" };
 }
 
-// Pick a TTL based on whether any match in a set is live.
+// Use the fast (live) TTL when any match is live OR kicks off soon, so a
+// scheduled->live transition is picked up within ~60s instead of waiting out
+// the 5-minute scheduled cache.
 function matchesTtl(matches: Match[]): number {
-  return matches.some((m) => m.status === "live") ? TTL.LIVE : TTL.SCHEDULED;
+  const soon = Date.now() + 5 * 60 * 1000;
+  const hot = matches.some(
+    (m) =>
+      m.status === "live" ||
+      (m.status === "scheduled" && new Date(m.kickoff).getTime() <= soon),
+  );
+  return hot ? TTL.LIVE : TTL.SCHEDULED;
 }
 
 function singleMatchTtl(match: Match): number {
@@ -48,7 +62,7 @@ export async function getMatches(): Promise<DataEnvelope<Match[]>> {
   const hit = cache.get<{ value: Match[]; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
-  const { value, source } = await withFallback(af.getMatches, espn.getMatches);
+  const { value, source } = await withFallback(af.getMatches, espn.getMatches, true);
   cache.set(key, { value, source }, matchesTtl(value));
   return envelope(value, source, false);
 }
@@ -76,41 +90,50 @@ export async function getStandings(): Promise<DataEnvelope<Standing[]>> {
   const hit = cache.get<{ value: Standing[]; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
-  const { value, source } = await withFallback(af.getStandings, espn.getStandings);
+  const { value, source } = await withFallback(af.getStandings, espn.getStandings, true);
   cache.set(key, { value, source }, TTL.STANDINGS);
   return envelope(value, source, false);
 }
 
-// Health probe for the /dev page: pings each source and reports status.
+// Health probe for the /dev page: reports each source's status plus which
+// source is currently being SERVED from cache. ESPN (unmetered) is pinged live;
+// API-Football is only pinged when `probe` is set, so a routine health load
+// doesn't burn the 100/day free-tier quota.
 export interface SourceHealth {
   source: DataSource;
   configured: boolean;
   ok: boolean;
   detail: string;
   count?: number;
+  serving?: boolean; // is this the source the cache is currently serving?
 }
 
-export async function checkHealth(): Promise<SourceHealth[]> {
+export async function checkHealth(probe = false): Promise<SourceHealth[]> {
   const results: SourceHealth[] = [];
+  const served = cache.get<{ value: Match[]; source: DataSource }>("matches:all")?.source;
 
-  // API-Football
+  // API-Football — avoid spending quota unless an explicit probe is requested.
   if (af.hasApiFootballKey()) {
-    try {
-      const m = await af.getMatches();
-      results.push({ source: "api-football", configured: true, ok: true, detail: "ok", count: m.length });
-    } catch (err) {
-      results.push({ source: "api-football", configured: true, ok: false, detail: (err as Error).message });
+    if (probe) {
+      try {
+        const m = await af.getMatches();
+        results.push({ source: "api-football", configured: true, ok: true, detail: "ok", count: m.length, serving: served === "api-football" });
+      } catch (err) {
+        results.push({ source: "api-football", configured: true, ok: false, detail: (err as Error).message, serving: served === "api-football" });
+      }
+    } else {
+      results.push({ source: "api-football", configured: true, ok: true, detail: "configured (not probed — saves quota)", serving: served === "api-football" });
     }
   } else {
     results.push({ source: "api-football", configured: false, ok: false, detail: "API_FOOTBALL_KEY not set" });
   }
 
-  // ESPN
+  // ESPN — unmetered, always pinged live.
   try {
     const m = await espn.getMatches();
-    results.push({ source: "espn", configured: true, ok: true, detail: "ok", count: m.length });
+    results.push({ source: "espn", configured: true, ok: true, detail: "ok", count: m.length, serving: served === "espn" });
   } catch (err) {
-    results.push({ source: "espn", configured: true, ok: false, detail: (err as Error).message });
+    results.push({ source: "espn", configured: true, ok: false, detail: (err as Error).message, serving: served === "espn" });
   }
 
   return results;

@@ -70,7 +70,17 @@ for every response.
 ## Roadmap
 
 - [x] **Phase 1 — Data Layer** (live scores, lineups, stats, standings, caching, `/dev`)
-- [ ] **Phase 2 — Analysis Engine** (Claude tactical breakdowns, previews, Q&A)
-- [ ] **Phase 3 — Computer Vision** (screenshot → formation analysis, FastAPI)
-- [ ] **Phase 4 — Shareable Cards** (`@vercel/og` match report cards)
-- [ ] **Phase 5 — Public Web App** (full UI, rate limiting, deploy)
+- [x] **Phase 2 — Analysis Engine** (Claude tactical breakdowns, previews, live reads, streaming Q&A)
+- [x] **Phase 3 — Computer Vision** (screenshot → formation analysis, FastAPI in `cv-service/`)
+- [x] **Phase 4 — Shareable Cards** (`next/og` match report cards at `/api/og/match/[id]`)
+- [x] **Phase 5 — Public Web App** ("FLOODLIT CHALK" tactics-cam UI: `/`, `/match/[id]`, `/standings`)
+- [ ] Deploy (Vercel + Railway) and Phase-5 rate limiting (Upstash) — not yet wired
+
+## Design
+
+The UI direction is **FLOODLIT CHALK** — the page *is* the broadcast tactics-cam:
+floodlit-grass black-green base, sodium-amber + telestrator-cyan chalk
+(home = cyan, away = amber), Anton scoreboard caps / Hanken Grotesk prose /
+Spline Sans Mono data. The signature is a self-drawing telestrator chalk overlay
+on formation dot-diagrams (`components/FormationPitch.tsx`), reinforced by
+kit-colour programme-spine edge bars on every team row.

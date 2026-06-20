@@ -36,10 +36,13 @@ export function TacticalAnalysis({ match }: { match: Match }) {
       const res = await fetch(route.url, { method: route.method });
       const json = await res.json();
       if (!res.ok) {
+        const staleState = res.status === 400 && /only available for/i.test(json.error ?? "");
         setError(
           res.status === 503
             ? "Claude analysis needs an ANTHROPIC_API_KEY. Add one to .env.local to enable tactical breakdowns."
-            : json.error || "Analysis failed.",
+            : staleState
+              ? "The match state just changed — refresh and try again."
+              : json.error || "Analysis failed.",
         );
       } else {
         setResult(json);

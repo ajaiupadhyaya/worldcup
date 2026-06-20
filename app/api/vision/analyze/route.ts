@@ -29,8 +29,11 @@ export async function POST(req: Request) {
   if (image.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ error: "Image exceeds 8MB limit" }, { status: 413 });
   }
-  if (image.type && !ALLOWED_TYPES.has(image.type)) {
-    return NextResponse.json({ error: `Unsupported image type: ${image.type}` }, { status: 415 });
+  if (!image.type || !ALLOWED_TYPES.has(image.type)) {
+    return NextResponse.json(
+      { error: `Unsupported image type: ${image.type || "unknown"}` },
+      { status: 415 },
+    );
   }
 
   // Optionally enrich with match context so the CV read is grounded.
@@ -52,7 +55,11 @@ export async function POST(req: Request) {
   try {
     cvRes = await fetch(`${CV_SERVICE_URL}/analyze-frame`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // Forward the shared secret when configured (CV service enforces it).
+        ...(process.env.CV_SHARED_SECRET ? { "X-CV-Token": process.env.CV_SHARED_SECRET } : {}),
+      },
       body: JSON.stringify({
         image_base64: imageBase64,
         media_type: image.type || undefined,
@@ -61,10 +68,9 @@ export async function POST(req: Request) {
       signal: AbortSignal.timeout(55_000),
     });
   } catch (err) {
-    return NextResponse.json(
-      { error: `CV service unreachable at ${CV_SERVICE_URL}: ${(err as Error).message}` },
-      { status: 502 },
-    );
+    // Log internals server-side; don't leak the internal URL/error to clients.
+    console.error("CV service unreachable", CV_SERVICE_URL, err);
+    return NextResponse.json({ error: "Vision service unavailable" }, { status: 502 });
   }
 
   const payload = await cvRes.json().catch(() => ({ error: "CV service returned non-JSON" }));

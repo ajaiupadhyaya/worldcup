@@ -96,11 +96,17 @@ async function complete(
     messages: [{ role: "user", content: user }],
   });
   const msg = await stream.finalMessage();
-  return msg.content
+  if (msg.stop_reason === "refusal") {
+    throw new Error("Claude declined to analyze this match.");
+  }
+  const text = msg.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")
     .map((b) => b.text)
     .join("")
     .trim();
+  // Never let an empty result be cached as a successful analysis.
+  if (!text) throw new Error("Claude returned an empty analysis; please retry.");
+  return text;
 }
 
 // ---- analysis types ---------------------------------------------------------
@@ -108,7 +114,8 @@ async function complete(
 /** Post-match tactical breakdown (400-600 words). */
 export async function postMatchBreakdown(match: Match): Promise<string> {
   const user = `Write a 400-600 word post-match tactical breakdown of this finished match. Cover: the key tactical battle, why the result happened, standout performers, and decisive manager decisions. Ground every claim in the stats below.\n\n${matchContext(match)}`;
-  return complete(ANALYST_SYSTEM, user, 2000);
+  // Headroom so a 600-word breakdown isn't truncated mid-sentence.
+  return complete(ANALYST_SYSTEM, user, 3000);
 }
 
 /** Pre-match preview + prediction. */

@@ -15,6 +15,16 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
+// In production on a non-Vercel host, an unset NEXT_PUBLIC_SITE_URL makes OG
+// image URLs resolve to localhost (broken unfurls). Warn loudly at build/boot.
+if (
+  process.env.NODE_ENV === "production" &&
+  !process.env.NEXT_PUBLIC_SITE_URL &&
+  !process.env.VERCEL_URL
+) {
+  console.warn("[layout] metadataBase fell back to localhost — set NEXT_PUBLIC_SITE_URL for correct OG image URLs.");
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Floodlit — World Cup Tactical Intelligence",

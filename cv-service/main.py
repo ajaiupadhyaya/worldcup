@@ -21,8 +21,10 @@ import json
 import os
 from typing import Optional
 
+import hmac
+
 import anthropic
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -31,14 +33,27 @@ MAX_IMAGE_BYTES = 8 * 1024 * 1024  # 8 MB decoded ceiling
 
 app = FastAPI(title="World Cup CV Service", version="0.1.0")
 
-# The Next.js app is the only intended caller; allow the configured origin (or
-# all, in dev) so a browser-side fallback could call directly if ever needed.
+# The Next.js app is the only intended caller. Default CORS to the local app
+# origin (NOT "*") so a hostile site can't drive a victim's browser into this
+# paid endpoint; override via CV_ALLOWED_ORIGINS in deploy.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("CV_ALLOWED_ORIGINS", "*").split(","),
+    allow_origins=os.environ.get("CV_ALLOWED_ORIGINS", "http://localhost:3000").split(","),
     allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
+
+# Optional shared secret. When CV_SHARED_SECRET is set, every /analyze-frame
+# call must present a matching X-CV-Token header (the Next.js proxy forwards it).
+# Unset = open (dev convenience); set it in any networked deploy.
+_SHARED_SECRET = os.environ.get("CV_SHARED_SECRET")
+
+
+def _check_token(token: str | None) -> None:
+    if not _SHARED_SECRET:
+        return
+    if not token or not hmac.compare_digest(token, _SHARED_SECRET):
+        raise HTTPException(status_code=401, detail="invalid or missing X-CV-Token")
 
 # In-process result cache keyed by image content hash. Swap for Redis if this
 # service is ever horizontally scaled.
@@ -161,15 +176,20 @@ def health() -> dict:
 
 
 @app.post("/analyze-frame", response_model=FrameAnalysis)
-def analyze_frame(req: AnalyzeRequest) -> FrameAnalysis:
+def analyze_frame(
+    req: AnalyzeRequest,
+    x_cv_token: str | None = Header(default=None),
+) -> FrameAnalysis:
+    _check_token(x_cv_token)
     if not _has_key():
         raise HTTPException(status_code=503, detail="ANTHROPIC_API_KEY not configured")
 
     raw_b64, media_type = _normalize_image(req.image_base64, req.media_type)
 
-    # Cache key folds in the image AND the context (different context -> different read).
+    # Cache key folds in the image bytes, the resolved media type, AND the
+    # context (different media type or context -> different read).
     cache_key = hashlib.sha256(
-        (raw_b64 + "\x00" + (req.match_context or "")).encode("utf-8")
+        "\x00".join([raw_b64, media_type, req.match_context or ""]).encode("utf-8")
     ).hexdigest()
     if cache_key in _cache:
         cached = _cache[cache_key].model_copy(update={"cached": True})
@@ -199,8 +219,16 @@ def analyze_frame(req: AnalyzeRequest) -> FrameAnalysis:
             ],
             output_config={"format": {"type": "json_schema", "schema": _ANALYSIS_SCHEMA}},
         )
-    except anthropic.APIError as exc:  # surface a clean error to the Next.js caller
-        raise HTTPException(status_code=502, detail=f"Claude vision error: {exc}") from exc
+    except anthropic.RateLimitError as exc:
+        print(f"[cv] Claude rate-limited: {exc}")
+        raise HTTPException(status_code=429, detail="Claude vision rate-limited; retry shortly") from exc
+    except anthropic.APIStatusError as exc:
+        print(f"[cv] Claude status error {exc.status_code}: {exc}")
+        status = exc.status_code if exc.status_code and exc.status_code < 500 else 502
+        raise HTTPException(status_code=status, detail="Claude vision error") from exc
+    except anthropic.APIError as exc:  # connection/timeout/etc — don't leak details
+        print(f"[cv] Claude unreachable: {exc}")
+        raise HTTPException(status_code=502, detail="Claude vision unreachable") from exc
 
     text = "".join(b.text for b in message.content if b.type == "text").strip()
     try:

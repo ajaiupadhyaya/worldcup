@@ -70,14 +70,17 @@ export async function getPreview(matchId: string, force = false): Promise<Analys
 }
 
 export async function getLive(matchId: string, force = false): Promise<AnalysisResult> {
-  const key = `analysis:live:${matchId}`;
-  if (!force) {
-    const hit = cache.get<AnalysisResult>(key);
-    if (hit) return hit;
-  }
   const { data: match } = await getMatch(matchId);
   if (match.status !== "live") {
     throw new Error("Live commentary is only available for live matches");
+  }
+  // Fold a coarse live-state signature into the key so a new goal/event (or a
+  // ~5-minute bucket) regenerates the read; LIVE_TTL caps the cost.
+  const sig = `${match.score.home}-${match.score.away}:${match.events?.length ?? 0}:${Math.floor((match.minute ?? 0) / 5)}`;
+  const key = `analysis:live:${matchId}:${sig}`;
+  if (!force) {
+    const hit = cache.get<AnalysisResult>(key);
+    if (hit) return hit;
   }
   const text = await claude.liveCommentary(match);
   const res = result(matchId, "live", text);

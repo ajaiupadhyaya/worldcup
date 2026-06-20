@@ -44,8 +44,17 @@ function mapStatusState(state: string | undefined, completed: boolean | undefine
 }
 
 function num(v: unknown): number {
-  const n = typeof v === "string" ? parseFloat(v) : (v as number);
+  // Strip thousands separators / percent signs so "1,234" and "57%" parse.
+  const n = typeof v === "string" ? parseFloat(v.replace(/[,%]/g, "")) : (v as number);
   return Number.isFinite(n) ? n : 0;
+}
+
+// Parse an ESPN clock ("62'", "45'+2", "90:00", "HT") to a minute number.
+function clockToMinute(s: string | undefined): number | undefined {
+  if (!s) return undefined;
+  const m = s.match(/(\d+)(?:\s*\+\s*(\d+))?/);
+  if (!m) return undefined;
+  return Number(m[1]) + (m[2] ? Number(m[2]) : 0);
 }
 
 function mapTeam(raw: any, group?: string): Team {
@@ -60,7 +69,8 @@ function mapTeam(raw: any, group?: string): Team {
 
 function statValue(stats: any[], name: string): number {
   const s = stats?.find((x) => x?.name === name);
-  return s ? num(s.displayValue ?? s.value) : 0;
+  // Prefer the numeric `value` (displayValue can be "1,234" or "+3").
+  return s ? num(s.value ?? s.displayValue) : 0;
 }
 
 // ---- public API -------------------------------------------------------------
@@ -82,8 +92,7 @@ function mapEvent(event: any): Match | null {
 
   const statusType = event?.status?.type ?? comp?.status?.type ?? {};
   const status = mapStatusState(statusType.state, statusType.completed);
-  const minute =
-    status === "live" ? num(event?.status?.displayClock?.replace("'", "")) : undefined;
+  const minute = status === "live" ? clockToMinute(event?.status?.displayClock) : undefined;
 
   return {
     id: String(event.id),
@@ -219,7 +228,7 @@ function mapEvents(summary: any, homeTeamId: string): MatchEvent[] {
     if (!type) continue;
     const athletes: any[] = e?.athletesInvolved ?? e?.participants ?? [];
     out.push({
-      minute: num(e?.clock?.displayValue?.replace("'", "")),
+      minute: clockToMinute(e?.clock?.displayValue) ?? 0,
       type,
       team: String(e?.team?.id ?? ""),
       player: athletes[0]?.displayName ?? e?.text ?? "",

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getMatch } from "@/lib/data";
+import { apiError } from "@/lib/apiError";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,6 @@ export async function GET(
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 502 });
+    return apiError(`GET /api/matches/${id}/lineups`, err);
   }
 }

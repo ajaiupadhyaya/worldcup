@@ -11,15 +11,19 @@ export function TickerBar() {
   const { data } = useMatches();
   const matches = (data?.data ?? []).slice().sort(byInterest);
   const live = matches.filter((m) => m.status === "live");
-  const ticker = (live.length ? live : matches.filter((m) => m.status === "scheduled")).slice(0, 6);
-  const labelKind = live.length ? "live" : "upcoming";
+  const scheduled = matches.filter((m) => m.status === "scheduled");
+  const finished = matches.filter((m) => m.status === "finished");
+  // Prefer live, then upcoming, then recent results so the bar is never empty
+  // when only finished matches remain on the board.
+  const ticker = (live.length ? live : scheduled.length ? scheduled : finished).slice(0, 6);
+  const labelKind = live.length ? "live" : scheduled.length ? "upcoming" : "results";
 
   return (
     <div className="sticky top-0 z-30 border-b border-border bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2 font-mono text-xs">
         <span className="flex shrink-0 items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-muted">
           {live.length ? <LiveDot size={7} /> : null}
-          {live.length ? "LIVE" : "NEXT UP"}
+          {labelKind === "live" ? "LIVE" : labelKind === "upcoming" ? "NEXT UP" : "RESULTS"}
         </span>
         <div className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {ticker.length === 0 ? (

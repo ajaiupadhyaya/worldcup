@@ -9,7 +9,7 @@ import { PitchDivider } from "@/components/PitchDivider";
 
 export default function Home() {
   const { data: matchesEnv, isLoading: loadingMatches, error: matchesError } = useMatches();
-  const { data: standingsEnv } = useStandings();
+  const { data: standingsEnv, error: standingsError } = useStandings();
 
   const matches = (matchesEnv?.data ?? []).slice().sort(byInterest);
   const featured =
@@ -55,14 +55,18 @@ export default function Home() {
       )}
 
       {/* GROUPS */}
-      {Object.keys(groups).length > 0 && (
+      {(Object.keys(groups).length > 0 || standingsError) && (
         <>
           <PitchDivider label="Groups" />
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {Object.entries(groups).map(([group, rows]) => (
-              <StandingsTable key={group} group={group} rows={rows} />
-            ))}
-          </div>
+          {standingsError ? (
+            <p className="text-sm text-muted">Standings are unavailable right now.</p>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(groups).map(([group, rows]) => (
+                <StandingsTable key={group} group={group} rows={rows} />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

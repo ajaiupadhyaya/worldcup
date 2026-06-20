@@ -36,10 +36,23 @@ export function MatchQA({ matchId }: { matchId: string }) {
       }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
+      let full = "";
       for (;;) {
         const { done, value } = await reader.read();
-        if (done) break;
-        setAnswer((prev) => prev + decoder.decode(value, { stream: true }));
+        if (done) {
+          full += decoder.decode(); // flush any buffered multibyte bytes
+          break;
+        }
+        full += decoder.decode(value, { stream: true });
+        setAnswer(full);
+      }
+      // The route writes a sentinel into the 200 stream if Claude fails mid-flight.
+      const sentinel = full.match(/\n?\[error: ([^\]]*)\]\s*$/);
+      if (sentinel) {
+        setAnswer(full.slice(0, sentinel.index).trim());
+        setError(sentinel[1] || "Claude could not finish the answer.");
+      } else {
+        setAnswer(full);
       }
     } catch (e) {
       setError((e as Error).message);

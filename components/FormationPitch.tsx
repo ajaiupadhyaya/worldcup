@@ -71,7 +71,16 @@ export function FormationPitch({
 
   return (
     <div className={`relative ${className}`}>
-      <svg viewBox="0 0 100 150" className="w-full" role="img" aria-label="Formation tactics board">
+      <svg
+        viewBox="0 0 100 150"
+        className="w-full"
+        role="img"
+        aria-label={
+          hasFormations
+            ? `Tactics board: home ${homeFormation ?? "unknown"} versus away ${awayFormation ?? "unknown"}`
+            : "Tactics board — formations confirmed at kickoff"
+        }
+      >
         {/* lit-grass vignette */}
         <defs>
           <radialGradient id="grass" cx="50%" cy="40%" r="75%">

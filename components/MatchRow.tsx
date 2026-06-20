@@ -9,10 +9,12 @@ import { LiveDot } from "./LiveDot";
 // spine on the left edge. Winner's score is full-strength; loser's is muted.
 export function MatchRow({ match }: { match: Match }) {
   const { homeTeam, awayTeam, score, status } = match;
-  const decided = status !== "scheduled";
-  // A line is dimmed only when its team has actually lost (draws stay bright).
-  const homeLost = decided && score.home < score.away;
-  const awayLost = decided && score.away < score.home;
+  const decided = status !== "scheduled"; // show scores for live + finished
+  // Dim only a team that LOST a finished match — a side merely trailing in a
+  // live match stays bright (draws always stay bright).
+  const final = status === "finished";
+  const homeLost = final && score.home < score.away;
+  const awayLost = final && score.away < score.home;
 
   const line = (team: typeof homeTeam, goals: number, dim: boolean) => (
     <div className="flex items-center gap-3 py-1.5">

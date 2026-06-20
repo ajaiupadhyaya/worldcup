@@ -130,14 +130,16 @@ function EventTimeline({ events, match }: { events: MatchEvent[]; match: Match }
   const color = (e: MatchEvent) =>
     e.type === "goal" ? "var(--danger)" : e.type === "card" ? "var(--accent)" : "var(--muted)";
   const icon = (e: MatchEvent) => (e.type === "goal" ? "⚽" : e.type === "card" ? "▮" : e.type === "substitution" ? "⇄" : "▷");
+  const fallbackLabel = (e: MatchEvent) =>
+    e.type === "substitution" ? "Substitution" : e.type === "var" ? "VAR review" : e.type === "card" ? "Card" : "Goal";
   return (
     <ol className="space-y-1.5">
       {events.map((e, i) => (
-        <li key={i} className="flex items-start gap-3 text-sm">
+        <li key={`${e.minute}-${e.type}-${e.player}-${i}`} className="flex items-start gap-3 text-sm">
           <span className="w-9 shrink-0 font-mono text-xs text-muted tabular-nums">{e.minute}&apos;</span>
           <span className="shrink-0" style={{ color: color(e) }}>{icon(e)}</span>
           <span className="text-text/90">
-            {e.player || e.detail}
+            {e.player || e.detail || fallbackLabel(e)}
             {e.assist && <span className="text-muted"> · assist {e.assist}</span>}
             {e.team && (
               <span className="ml-1 font-mono text-[10px] text-muted">

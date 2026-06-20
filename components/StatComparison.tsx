@@ -3,7 +3,10 @@ import type { Match } from "@/lib/types";
 // Head-to-head stat bars: home grows from the left in telestrator cyan, away
 // from the right in sodium amber, meeting in the middle. xG gets pride of place.
 function Bar({ label, home, away, suffix = "" }: { label: string; home: number; away: number; suffix?: string }) {
-  const total = home + away || 1;
+  // Both-zero means the source omitted this stat — render nothing rather than a
+  // misleading "0 vs 0" with an empty bar.
+  if (home + away === 0) return null;
+  const total = home + away;
   const homePct = (home / total) * 100;
   return (
     <div className="py-2">

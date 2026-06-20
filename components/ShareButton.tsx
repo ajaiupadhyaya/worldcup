@@ -19,11 +19,14 @@ export function ShareButton({ matchId }: { matchId: string }) {
       }
     }
     try {
+      if (!navigator.clipboard) throw new Error("no clipboard");
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      window.open(cardUrl, "_blank");
+      // Last resort: open the shareable page (not the raw OG image) so the user
+      // can copy the URL from the address bar.
+      window.open(url, "_blank");
     }
   }
 
