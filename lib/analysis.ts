@@ -90,3 +90,16 @@ export async function matchForQA(matchId: string): Promise<Match> {
   const { data } = await getMatch(matchId);
   return data;
 }
+
+/**
+ * Returns a one-sentence Claude verdict for a match IF a breakdown is already
+ * cached — never triggers a generation. Used by the OG card so rendering an
+ * image is always cheap and never blocks on (or pays for) a Claude call.
+ */
+export function peekVerdict(matchId: string): string | null {
+  const hit = cache.get<AnalysisResult>(`analysis:breakdown:${matchId}`);
+  if (!hit) return null;
+  // First sentence of the breakdown, trimmed to a card-friendly length.
+  const sentence = hit.text.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s/)[0] ?? "";
+  return sentence.length > 160 ? sentence.slice(0, 157).trimEnd() + "…" : sentence;
+}
