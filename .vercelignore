@@ -1,0 +1,4 @@
+# The CV microservice is a separate FastAPI app (deployed to Railway, not
+# Vercel). Keep it out of the Next.js build.
+cv-service/
+.playwright-mcp/
