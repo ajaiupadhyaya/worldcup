@@ -8,6 +8,10 @@ def load_bracket() -> list[dict]:
     return json.loads(_BRACKET.read_text())["r32"]
 
 
+def load_progression() -> dict:
+    return json.loads(_BRACKET.read_text())["progression"]
+
+
 def _resolve(ref: str, winners, runners, thirds) -> str:
     if ref.startswith("3rd@"):
         return thirds[ref[4:]]        # "3rd@1E" -> thirds["1E"]

@@ -1,5 +1,5 @@
 from model.dixoncoles import Strengths
-from model.simulate import Tournament, simulate
+from model.simulate import STAGES, Tournament, simulate
 
 
 def _two_group_tournament():
@@ -32,6 +32,55 @@ def test_two_qualify_per_group_on_average():
     r = simulate(t, _flat_strengths(teams), sims=300, seed=1)
     qa = sum(r["teams"][x]["qualify"] for x in t.groups["A"])
     assert abs(qa - 2.0) < 0.05  # exactly 2 of 4 advance from group A
+
+
+def _twelve_group_tournament():
+    groups = {g: [f"{g}{i}" for i in range(1, 5)] for g in "ABCDEFGHIJKL"}
+    remaining = [(g, h, a) for g, v in groups.items() for h in v for a in v if h < a]
+    return Tournament(groups=groups, played=[], fixtures_remaining=remaining)
+
+
+def test_real_format_exactly_one_champion_and_stage_monotonicity():
+    # 12 groups A..L of 4 -> full 2026 field; flat strengths.
+    t = _twelve_group_tournament()
+    teams = [tm for v in t.groups.values() for tm in v]
+    s = _flat_strengths(teams)
+    r = simulate(t, s, sims=120, seed=7)
+    champ = sum(r["teams"][x]["winCup"] for x in teams)
+    fin = sum(r["teams"][x]["reachFinal"] for x in teams)
+    assert abs(champ - 1.0) < 1e-9        # exactly one champion per sim
+    assert abs(fin - 2.0) < 1e-9          # exactly two finalists per sim
+    for x in teams:                        # stages non-increasing
+        st = r["teams"][x]
+        assert (st["qualify"] >= st["reachR16"] >= st["reachQF"]
+                >= st["reachSF"] >= st["reachFinal"] >= st["winCup"])
+    # finishProbs sum to 1 per team
+    fp = next(tt["finishProbs"] for grp in r["groups"] if grp["group"] == "A"
+              for tt in grp["teams"])
+    assert abs(fp["p1"] + fp["p2"] + fp["p3"] + fp["p4"] - 1.0) < 1e-9
+
+
+def test_real_format_output_shape():
+    t = _twelve_group_tournament()
+    teams = [tm for v in t.groups.values() for tm in v]
+    r = simulate(t, _flat_strengths(teams), sims=40, seed=3)
+    # per-stage mcStdErr is a dict keyed by every STAGE
+    stats = r["teams"]["A1"]
+    assert set(stats["mcStdErr"]) == set(STAGES)
+    assert all(v >= 0.0 for v in stats["mcStdErr"].values())
+    # every team carries reachR32 plus all STAGES
+    assert "reachR32" in stats
+    for k in STAGES:
+        assert 0.0 <= stats[k] <= 1.0
+    # bracket advancement array is present and well-formed
+    assert isinstance(r["bracket"], list)
+    for slot in r["bracket"]:
+        assert "slot" in slot and isinstance(slot["teamProbs"], list)
+    # 32 teams enter R32 in each sim (sum of reachR32 over all teams == 32)
+    assert abs(sum(r["teams"][x]["reachR32"] for x in teams) - 32.0) < 1e-9
+    # exactly 16 reach R16 per sim
+    assert abs(sum(r["teams"][x]["reachR16"] for x in teams) - 16.0) < 1e-9
+    assert r["thirdsTableComplete"] in (True, False)
 
 
 def test_played_results_drive_standings_disjoint():

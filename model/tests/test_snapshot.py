@@ -5,9 +5,10 @@ from model.snapshot import build_predictions, write_json, validate_predictions
 
 
 def test_build_and_validate_roundtrip(tmp_path: Path):
-    sim = {"teams": {"Brazil": {"qualify": 0.9, "reachR16": 0.7, "reachQF": 0.5,
-                                "reachSF": 0.3, "reachFinal": 0.2, "winCup": 0.12,
-                                "mcStdErr": 0.003}},
+    stages = {"qualify": 0.9, "reachR32": 0.9, "reachR16": 0.7, "reachQF": 0.5,
+              "reachSF": 0.3, "reachFinal": 0.2, "winCup": 0.12}
+    sim = {"teams": {"Brazil": {**stages,
+                                "mcStdErr": {k: 0.003 for k in stages}}},
            "simCount": 10000, "seed": 42}
     obj = build_predictions(sim, fixtures=[], groups_meta=[],
                             generated_at="2026-06-20T00:00:00Z", inputs_hash="abc")

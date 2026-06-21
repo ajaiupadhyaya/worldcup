@@ -4,7 +4,8 @@ from pathlib import Path
 
 from model.version import MODEL_VERSION
 
-_TEAM_KEYS = {"qualify", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup", "mcStdErr"}
+_STAGE_KEYS = {"qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup"}
+_TEAM_KEYS = _STAGE_KEYS | {"mcStdErr"}
 
 
 def build_predictions(sim_result, fixtures, groups_meta, *, generated_at, inputs_hash) -> dict:
@@ -29,9 +30,15 @@ def validate_predictions(obj: dict) -> None:
     for t in obj["teams"]:
         if not _TEAM_KEYS <= set(t):
             raise ValueError(f"team entry missing keys: {_TEAM_KEYS - set(t)}")
-        for k in _TEAM_KEYS:
+        for k in _STAGE_KEYS:
             if not 0.0 <= float(t[k]) <= 1.0:
                 raise ValueError(f"{t.get('name')}: {k} out of [0,1]")
+        err = t["mcStdErr"]
+        if not isinstance(err, dict):
+            raise ValueError(f"{t.get('name')}: mcStdErr must be a per-stage dict")
+        for k in _STAGE_KEYS:
+            if k not in err or float(err[k]) < 0.0:
+                raise ValueError(f"{t.get('name')}: mcStdErr[{k}] invalid")
 
 
 def write_json(obj: dict, path: Path) -> None:
