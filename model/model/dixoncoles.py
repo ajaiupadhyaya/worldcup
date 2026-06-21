@@ -31,6 +31,12 @@ def fit_strengths(
     as_of: date,
     elo_prior_weight: float = 0.1,
 ) -> Strengths:
+    # Enforce as_of semantics: exclude any match dated after the cutoff so that
+    # callers (e.g. walk-forward backtests) cannot leak future results into the
+    # Elo prior seed or the likelihood weights.
+    matches = [m for m in matches if m.date <= as_of]
+    if not matches:
+        raise ValueError(f"fit_strengths: no matches on or before as_of={as_of}")
     teams = sorted({m.home for m in matches} | {m.away for m in matches})
     idx = {t: i for i, t in enumerate(teams)}
     n = len(teams)
