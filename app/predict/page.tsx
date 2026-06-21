@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { predictions, ratings } from "@/lib/predictions";
+import { predictions, ratings, calibration } from "@/lib/predictions";
 import { WinCupLeaderboard } from "@/components/predict/WinCupLeaderboard";
 import { SurvivalFunnel } from "@/components/predict/SurvivalFunnel";
 import { RatingsTable } from "@/components/predict/RatingsTable";
+import { CalibrationPanel } from "@/components/predict/CalibrationPanel";
 
 export const metadata = { title: "Predict — Floodlit" };
 
@@ -39,6 +40,13 @@ export default function PredictPage() {
 
       <Section kicker="elo + attack / defense strength" title="Ratings">
         <RatingsTable teams={ratings.teams} />
+      </Section>
+
+      <Section kicker="how well-calibrated is the model" title="The Model">
+        <CalibrationPanel
+          cal={calibration}
+          meta={{ generatedAt: p.generatedAt, simCount: p.simCount, seed: p.seed, modelVersion: p.modelVersion }}
+        />
       </Section>
     </div>
   );
