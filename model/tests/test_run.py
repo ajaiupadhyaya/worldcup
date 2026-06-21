@@ -1,10 +1,34 @@
 import json
 from pathlib import Path
 
-from model.run import main
+from model.espn import Fixture
+from model.run import build_tournament, main
 
 FIX = Path(__file__).parent / "fixtures" / "espn_scoreboard.json"
 SMALL_HISTORY = Path(__file__).parent / "fixtures" / "results_small.csv"
+
+
+def _gf(fid, home, away, group, status="scheduled", hg=None, ag=None):
+    return Fixture(
+        id=fid, home=home, away=away, kickoff="2026-06-11T19:00Z",
+        round="group-stage", status=status, home_goals=hg, away_goals=ag,
+        neutral=True, group=group,
+    )
+
+
+def test_build_tournament_uses_real_group_labels():
+    fx = [
+        _gf("1", "Mexico", "South Africa", "A"),
+        _gf("2", "France", "Senegal", "B"),
+        _gf("3", "Mexico", "France", "A", status="finished", hg=2, ag=1),
+    ]
+    t, _ = build_tournament(fx)
+    assert set(t.groups) == {"A", "B"}
+    assert "?" not in t.groups
+    assert t.groups["A"] == ["Mexico", "South Africa", "France"]
+    assert t.groups["B"] == ["France", "Senegal"]
+    # The finished group-A match is recorded as a settled result.
+    assert ("Mexico", "France", 2, 1) in t.played
 
 
 def _args(out: Path):

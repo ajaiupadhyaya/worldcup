@@ -29,13 +29,15 @@ _CALIBRATION_MAX_SAMPLES = 3000
 
 
 def build_tournament(fixtures: list[Fixture]):
-    # Group fixtures whose round is the group stage; infer groups from played + scheduled.
+    # Group fixtures by their real ESPN group label (A..L); infer each group's
+    # teams from played + scheduled matches. Fixtures without a group letter
+    # (knockouts, or group matches ESPN hasn't labelled) are not group-stage.
     groups: dict[str, list[str]] = {}
     played, remaining = [], []
     for f in fixtures:
-        if "group" not in (f.round or "").lower():
+        g = f.group
+        if not g:
             continue
-        g = "?"  # ESPN group label; refined via standings endpoint in production
         groups.setdefault(g, [])
         for tm in (f.home, f.away):
             if tm not in groups[g]:

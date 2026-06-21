@@ -1,10 +1,14 @@
 import json
+import re
 import urllib.request
 from dataclasses import dataclass
 
 from model.names import normalize
 
 BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world"
+
+# ESPN tags group-stage matches with e.g. "FIFA World Cup, Group A" in altGameNote.
+_GROUP_RE = re.compile(r"Group ([A-L])\b")
 
 
 @dataclass(frozen=True)
@@ -18,6 +22,12 @@ class Fixture:
     home_goals: int | None
     away_goals: int | None
     neutral: bool
+    group: str  # single letter "A".."L" for group-stage matches, else ""
+
+
+def _group(note: str | None) -> str:
+    m = _GROUP_RE.search(note or "")
+    return m.group(1) if m else ""
 
 
 def _status(state: str | None, completed: bool | None) -> str:
@@ -56,6 +66,7 @@ def parse_scoreboard(data: dict) -> list[Fixture]:
                 home_goals=_int_or_none(home.get("score")),
                 away_goals=_int_or_none(away.get("score")),
                 neutral=bool(comp.get("neutralSite", True)),
+                group=_group(comp.get("altGameNote")),
             )
         )
     return out
