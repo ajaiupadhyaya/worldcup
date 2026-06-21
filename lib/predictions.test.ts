@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatProb, funnelRows } from "@/lib/predictions";
+import { formatProb, funnelRows, qualifyByTeam, slugifyTeam } from "@/lib/predictions";
 import type { PredTeam } from "@/lib/predictions";
 
 describe("formatProb", () => {
@@ -53,8 +53,6 @@ describe("funnelRows", () => {
     expect(cols[0].entries).toHaveLength(2);
   });
 });
-
-import { qualifyByTeam, slugifyTeam } from "@/lib/predictions";
 
 describe("slugifyTeam", () => {
   it("mirrors the model _slug: lowercase, strip apostrophes, spaces to hyphens", () => {
