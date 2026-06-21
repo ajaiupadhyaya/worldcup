@@ -47,7 +47,8 @@ def standings(group_teams: list[str], results: list[tuple[str, str, int, int]]) 
 
     def sort_key(t: str):
         r = rows[t]
-        tied = {x for x in group_teams if rows[x].points == r.points} - {t}
+        tied = {x for x in group_teams
+                if (rows[x].points, rows[x].gd, rows[x].gf) == (r.points, r.gd, r.gf)} - {t}
         h2h = _h2h_points(t, tied, results) if tied else (0, 0, 0)
         return (-r.points, -r.gd, -r.gf, -h2h[0], -h2h[1], -h2h[2], t)
 

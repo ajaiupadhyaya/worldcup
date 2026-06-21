@@ -17,3 +17,34 @@ def test_head_to_head_breaks_equal_points_and_gd():
     results = [("X", "Y", 2, 1)]
     table = standings(teams, results)
     assert table[0].team == "X"  # beat Y head-to-head
+
+
+def test_h2h_tiebreak_after_equal_points_gd_gf():
+    # 3-team round-robin designed so A and B end equal on (pts, gd, gf),
+    # forcing a fall-through to H2H to decide their relative order.
+    #
+    # Results:
+    #   B beats A 1-0  →  B: +3pts, gf+=1, ga+=0;  A: 0pts, gf+=0, ga+=1
+    #   A beats C 2-1  →  A: +3pts, gf+=2, ga+=1;  C: 0pts, gf+=1, ga+=2
+    #   C beats B 2-1  →  C: +3pts, gf+=2, ga+=1;  B: 0pts, gf+=1, ga+=2
+    #
+    # Final standings:
+    #   A: 3pts, gf=2, ga=2, gd=0
+    #   B: 3pts, gf=2, ga=2, gd=0   ← equal triple with A; H2H required
+    #   C: 3pts, gf=3, ga=3, gd=0
+    #
+    # H2H between A and B: B beat A 1-0, so B has 3 H2H pts vs A's 0.
+    # B should rank above A.
+    # Without H2H, "A" < "B" by name → A would be placed first (wrong order).
+    # The H2H term flips them: B ranks above A.
+    teams = ["A", "B", "C"]
+    results = [
+        ("B", "A", 1, 0),  # B beats A (H2H decider)
+        ("A", "C", 2, 1),  # A beats C
+        ("C", "B", 2, 1),  # C beats B
+    ]
+    table = standings(teams, results)
+    names = [r.team for r in table]
+    assert names.index("B") < names.index("A"), (
+        f"B (H2H winner over A) should rank above A, got order {names}"
+    )
