@@ -1,0 +1,38 @@
+# .github/workflows/predict.yml
+name: Refresh predictions
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: predictions
+  cancel-in-progress: false
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Run model
+        working-directory: model
+        run: |
+          uv sync
+          uv run python -m model.run \
+            --seed 42 --sims 10000 \
+            --generated-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --data-dir ../data
+      - name: Commit snapshots if changed
+        run: |
+          git config user.name "floodlit-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No prediction changes."
+          else
+            git commit -m "chore(data): refresh predictions $(date -u +%FT%TZ)"
+            git push
+          fi
