@@ -24,6 +24,7 @@ export function RatingsTable({ teams }: { teams: RatingTeam[] }) {
           <button
             key={c.key}
             onClick={() => setSort(c.key)}
+            aria-pressed={sort === c.key}
             className={`w-16 text-right tabular-nums ${sort === c.key ? "text-accent" : "hover:text-text"}`}
           >
             {c.label}
