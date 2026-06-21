@@ -108,3 +108,13 @@ export function funnelRows(teams: PredTeam[], topN = 8): FunnelColumn[] {
       .slice(0, topN),
   }));
 }
+
+/** Mirror of the model's _slug so live ESPN team names join to snapshot ids. */
+export function slugifyTeam(name: string): string {
+  return name.toLowerCase().replace(/'/g, "").replace(/ /g, "-");
+}
+
+/** slug -> P(qualify from group), for the /standings projected column. */
+export function qualifyByTeam(teams: PredTeam[]): Map<string, number> {
+  return new Map(teams.map((t) => [t.id, t.qualify]));
+}

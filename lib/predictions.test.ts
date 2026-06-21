@@ -53,3 +53,22 @@ describe("funnelRows", () => {
     expect(cols[0].entries).toHaveLength(2);
   });
 });
+
+import { qualifyByTeam, slugifyTeam } from "@/lib/predictions";
+
+describe("slugifyTeam", () => {
+  it("mirrors the model _slug: lowercase, strip apostrophes, spaces to hyphens", () => {
+    expect(slugifyTeam("South Korea")).toBe("south-korea");
+    expect(slugifyTeam("Cote d'Ivoire")).toBe("cote-divoire");
+    expect(slugifyTeam("Brazil")).toBe("brazil");
+  });
+});
+
+describe("qualifyByTeam", () => {
+  it("maps slug -> qualify probability", () => {
+    const m = qualifyByTeam([mkTeam("argentina", { qualify: 0.99 }), mkTeam("mexico", { qualify: 1 })]);
+    expect(m.get("argentina")).toBe(0.99);
+    expect(m.get("mexico")).toBe(1);
+    expect(m.get("nope")).toBeUndefined();
+  });
+});
