@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { predictions } from "@/lib/predictions";
+import { predictions, ratings } from "@/lib/predictions";
 import { WinCupLeaderboard } from "@/components/predict/WinCupLeaderboard";
 import { SurvivalFunnel } from "@/components/predict/SurvivalFunnel";
+import { RatingsTable } from "@/components/predict/RatingsTable";
 
 export const metadata = { title: "Predict — Floodlit" };
 
@@ -34,6 +35,10 @@ export default function PredictPage() {
 
       <Section kicker="probability of reaching each round" title="The Bracket">
         <SurvivalFunnel teams={p.teams} />
+      </Section>
+
+      <Section kicker="elo + attack / defense strength" title="Ratings">
+        <RatingsTable teams={ratings.teams} />
       </Section>
     </div>
   );
