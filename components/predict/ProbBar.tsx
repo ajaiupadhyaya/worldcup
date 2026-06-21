@@ -14,7 +14,7 @@ export function ProbBar({
       className="h-1.5 w-full overflow-hidden rounded-full"
       style={{ background: "var(--chalk-faint)" }}
       role="img"
-      aria-label={label}
+      aria-label={label ?? `${Math.round(pct)}%`}
     >
       <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
     </div>

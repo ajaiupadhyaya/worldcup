@@ -6,7 +6,7 @@ import { ProbBar } from "./ProbBar";
 // All 48 teams ranked by P(win cup). Bars are normalised to the leader so the
 // field stays readable; the printed % and ± are the true values.
 export function WinCupLeaderboard({ teams }: { teams: PredTeam[] }) {
-  const top = teams[0]?.winCup || 1;
+  const top = teams[0]?.winCup ?? 1;
   return (
     <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
       {teams.map((t, i) => (
