@@ -1,5 +1,3 @@
-import numpy as np
-
 from model.predict import score_matrix, outcome_probs, top_scores
 
 
