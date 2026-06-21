@@ -21,7 +21,12 @@ export function SurvivalFunnel({ teams }: { teams: PredTeam[] }) {
                   <span className="font-mono text-[11px] tabular-nums text-muted">{formatProb(e.prob)}</span>
                 </div>
                 <div className="mt-1">
-                  <ProbBar value={e.prob} label={`${e.name}: ${formatProb(e.prob)} to reach the ${col.label}`} />
+                  <ProbBar
+                    value={e.prob}
+                    label={`${e.name}: ${formatProb(e.prob)} ${
+                      col.key === "winCup" ? "to win the cup" : `to reach the ${col.label}`
+                    }`}
+                  />
                 </div>
               </div>
             ))}

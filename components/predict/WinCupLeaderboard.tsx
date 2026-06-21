@@ -3,13 +3,15 @@ import { formatProb } from "@/lib/predictions";
 import { kitColor } from "@/lib/teamColors";
 import { ProbBar } from "./ProbBar";
 
-// All 48 teams ranked by P(win cup). Bars are normalised to the leader so the
+// All 48 teams ranked by P(win cup). Sort here so the ranking is self-contained
+// (not reliant on the snapshot's order). Bars are normalised to the leader so the
 // field stays readable; the printed % and ± are the true values.
 export function WinCupLeaderboard({ teams }: { teams: PredTeam[] }) {
-  const top = teams[0]?.winCup ?? 1;
+  const ranked = [...teams].sort((a, b) => b.winCup - a.winCup);
+  const top = ranked[0]?.winCup ?? 1;
   return (
     <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
-      {teams.map((t, i) => (
+      {ranked.map((t, i) => (
         <div
           key={t.id}
           className="flex items-center gap-3 border-b border-border px-3 py-2 last:border-b-0"
