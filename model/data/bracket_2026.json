@@ -1,0 +1,32 @@
+{
+  "r32": [
+    {"slot": "M73", "home_ref": "2A", "away_ref": "2B"},
+    {"slot": "M74", "home_ref": "1E", "away_ref": "3rd@1E"},
+    {"slot": "M75", "home_ref": "1F", "away_ref": "2C"},
+    {"slot": "M76", "home_ref": "1C", "away_ref": "2F"},
+    {"slot": "M77", "home_ref": "1I", "away_ref": "3rd@1I"},
+    {"slot": "M78", "home_ref": "2E", "away_ref": "2I"},
+    {"slot": "M79", "home_ref": "1A", "away_ref": "3rd@1A"},
+    {"slot": "M80", "home_ref": "1L", "away_ref": "3rd@1L"},
+    {"slot": "M81", "home_ref": "1D", "away_ref": "3rd@1D"},
+    {"slot": "M82", "home_ref": "1G", "away_ref": "3rd@1G"},
+    {"slot": "M83", "home_ref": "2K", "away_ref": "2L"},
+    {"slot": "M84", "home_ref": "1H", "away_ref": "2J"},
+    {"slot": "M85", "home_ref": "1B", "away_ref": "3rd@1B"},
+    {"slot": "M86", "home_ref": "1J", "away_ref": "2H"},
+    {"slot": "M87", "home_ref": "1K", "away_ref": "3rd@1K"},
+    {"slot": "M88", "home_ref": "2D", "away_ref": "2G"}
+  ],
+  "progression": {
+    "M89": ["M74", "M77"], "M90": ["M73", "M75"], "M91": ["M76", "M78"], "M92": ["M79", "M80"],
+    "M93": ["M83", "M84"], "M94": ["M81", "M82"], "M95": ["M86", "M88"], "M96": ["M85", "M87"],
+    "M97": ["M89", "M90"], "M98": ["M93", "M94"], "M99": ["M91", "M92"], "M100": ["M95", "M96"],
+    "M101": ["M97", "M98"], "M102": ["M99", "M100"],
+    "M104": ["M101", "M102"]
+  },
+  "thirds_columns": ["1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L"],
+  "thirds_table": {
+    "EFGHIJKL": {"1A": "3E", "1B": "3J", "1D": "3I", "1E": "3F", "1G": "3H", "1I": "3G", "1K": "3L", "1L": "3K"},
+    "ABCDEFGH": {"1A": "3H", "1B": "3G", "1D": "3B", "1E": "3C", "1G": "3A", "1I": "3F", "1K": "3D", "1L": "3E"}
+  }
+}
