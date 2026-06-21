@@ -28,18 +28,20 @@ def load_results(path: Path) -> list[Match]:
             try:
                 d = datetime.strptime(r["date"], "%Y-%m-%d").date()
                 hg, ag = int(r["home_score"]), int(r["away_score"])
+                home = normalize(r["home_team"])
+                away = normalize(r["away_team"])
+                out.append(
+                    Match(
+                        date=d,
+                        home=home,
+                        away=away,
+                        home_goals=hg,
+                        away_goals=ag,
+                        neutral=_to_bool(r.get("neutral", "FALSE")),
+                        tournament=r.get("tournament", ""),
+                    )
+                )
             except (ValueError, KeyError):
                 continue  # skip unscored / malformed rows
-            out.append(
-                Match(
-                    date=d,
-                    home=normalize(r["home_team"]),
-                    away=normalize(r["away_team"]),
-                    home_goals=hg,
-                    away_goals=ag,
-                    neutral=_to_bool(r.get("neutral", "FALSE")),
-                    tournament=r.get("tournament", ""),
-                )
-            )
     out.sort(key=lambda m: m.date)
     return out
