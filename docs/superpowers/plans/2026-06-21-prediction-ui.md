@@ -821,13 +821,22 @@ git commit -m "feat(predict): calibration + methodology section"
 
 ### Task 8: `/standings` projected-qualify column
 
+**Architecture note:** `data/predictions/latest.json` is ~133 KB. The current
+`app/standings/page.tsx` is a **client** component, so importing the snapshot
+there would ship all 133 KB to the browser just to read 48 qualify numbers.
+Instead, split: `app/standings/page.tsx` becomes a thin **Server Component** that
+imports the snapshot, builds a small `Record<string, number>` (slug → qualify),
+and passes it to a new client component `components/StandingsGrid.tsx` that holds
+the existing React-Query logic. Only the ~48-entry object crosses to the client.
+
 **Files:**
 - Modify: `components/StandingsTable.tsx`
-- Modify: `app/standings/page.tsx`
+- Create: `components/StandingsGrid.tsx`
+- Modify (rewrite): `app/standings/page.tsx`
 
 **Interfaces:**
-- Consumes: `predictions`, `qualifyByTeam`, `slugifyTeam`, `formatProb` (Tasks 1, 3).
-- Produces: `StandingsTable` gains an optional `projected?: Map<string, number>` prop.
+- Consumes: `predictions`, `qualifyByTeam`, `slugifyTeam`, `formatProb` (Tasks 1, 3); `useStandings`, `groupStandings` (`@/lib/hooks`).
+- Produces: `StandingsTable` gains `projected?: Record<string, number>`; `<StandingsGrid projected />` (client).
 
 - [ ] **Step 1: Add the prop + column to `StandingsTable`**
 
@@ -848,7 +857,7 @@ export function StandingsTable({
 }: {
   group: string;
   rows: Standing[];
-  projected?: Map<string, number>;
+  projected?: Record<string, number>;
 }) {
   return (
     <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
@@ -860,7 +869,7 @@ export function StandingsTable({
       </div>
       <div>
         {rows.map((r, i) => {
-          const q = projected?.get(slugifyTeam(r.team.name));
+          const q = projected?.[slugifyTeam(r.team.name)];
           return (
             <div key={r.team.id}>
               <div className="flex items-center gap-2 px-3 py-2 font-mono text-[13px]">
@@ -896,19 +905,17 @@ export function StandingsTable({
 }
 ```
 
-- [ ] **Step 2: Wire the prediction map into the standings page**
+- [ ] **Step 2: Move the client logic into `StandingsGrid`**
 
-In `app/standings/page.tsx`, add imports and build the map, passing it to each table:
+Create `components/StandingsGrid.tsx` (the existing page body, now a client
+component that receives the projected map as a prop):
 ```tsx
 "use client";
 
-import { useStandings, groupStandings } from "@/lib/hooks";
+import { groupStandings, useStandings } from "@/lib/hooks";
 import { StandingsTable } from "@/components/StandingsTable";
-import { predictions, qualifyByTeam } from "@/lib/predictions";
 
-const PROJECTED = qualifyByTeam(predictions.teams);
-
-export default function StandingsPage() {
+export function StandingsGrid({ projected }: { projected: Record<string, number> }) {
   const { data, isLoading, error } = useStandings();
   const groups = data ? groupStandings(data.data) : {};
 
@@ -935,7 +942,7 @@ export default function StandingsPage() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(groups).map(([group, rows]) => (
-          <StandingsTable key={group} group={group} rows={rows} projected={PROJECTED} />
+          <StandingsTable key={group} group={group} rows={rows} projected={projected} />
         ))}
       </div>
     </div>
@@ -943,20 +950,37 @@ export default function StandingsPage() {
 }
 ```
 
-- [ ] **Step 3: Typecheck + build**
+- [ ] **Step 3: Rewrite `app/standings/page.tsx` as a Server Component wrapper**
+
+Replace the entire file with (note: NO `"use client"` — this keeps the 133 KB
+snapshot server-side; only the small `Record` is serialized to the client):
+```tsx
+import { StandingsGrid } from "@/components/StandingsGrid";
+import { predictions, qualifyByTeam } from "@/lib/predictions";
+
+// Build the slug -> qualify map server-side; only ~48 numbers cross to client.
+const projected = Object.fromEntries(qualifyByTeam(predictions.teams));
+
+export default function StandingsPage() {
+  return <StandingsGrid projected={projected} />;
+}
+```
+
+- [ ] **Step 4: Typecheck + build**
 
 Run: `npx tsc --noEmit && npm run build`
-Expected: clean.
+Expected: clean. In the build's route table, `/standings` First Load JS should
+NOT balloon by ~130 KB (confirming the snapshot stayed server-side).
 
-- [ ] **Step 4: Browser sanity check**
+- [ ] **Step 5: Browser sanity check**
 
 Run dev server; load `/standings`. Expected: each group table has a right-aligned cyan Q% column; values are plausible (host/strong teams high); teams whose name doesn't match a snapshot slug show "—" rather than breaking the row. No console errors.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add components/StandingsTable.tsx app/standings/page.tsx
-git commit -m "feat(predict): projected-qualify column on /standings"
+git add components/StandingsTable.tsx components/StandingsGrid.tsx app/standings/page.tsx
+git commit -m "feat(predict): projected-qualify column on /standings (server-built map)"
 ```
 
 ---
