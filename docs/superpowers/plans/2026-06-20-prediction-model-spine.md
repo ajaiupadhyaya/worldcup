@@ -1238,7 +1238,7 @@ def assign_r32(winners: dict[str, str], runners: dict[str, str], thirds: dict[st
 Run: `cd model && uv run pytest tests/test_bracket.py -v`
 Expected: PASS
 
-> **Note for implementer:** the 16 R32 ties and the R16→Final `progression` above are the complete, verified FIFA structure — use as-is. The ONE remaining data-entry job is the `thirds_table` (Annex C): transcribe all **495** rows from the official PDF (or the Wikipedia mirror `Template:2026_FIFA_World_Cup_third-place_table`) as `"<8 sorted group letters>": {winnerSlot: "3X"}`, and validate against the two committed anchor rows. This is the highest-risk correctness surface (spec §5, §11); `assign_thirds` (Task 11b) consumes it.
+> **Note for implementer:** the 16 R32 ties and the R16→Final `progression` above are the complete, verified FIFA structure — use as-is. The ONE remaining data-entry job is the `thirds_table` (Annex C): transcribe all **495** rows from the official PDF (or the Wikipedia mirror `Template:2026_FIFA_World_Cup_third-place_table`) as `"<8 sorted group letters>": {winnerSlot: "3X"}`, and validate against the two committed anchor rows. This is the highest-risk correctness surface (spec §5, §11); `assign_thirds` (Task 19) consumes it.
 
 - [ ] **Step 5: Commit**
 
