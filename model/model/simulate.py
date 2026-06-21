@@ -43,14 +43,26 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
     counts = {team: {k: 0 for k in STAGES} for team in all_teams}
     rng = np.random.default_rng(seed)
 
+    # Precompute constant structures outside the sim loop.
+    played_lookup = {(h, a): (hg, ag) for (h, a, hg, ag) in t.played}
+    group_of = {team: g for g, teams in t.groups.items() for team in teams}
+
     for _ in range(sims):
         results_by_group: dict[str, list] = {g: [] for g in t.groups}
-        played_lookup = {(h, a): (hg, ag) for (h, a, hg, ag) in t.played}
+
+        # Seed settled results first (matches in t.played that are NOT in
+        # fixtures_remaining — the natural disjoint caller split).
+        for h, a, hg, ag in t.played:
+            grp = group_of.get(h)
+            if grp is not None:
+                results_by_group[grp].append((h, a, hg, ag))
+
+        # Simulate remaining fixtures, skipping any already seeded from played.
         for g, h, a in t.fixtures_remaining:
             if (h, a) in played_lookup:
-                hg, ag = played_lookup[(h, a)]
-            else:
-                hg, ag = _sim_score(s, h, a, rng)
+                # Caller placed this in both collections; don't double-count.
+                continue
+            hg, ag = _sim_score(s, h, a, rng)
             results_by_group[g].append((h, a, hg, ag))
 
         qualifiers: list[str] = []

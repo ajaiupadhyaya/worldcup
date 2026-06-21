@@ -32,3 +32,44 @@ def test_two_qualify_per_group_on_average():
     r = simulate(t, _flat_strengths(teams), sims=300, seed=1)
     qa = sum(r["teams"][x]["qualify"] for x in t.groups["A"])
     assert abs(qa - 2.0) < 0.05  # exactly 2 of 4 advance from group A
+
+
+def test_played_results_drive_standings_disjoint():
+    # "Alpha" has already won all 3 of its group matches (9 pts, +9 GD).
+    # The other 3 teams have split results (3 pts max possible) so Alpha
+    # is guaranteed to top Group A regardless of remaining Beta/Gamma/Delta
+    # head-to-head fixtures.  Those remaining fixtures are in fixtures_remaining
+    # and NOT in played — the disjoint split that exposed the original bug.
+    groups = {
+        "A": ["Alpha", "Beta", "Gamma", "Delta"],
+        "B": ["B1", "B2", "B3", "B4"],
+    }
+    # Alpha beat every opponent 3-0; opponents have 0 pts from Alpha games.
+    # Remaining A fixtures: Beta vs Gamma, Beta vs Delta, Gamma vs Delta.
+    # Even if one team wins both, it gets 6 pts — Alpha has 9.  Alpha tops A.
+    played = [
+        ("Alpha", "Beta", 3, 0),
+        ("Alpha", "Gamma", 3, 0),
+        ("Alpha", "Delta", 3, 0),
+    ]
+    remaining_a = [
+        ("A", "Beta", "Gamma"),
+        ("A", "Beta", "Delta"),
+        ("A", "Gamma", "Delta"),
+    ]
+    remaining_b = [
+        ("B", h, a)
+        for h in groups["B"]
+        for a in groups["B"]
+        if h < a
+    ]
+    t = Tournament(
+        groups=groups,
+        played=played,
+        fixtures_remaining=remaining_a + remaining_b,
+    )
+    all_teams = groups["A"] + groups["B"]
+    s = _flat_strengths(all_teams)
+    r = simulate(t, s, sims=200, seed=7)
+    # Alpha's 9 pts / +9 GD is unreachable — it must always qualify.
+    assert r["teams"]["Alpha"]["qualify"] == 1.0
