@@ -29,3 +29,14 @@ def assign_r32(winners: dict[str, str], runners: dict[str, str], thirds: dict[st
             continue  # ref not yet fillable in a partial sim state
         pairs.append((h, a))
     return pairs
+
+
+def load_thirds_table() -> dict:
+    return json.loads(_BRACKET.read_text())["thirds_table"]
+
+
+def assign_thirds(qualifying_groups: set[str], table: dict | None = None) -> dict[str, str]:
+    table = load_thirds_table() if table is None else table
+    key = "".join(sorted(qualifying_groups))            # e.g. "EFGHIJKL"
+    row = table[key]                                    # {"1A": "3E", ...}
+    return {slot: code[1] for slot, code in row.items()}  # "3E" -> "E"
