@@ -21,6 +21,10 @@ function Section({ kicker, title, children }: { kicker: string; title: string; c
 
 export default function PredictPage() {
   const p = predictions;
+  // The ratings snapshot carries every historically-fitted nation (~330);
+  // on a World Cup page only the 48 participants are meaningful.
+  const wcIds = new Set(p.teams.map((t) => t.id));
+  const wcRatings = ratings.teams.filter((t) => wcIds.has(t.id));
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
       <div className="mb-6 flex items-baseline gap-3">
@@ -39,7 +43,7 @@ export default function PredictPage() {
       </Section>
 
       <Section kicker="elo + attack / defense strength" title="Ratings">
-        <RatingsTable teams={ratings.teams} />
+        <RatingsTable teams={wcRatings} />
       </Section>
 
       <Section kicker="how well-calibrated is the model" title="The Model">
