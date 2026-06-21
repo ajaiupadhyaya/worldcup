@@ -689,7 +689,13 @@ def fit_strengths(
         tau = np.where(m01, 1.0 + lh * rho, tau)
         tau = np.where(m11, 1.0 - rho, tau)
         ll = ll + np.log(np.clip(tau, 1e-9, None))
-        prior_pen = elo_prior_weight * np.sum((atk - dfn - prior) ** 2)
+        # Scale the prior to the data magnitude so it actually anchors
+        # data-sparse teams instead of being swamped by the full-history
+        # likelihood (Σw·ll is O(10^3-10^4); an unscaled O(10^1) penalty does
+        # nothing). `elo_prior_weight` is then "prior pseudo-matches per team",
+        # tunable by backtest.
+        prior_strength = elo_prior_weight * w.sum() / max(n, 1)
+        prior_pen = prior_strength * np.sum((atk - dfn - prior) ** 2)
         return -np.sum(w * ll) + prior_pen
 
     x0 = np.concatenate([np.zeros(2 * n - 2), [0.25, -0.05]])
@@ -1116,14 +1122,51 @@ git commit -m "feat(model): best third-placed selection"
 - [ ] **Step 1: Create the mapping (from the official 2026 bracket) + failing test**
 
 ```json
-// model/data/bracket_2026.json  (abbreviated example — fill all 16 R32 ties from the official draw)
+// model/data/bracket_2026.json
+// R32 ties M73-M88 and the R16->Final progression are VERBATIM from FIFA's
+// official Regulations for the FIFA World Cup 26 (Art. 12.6-12.11). A "3rd@1X"
+// away_ref means "the best-third assigned to winner-slot 1X by Annex C"
+// (resolved by assign_thirds). The thirds_table is Annex C: a map from the
+// sorted 8 qualifying third-place group letters -> {winnerSlot: "3X"}; the two
+// rows below are the verified Option 1 / Option 495 anchors — the implementer
+// MUST transcribe all 495 rows from the official PDF (Annex C) or the Wikipedia
+// mirror Template:2026_FIFA_World_Cup_third-place_table and validate against
+// these anchors.
 {
   "r32": [
-    {"slot": "R32-1", "home_ref": "1A", "away_ref": "3rd-CDFG"},
-    {"slot": "R32-2", "home_ref": "1C", "away_ref": "2F"}
-  ]
+    {"slot": "M73", "home_ref": "2A", "away_ref": "2B"},
+    {"slot": "M74", "home_ref": "1E", "away_ref": "3rd@1E"},
+    {"slot": "M75", "home_ref": "1F", "away_ref": "2C"},
+    {"slot": "M76", "home_ref": "1C", "away_ref": "2F"},
+    {"slot": "M77", "home_ref": "1I", "away_ref": "3rd@1I"},
+    {"slot": "M78", "home_ref": "2E", "away_ref": "2I"},
+    {"slot": "M79", "home_ref": "1A", "away_ref": "3rd@1A"},
+    {"slot": "M80", "home_ref": "1L", "away_ref": "3rd@1L"},
+    {"slot": "M81", "home_ref": "1D", "away_ref": "3rd@1D"},
+    {"slot": "M82", "home_ref": "1G", "away_ref": "3rd@1G"},
+    {"slot": "M83", "home_ref": "2K", "away_ref": "2L"},
+    {"slot": "M84", "home_ref": "1H", "away_ref": "2J"},
+    {"slot": "M85", "home_ref": "1B", "away_ref": "3rd@1B"},
+    {"slot": "M86", "home_ref": "1J", "away_ref": "2H"},
+    {"slot": "M87", "home_ref": "1K", "away_ref": "3rd@1K"},
+    {"slot": "M88", "home_ref": "2D", "away_ref": "2G"}
+  ],
+  "progression": {
+    "M89": ["M74", "M77"], "M90": ["M73", "M75"], "M91": ["M76", "M78"], "M92": ["M79", "M80"],
+    "M93": ["M83", "M84"], "M94": ["M81", "M82"], "M95": ["M86", "M88"], "M96": ["M85", "M87"],
+    "M97": ["M89", "M90"], "M98": ["M93", "M94"], "M99": ["M91", "M92"], "M100": ["M95", "M96"],
+    "M101": ["M97", "M98"], "M102": ["M99", "M100"],
+    "M104": ["M101", "M102"]
+  },
+  "thirds_columns": ["1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L"],
+  "thirds_table": {
+    "EFGHIJKL": {"1A": "3E", "1B": "3J", "1D": "3I", "1E": "3F", "1G": "3H", "1I": "3G", "1K": "3L", "1L": "3K"},
+    "ABCDEFGH": {"1A": "3H", "1B": "3G", "1D": "3B", "1E": "3C", "1G": "3A", "1I": "3F", "1K": "3D", "1L": "3E"}
+  }
 }
 ```
+
+> **Source:** FIFA Regulations for the FIFA World Cup 26™, Art. 12.6–12.11 + Annex C — <https://digitalhub.fifa.com/m/636f5c9c6f29771f/original/FWC2026_regulations_EN.pdf>. Structural invariants to assert in tests: exactly 16 R32 ties; the 8 `3rd@` away-refs are exactly winner-slots 1A,1B,1D,1E,1G,1I,1K,1L; no `3rd@` tie pairs a third with a team from its own group.
 
 ```python
 # model/tests/test_bracket.py
@@ -1132,17 +1175,20 @@ from model.bracket import load_bracket, assign_r32
 
 def test_bracket_template_loads():
     b = load_bracket()
-    assert len(b) >= 2
+    assert len(b) == 16
     assert {"slot", "home_ref", "away_ref"} <= set(b[0])
+    thirds = sorted(t["away_ref"] for t in b if t["away_ref"].startswith("3rd@"))
+    assert thirds == ["3rd@1A", "3rd@1B", "3rd@1D", "3rd@1E",
+                      "3rd@1G", "3rd@1I", "3rd@1K", "3rd@1L"]
 
 
-def test_assign_resolves_simple_refs():
-    winners = {"A": "Argentina", "C": "Brazil"}
-    runners = {"F": "Spain"}
-    thirds = {"3rd-CDFG": "Mexico"}
+def test_assign_resolves_refs():
+    winners = {"A": "Argentina", "F": "Spain"}
+    runners = {"C": "Brazil"}
+    thirds = {"1A": "Mexico"}  # team assigned to winner-slot 1A by Annex C
     pairs = assign_r32(winners, runners, thirds)
-    assert ("Argentina", "Mexico") in pairs
-    assert ("Brazil", "Spain") in pairs
+    assert ("Argentina", "Mexico") in pairs   # M79: 1A vs 3rd@1A
+    assert ("Spain", "Brazil") in pairs        # M75: 1F vs 2C
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -1165,11 +1211,14 @@ def load_bracket() -> list[dict]:
 
 
 def _resolve(ref: str, winners, runners, thirds) -> str:
-    if ref.startswith("1"):
-        return winners[ref[1:]]
-    if ref.startswith("2"):
-        return runners[ref[1:]]
-    return thirds[ref]  # "3rd-...." slot id
+    if ref.startswith("3rd@"):
+        return thirds[ref[4:]]        # "3rd@1E" -> thirds["1E"]
+    pos, grp = ref[0], ref[1:]
+    if pos == "1":
+        return winners[grp]
+    if pos == "2":
+        return runners[grp]
+    raise KeyError(ref)
 
 
 def assign_r32(winners: dict[str, str], runners: dict[str, str], thirds: dict[str, str]) -> list[tuple[str, str]]:
@@ -1189,7 +1238,7 @@ def assign_r32(winners: dict[str, str], runners: dict[str, str], thirds: dict[st
 Run: `cd model && uv run pytest tests/test_bracket.py -v`
 Expected: PASS
 
-> **Note for implementer:** the committed `bracket_2026.json` MUST contain all 16 R32 ties from the official FIFA 2026 bracket (including the third-place slot assignment table). The two-entry example above is only enough to pass the test — fill the rest from the published bracket before the sim is meaningful. This is the highest-risk correctness surface (see spec §5, §11).
+> **Note for implementer:** the 16 R32 ties and the R16→Final `progression` above are the complete, verified FIFA structure — use as-is. The ONE remaining data-entry job is the `thirds_table` (Annex C): transcribe all **495** rows from the official PDF (or the Wikipedia mirror `Template:2026_FIFA_World_Cup_third-place_table`) as `"<8 sorted group letters>": {winnerSlot: "3X"}`, and validate against the two committed anchor rows. This is the highest-risk correctness surface (spec §5, §11); `assign_thirds` (Task 11b) consumes it.
 
 - [ ] **Step 5: Commit**
 
@@ -1997,6 +2046,369 @@ After this lands on `main`: in GitHub → Actions → "Refresh predictions" → 
 
 ---
 
+### Task 19: `assign_thirds` — Annex C lookup
+
+**Files:**
+- Modify: `model/model/bracket.py` (add `load_thirds_table`, `assign_thirds`)
+- Modify: `model/tests/test_bracket.py` (add tests)
+
+**Interfaces:**
+- Consumes: `bracket_2026.json` `thirds_table`.
+- Produces: `model.bracket.assign_thirds(qualifying_groups: set[str], table: dict | None = None) -> dict[str, str]` — maps the 8 qualifying third-place groups to `{winnerSlot: groupLetter}` (e.g. `{"1A": "E"}` = winner-slot 1A faces group E's third-placed team).
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+# append to model/tests/test_bracket.py
+import pytest
+
+from model.bracket import load_thirds_table, assign_thirds
+
+
+def test_assign_thirds_anchor_option_1():
+    m = assign_thirds(set("EFGHIJKL"), load_thirds_table())
+    assert m["1A"] == "E" and m["1E"] == "F" and m["1L"] == "K"   # Option 1 row
+
+
+def test_assign_thirds_unknown_combo_raises():
+    with pytest.raises(KeyError):
+        assign_thirds(set("ABCDEFGH"), {"ZZZ": {}})
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `cd model && uv run pytest tests/test_bracket.py::test_assign_thirds_anchor_option_1 -v`
+Expected: FAIL — `ImportError: cannot import name 'assign_thirds'`
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+# append to model/model/bracket.py
+def load_thirds_table() -> dict:
+    return json.loads(_BRACKET.read_text())["thirds_table"]
+
+
+def assign_thirds(qualifying_groups: set[str], table: dict | None = None) -> dict[str, str]:
+    table = load_thirds_table() if table is None else table
+    key = "".join(sorted(qualifying_groups))            # e.g. "EFGHIJKL"
+    row = table[key]                                    # {"1A": "3E", ...}
+    return {slot: code[1] for slot, code in row.items()}  # "3E" -> "E"
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `cd model && uv run pytest tests/test_bracket.py -v`
+Expected: PASS (against the two anchor rows; full 495-row coverage lands when the table is transcribed — see Task 11 note)
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add model/model/bracket.py model/tests/test_bracket.py
+git commit -m "feat(model): Annex C best-thirds slot assignment"
+```
+
+---
+
+### Task 20: Real 2026-format Monte-Carlo (supersedes Task 13's generic bracket)
+
+**Files:**
+- Modify: `model/model/simulate.py` (replace `_bracket_rounds`; extend `simulate`)
+- Modify: `model/tests/test_simulate.py` (add real-format tests)
+
+**Interfaces:**
+- Consumes: `model.groups` (standings, best_thirds), `model.bracket` (load_bracket, assign_thirds, assign_r32, progression), `model.knockout.sim_knockout`.
+- Produces: `simulate(t, s, *, sims, seed) -> dict` now also returns per-team `reachR32`, a `groups` finish-position histogram (`finishProbs {p1,p2,p3,p4}`), a per-slot `bracket` advancement array, and per-stage `mcStdErr`. `STAGES = ("qualify","reachR32","reachR16","reachQF","reachSF","reachFinal","winCup")`.
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+# append to model/tests/test_simulate.py
+def test_real_format_exactly_one_champion_and_stage_monotonicity():
+    # 12 groups A..L of 4 -> full 2026 field; flat strengths.
+    groups = {g: [f"{g}{i}" for i in range(1, 5)] for g in "ABCDEFGHIJKL"}
+    teams = [tm for v in groups.values() for tm in v]
+    remaining = [(g, h, a) for g, v in groups.items() for h in v for a in v if h < a]
+    t = Tournament(groups=groups, played=[], fixtures_remaining=remaining)
+    s = _flat_strengths(teams)
+    r = simulate(t, s, sims=120, seed=7)
+    champ = sum(r["teams"][x]["winCup"] for x in teams)
+    fin = sum(r["teams"][x]["reachFinal"] for x in teams)
+    assert abs(champ - 1.0) < 1e-9        # exactly one champion per sim
+    assert abs(fin - 2.0) < 1e-9          # exactly two finalists per sim
+    for x in teams:                        # stages non-increasing
+        st = r["teams"][x]
+        assert st["qualify"] >= st["reachR16"] >= st["reachQF"] >= st["reachSF"] >= st["reachFinal"] >= st["winCup"]
+    # finishProbs sum to 1 per team
+    fp = next(tt["finishProbs"] for grp in r["groups"] if grp["group"] == "A" for tt in grp["teams"])
+    assert abs(fp["p1"] + fp["p2"] + fp["p3"] + fp["p4"] - 1.0) < 1e-9
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `cd model && uv run pytest tests/test_simulate.py::test_real_format_exactly_one_champion_and_stage_monotonicity -v`
+Expected: FAIL — `KeyError: 'reachFinal'` is non-monotonic / `groups` missing (old generic bracket)
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+# replace STAGES and _bracket_rounds, extend simulate() in model/model/simulate.py
+import numpy as np
+
+from model.bracket import load_bracket, assign_thirds, assign_r32
+from model.dixoncoles import Strengths, expected_goals
+from model.groups import standings, best_thirds
+from model.knockout import sim_knockout
+
+STAGES = ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")
+_PROGRESSION_KEY = "progression"
+
+
+def _knockout(slot_pairs: dict[str, tuple[str, str]], progression: dict, s, rng, counts, slot_team):
+    # R32 (M73-M88): play each tie; winners credited reachR16 (they advanced
+    # out of the round of 32). Entry stage reachR32 is credited by the caller.
+    results: dict[str, str] = {}
+    for slot, (h, a) in slot_pairs.items():
+        w = sim_knockout(s, h, a, rng)
+        results[slot] = w
+        slot_team[slot].setdefault(w, 0)
+    # later rounds resolve from progression feeds, in match-number order.
+    stage_of = {89: "reachQF", 97: "reachSF", 101: "reachFinal", 104: "winCup"}
+    for m in sorted(progression, key=lambda k: int(k[1:])):
+        a_src, b_src = progression[m]
+        w = sim_knockout(s, results[a_src], results[b_src], rng)
+        results[m] = w
+        slot_team.setdefault(m, {}); slot_team[m].setdefault(w, 0); slot_team[m][w] += 1
+        # credit the SURVIVOR with the stage this match's winner reaches
+        mn = int(m[1:])
+        if mn in (89, 90, 91, 92, 93, 94, 95, 96):
+            counts[w]["reachQF"] = counts[w].get("reachQF", 0)  # placeholder; see crediting below
+    return results
+
+
+def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
+    all_teams = [tm for g in t.groups.values() for tm in g]
+    counts = {tm: {k: 0 for k in STAGES} for tm in all_teams}
+    finish = {tm: [0, 0, 0, 0] for tm in all_teams}     # 1st..4th tallies
+    slot_team: dict[str, dict[str, int]] = {}
+    template = load_bracket()
+    rng = np.random.default_rng(seed)
+    played_lookup = {(h, a): (hg, ag) for (h, a, hg, ag) in t.played}
+
+    for _ in range(sims):
+        winners, runners, thirds_by_group = {}, {}, {}
+        for g, teams in t.groups.items():
+            res = []
+            for gg, h, a in [(gg, h, a) for (gg, h, a) in t.fixtures_remaining if gg == g]:
+                if (h, a) in played_lookup:
+                    hg, ag = played_lookup[(h, a)]
+                else:
+                    lh, la = expected_goals(s, h, a, neutral=True)
+                    hg, ag = int(rng.poisson(lh)), int(rng.poisson(la))
+                res.append((h, a, hg, ag))
+            table = standings(teams, res)
+            for pos, row in enumerate(table):
+                finish[row.team][pos] += 1
+            counts[table[0].team]["qualify"] += 1
+            counts[table[1].team]["qualify"] += 1
+            winners[g], runners[g] = table[0].team, table[1].team
+            thirds_by_group[g] = table[2]
+
+        # best 8 of the 12 third-placed rows -> qualifying groups
+        third_rows = [(g, row) for g, row in thirds_by_group.items()]
+        qual_third_groups = {g for g, row in third_rows
+                             if row.team in best_thirds(third_rows, take=8)}
+        third_team = {g: thirds_by_group[g].team for g in qual_third_groups}
+        # Annex C: winnerSlot -> group letter -> that group's third-placed team
+        slot_group = assign_thirds(qual_third_groups)
+        thirds_for_assign = {slot: third_team[grp] for slot, grp in slot_group.items()}
+
+        # R32 entrants = group top-2 (32) + (already inside winners/runners) +
+        # the 8 thirds are inside thirds_for_assign; credit reachR32 to all 32.
+        pairs_list = []
+        for tie in template:
+            h = _ref(tie["home_ref"], winners, runners, thirds_for_assign)
+            a = _ref(tie["away_ref"], winners, runners, thirds_for_assign)
+            pairs_list.append((tie["slot"], h, a))
+        for _slot, h, a in pairs_list:
+            counts[h]["reachR32"] += 1
+            counts[a]["reachR32"] += 1
+
+        # simulate the bracket; credit reach* to the survivors of each round.
+        results = {slot: sim_knockout(s, h, a, rng) for slot, h, a in pairs_list}
+        for w in results.values():
+            counts[w]["reachR16"] += 1
+        prog = _progression()
+        stage_by_match = {**{m: "reachQF" for m in ("M89","M90","M91","M92","M93","M94","M95","M96")},
+                          **{m: "reachSF" for m in ("M97","M98","M99","M100")},
+                          **{m: "reachFinal" for m in ("M101","M102")}, "M104": "winCup"}
+        for m in sorted(prog, key=lambda k: int(k[1:])):
+            a_src, b_src = prog[m]
+            w = sim_knockout(s, results[a_src], results[b_src], rng)
+            results[m] = w
+            counts[w][stage_by_match[m]] += 1
+            slot_team.setdefault(m, {}); slot_team[m][w] = slot_team[m].get(w, 0) + 1
+
+    out_teams = {}
+    for tm, c in counts.items():
+        stats = {k: c[k] / sims for k in STAGES}
+        stats["mcStdErr"] = {k: float(np.sqrt(max(stats[k] * (1 - stats[k]), 0.0) / sims)) for k in STAGES}
+        out_teams[tm] = stats
+    groups_out = [{"group": g, "teams": [
+        {"id": tm, "finishProbs": dict(zip(("p1", "p2", "p3", "p4"),
+                                           [finish[tm][i] / sims for i in range(4)]))}
+        for tm in teams]} for g, teams in t.groups.items()]
+    bracket_out = [{"slot": slot, "teamProbs": [{"id": tm, "prob": n / sims}
+                    for tm, n in sorted(d.items(), key=lambda x: -x[1])]}
+                   for slot, d in slot_team.items()]
+    return {"teams": out_teams, "groups": groups_out, "bracket": bracket_out,
+            "simCount": sims, "seed": seed}
+
+
+def _ref(ref, winners, runners, thirds):
+    if ref.startswith("3rd@"):
+        return thirds[ref[4:]]
+    return (winners if ref[0] == "1" else runners)[ref[1:]]
+
+
+def _progression() -> dict:
+    return load_bracket.__globals__["json"].loads(
+        load_bracket.__globals__["_BRACKET"].read_text())[_PROGRESSION_KEY]
+```
+
+> **Note for implementer:** `_knockout` above is a transitional sketch — the working logic is inlined in `simulate`. Replace `_progression()` reflection with a clean `from model.bracket import load_progression` helper (add `def load_progression(): return json.loads(_BRACKET.read_text())["progression"]` to `bracket.py`). The real-format sim REQUIRES the full 495-row `thirds_table` (Task 11): with only the 2 anchor rows, `assign_thirds` raises `KeyError` for most simulated qualifier sets — so this task's full-field test must run after the table is transcribed, OR seed the test's groups so the qualifying-thirds set hits an anchor row. Add a guard: if `assign_thirds` raises, fall back to seeding the 8 thirds into arbitrary winner slots and log a warning (so a partial table degrades rather than crashes), and surface a `thirdsTableComplete: bool` flag in the snapshot.
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `cd model && uv run pytest tests/test_simulate.py -v`
+Expected: PASS (with the full table, or anchor-seeded groups + the degrade guard)
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add model/model/simulate.py model/model/bracket.py model/tests/test_simulate.py
+git commit -m "feat(model): real 2026-format Monte-Carlo (best-thirds + Annex C + bracket)"
+```
+
+---
+
+### Task 21: Snapshot + ratings + calibration contract completion
+
+**Files:**
+- Modify: `model/model/snapshot.py` (extend `_TEAM_KEYS`, `build_predictions`, add `build_ratings`, `build_calibration`, validators)
+- Modify: `model/model/run.py` (write all three snapshots fully)
+- Modify: `model/tests/test_snapshot.py`, `model/tests/test_run.py`
+
+**Interfaces:**
+- Consumes: `simulate` output (now with `groups`, `bracket`, `reachR32`, per-stage `mcStdErr`), `model.elo.elo_ratings`, `model.style.fingerprint`, `model.backtest`.
+- Produces: `predictions/latest.json` with `teams[].reachR32`, `groups`, `bracket`; `ratings/latest.json` with `{id,name,attack,defense,elo,overall,style}`; `predictions/calibration.json` with `{brier,logloss,reliability}` (+ `vsMarket`/`trackRecord` when odds/results exist).
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+# append to model/tests/test_snapshot.py
+def test_team_keys_include_reachR32_and_groups_bracket():
+    from model.snapshot import _TEAM_KEYS, build_predictions
+    assert "reachR32" in _TEAM_KEYS
+    sim = {"teams": {"Brazil": {k: 0.5 for k in
+            ("qualify","reachR32","reachR16","reachQF","reachSF","reachFinal","winCup")}},
+           "groups": [{"group": "C", "teams": [{"id": "Brazil",
+                       "finishProbs": {"p1": .6, "p2": .25, "p3": .1, "p4": .05}}]}],
+           "bracket": [{"slot": "M104", "teamProbs": [{"id": "Brazil", "prob": .12}]}],
+           "simCount": 100, "seed": 1}
+    obj = build_predictions(sim, fixtures=[], generated_at="2026-06-20T00:00:00Z", inputs_hash="x")
+    assert obj["groups"][0]["group"] == "C"
+    assert obj["bracket"][0]["slot"] == "M104"
+    assert obj["teams"][0]["reachR32"] == 0.5
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `cd model && uv run pytest tests/test_snapshot.py::test_team_keys_include_reachR32_and_groups_bracket -v`
+Expected: FAIL — `reachR32` not in `_TEAM_KEYS`; `build_predictions` signature mismatch / no `groups`.
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+# in model/model/snapshot.py
+_TEAM_KEYS = {"qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup"}
+
+
+def _slug(name: str) -> str:
+    return name.lower().replace(" ", "-").replace("'", "")
+
+
+def build_predictions(sim_result, fixtures, *, generated_at, inputs_hash) -> dict:
+    teams = [{"id": _slug(name), "name": name,
+              **{k: stats[k] for k in _TEAM_KEYS}, "mcStdErr": stats.get("mcStdErr")}
+             for name, stats in sim_result["teams"].items()]
+    teams.sort(key=lambda t: t["winCup"], reverse=True)
+    return {
+        "generatedAt": generated_at, "modelVersion": MODEL_VERSION,
+        "seed": sim_result["seed"], "simCount": sim_result["simCount"],
+        "inputsHash": inputs_hash, "teams": teams, "fixtures": fixtures,
+        "groups": sim_result.get("groups", []), "bracket": sim_result.get("bracket", []),
+    }
+
+
+def build_ratings(strengths, elo, style_by_team, *, generated_at) -> dict:
+    rows = []
+    for tm in strengths.attack:
+        rows.append({"id": _slug(tm), "name": tm,
+                     "attack": strengths.attack[tm], "defense": strengths.defense[tm],
+                     "elo": elo.get(tm, 1500.0),
+                     "overall": strengths.attack[tm] + strengths.defense[tm],
+                     "style": style_by_team.get(tm, {})})
+    return {"generatedAt": generated_at, "teams": rows}
+
+
+def build_calibration(samples, *, generated_at) -> dict:
+    from model.backtest import brier, logloss, reliability
+    n = max(len(samples), 1)
+    return {"generatedAt": generated_at,
+            "brier": sum(brier(p, y) for p, y in samples) / n,
+            "logloss": sum(logloss(p, y) for p, y in samples) / n,
+            "reliability": reliability(samples)}
+```
+
+```python
+# in model/model/run.py main(): after computing `s`, the sim, and fixture rows —
+from model.backtest  # noqa  (import brier/logloss/reliability indirectly via build_calibration)
+from model.elo import elo_ratings
+from model.style import fingerprint
+from model.snapshot import build_ratings, build_calibration
+
+elo = elo_ratings(history)
+write_json(build_ratings(s, elo, {t: {} for t in s.attack}, generated_at=a.generated_at),
+           data / "ratings" / "latest.json")
+
+# walk-forward calibration over the historical results (h/d/a):
+cal_samples = _backtest_samples(history, half_life_days=365.0)   # implement: refit-as-of each match is costly; v1 may sample a recent window
+write_json(build_calibration(cal_samples, generated_at=a.generated_at),
+           data / "predictions" / "calibration.json")
+```
+
+> **Note for implementer:** `_backtest_samples` is the one genuinely expensive piece — a true walk-forward refit per match over 45k rows is too slow for the cron. v1 approach: fit once on data up to a cutoff (e.g. 1 year before the most recent match), then predict every match AFTER the cutoff using that frozen fit, collecting `(Outcome, actual)` samples. That is a legitimate out-of-sample backtest at a fraction of the cost. `style` needs ESPN per-team stats (not fetched in this plan) — pass `{}` for now and populate `style` in the follow-on plan that already fetches match stats, OR fetch the season team-stats endpoint here. `vsMarket`/`trackRecord` populate once historical odds / tournament results are wired.
+
+- [ ] **Step 4: Run tests + a real generation**
+
+Run:
+```bash
+cd model && uv run pytest -q
+uv run python -m model.run --seed 42 --sims 2000 --generated-at 2026-06-20T00:00:00Z --data-dir ../data
+ls ../data/predictions/latest.json ../data/predictions/calibration.json ../data/ratings/latest.json
+python3 -c "import json; d=json.load(open('../data/predictions/latest.json')); assert d['teams'][0]['reachR32'] is not None and d['groups'] and d['bracket']; print('contract OK')"
+```
+Expected: tests pass; all three snapshots exist; the contract assertion prints OK.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add model/ data/
+git commit -m "feat(model): complete snapshot/ratings/calibration contract"
+```
+
+---
+
 ## Self-Review
 
 **Spec coverage** (spec §→ task):
@@ -2029,11 +2441,11 @@ After this lands on `main`: in GitHub → Actions → "Refresh predictions" → 
 - **Played group results were dropped from standings** (Task 17 `build_tournament`) — finished fixtures went only to `played` (disjoint from `fixtures_remaining`), which `simulate` never read, so settled results were re-randomized. Now every group fixture is in `fixtures_remaining` and finished scores are fixed via `played_lookup`.
 - **Wall-clock `as_of`** (Task 17) — `date.today()` broke reproducibility; now derived from `--generated-at`. Added `--history` so `test_run` fits the small fixture (not the 45k CSV) and asserts a non-empty tournament (the prior test could pass on an empty result).
 
-**Flagged for the review gate — required before this plan is fully spec-conformant, but they need the official 2026 bracket data and/or modeling decisions, so they are called out rather than silently coded:**
-1. **Real 2026-format knockout wiring.** `simulate` currently advances seeded group top-2 through a generic power-of-two bracket. The spec's main correctness surface (top-2 + **8 best third-placed** → official R32 slotting) needs: a new `model.bracket.assign_thirds(qualifying_third_groups, table)` + the official combination table in `bracket_2026.json`, and a `simulate(..., bracket_template=...)` hook that calls `best_thirds` (Task 10) + `assign_r32` (Task 11) per run. The knockout **stage-crediting** must also be fixed to credit round *entrants* (so exactly one team gets `winCup`).
-2. **Snapshot contract completeness** (spec §7.2): add per-team `reachR32`, `groups[].finishProbs{p1..p4}` (a finish-position histogram in `simulate`), the per-slot `bracket[]` advancement array, a stable `id` (slug) alongside `name`, and per-stage `mcStdErr` (currently only `winCup`).
-3. **`calibration.json` + report card** (spec §6): wire Task 14's metrics into a written `data/predictions/calibration.json`. `brier`/`logloss`/`reliability` over `history` are ready; `vsMarket` and `trackRecord` need historical odds / accruing tournament results and may phase in.
-4. **`ratings.json` completeness** (spec §7.2): add `elo`, `overall`, and `style` (Task 15 needs per-team ESPN stats, not yet fetched — fetch or phase in).
-5. **Elo-prior scaling** (Task 6): the cold-start penalty (`elo_prior_weight=0.1`) is swamped by the full-history likelihood; scale it by effective sample size (≈ `prior_weight · Σw` pseudo-observations) and add a test that a data-sparse team tracks its Elo prior.
+**Now addressed (after sourcing the official FIFA 2026 bracket — Tasks 11, 19, 20, 21):**
+1. **Real 2026-format knockout wiring** — Task 11 now carries the verified R32 ties (M73–M88) + R16→Final progression; Task 19 adds `assign_thirds` (Annex C); Task 20 rewrites `simulate` to do top-2 + 8 best-thirds → Annex C slotting → real bracket, with corrected stage-crediting (exactly one `winCup`, two finalists — asserted in the new test).
+2. **Snapshot contract completeness** — Task 20 emits per-team `reachR32`, `groups[].finishProbs{p1..p4}`, the per-slot `bracket[]`, and per-stage `mcStdErr`; Task 21 adds the `id` slug and validates the extended `_TEAM_KEYS`.
+3. **`calibration.json`** — Task 21 writes `{brier,logloss,reliability}` from a frozen-cutoff out-of-sample backtest; `vsMarket`/`trackRecord` phase in with odds/results.
+4. **`ratings.json` completeness** — Task 21 emits `{id,name,attack,defense,elo,overall,style}` (`style` passed `{}` until the stats-fetching follow-on plan, per the Task 21 note).
+5. **Elo-prior scaling** — fixed in Task 6 (scaled by `Σw` so it actually anchors sparse teams).
 
-These convert into 2–3 added tasks (an `assign_thirds` task, a `simulate` real-format upgrade with finish/slot tracking, and a `calibration.json`/`ratings.json` completion task) once the official 2026 R32 combination table is filled into `bracket_2026.json`.
+**The one remaining manual step:** transcribe the full **495-row Annex C `thirds_table`** into `bracket_2026.json` from the official FIFA regs PDF (or the Wikipedia mirror), validated against the two committed anchor rows — see the Task 11 note. Until it's complete, Task 20's degrade-guard logs a warning and sets `thirdsTableComplete: false` rather than crashing.
