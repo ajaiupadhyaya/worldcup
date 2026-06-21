@@ -53,3 +53,11 @@ def standings(group_teams: list[str], results: list[tuple[str, str, int, int]]) 
         return (-r.points, -r.gd, -r.gf, -h2h[0], -h2h[1], -h2h[2], t)
 
     return [rows[t] for t in sorted(group_teams, key=sort_key)]
+
+
+def best_thirds(third_rows: list[tuple[str, "TeamRow"]], take: int = 8) -> list[str]:
+    ranked = sorted(
+        third_rows,
+        key=lambda gr: (-gr[1].points, -gr[1].gd, -gr[1].gf, gr[1].team),
+    )
+    return [row.team for _, row in ranked[:take]]

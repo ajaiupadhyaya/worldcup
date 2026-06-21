@@ -1,4 +1,19 @@
-from model.groups import standings
+from model.groups import standings, TeamRow, best_thirds
+
+
+def _row(team, pts, gd, gf):
+    return TeamRow(team, points=pts, gd=gd, gf=gf)
+
+
+def test_best_thirds_takes_top_by_points_then_gd():
+    thirds = [(f"G{i}", _row(f"T{i}", pts, gd, 3))
+              for i, (pts, gd) in enumerate(
+                  [(6, 4), (6, 2), (4, 1), (4, 0), (3, 0), (3, -1),
+                   (3, -2), (2, 0), (1, -1), (1, -3), (0, -4), (0, -6)])]
+    picked = best_thirds(thirds, take=8)
+    assert picked[0] == "T0" and picked[1] == "T1"  # 6pts, GD breaks tie
+    assert len(picked) == 8
+    assert "T11" not in picked  # worst third excluded
 
 
 def test_points_then_gd_then_gf_ordering():
