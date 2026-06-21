@@ -27,6 +27,7 @@ def test_reliability_curve_tracks_a_calibrated_model():
         samples.append((Outcome(0.70, 0.15, 0.15), actual))
     bins = reliability(samples, bins=10)
     assert sum(b["n"] for b in bins) == 300        # 3 classes * 100 matches
+    assert any(b["n"] > 0 for b in bins)           # at least one populated bin
     hot = next(b for b in bins if b["n"] and 0.6 <= b["binMid"] <= 0.8)
     assert abs(hot["observed"] - 0.70) < 0.06       # observed tracks predicted
     low = next(b for b in bins if b["n"] and 0.1 <= b["binMid"] <= 0.2)

@@ -124,7 +124,6 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
 
         # Best 8 of the 12 third-placed rows -> qualifying GROUPS (in rank order).
         best8 = best_thirds(third_rows, take=8)        # team names, ranked
-        best8_set = set(best8)
         team_to_group = {row.team: g for g, row in third_rows}
         qual_third_order = [team_to_group[tm] for tm in best8]   # groups, ranked
         qual_third_groups = set(qual_third_order)

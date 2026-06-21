@@ -96,7 +96,7 @@ def _calibration_samples(history: list[Match], as_of: date) -> list[tuple]:
     fit_matches = [m for m in in_window if m.date <= cutoff]
     if not fit_matches:
         return []
-    s = fit_strengths(history, as_of=cutoff)
+    s = fit_strengths(in_window, as_of=cutoff)
     known = set(s.attack)
     post = [m for m in in_window if m.date > cutoff and m.home in known and m.away in known]
     post.sort(key=lambda m: m.date)
@@ -134,7 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     rows = _fixture_rows(fixtures, s)
 
     inputs_hash = hashlib.sha256(
-        (a.generated_at + str(len(history)) + str(len(fixtures))).encode()
+        (a.generated_at + str(len(history)) + str(len(fixtures)) + str(a.seed) + str(a.sims)).encode()
     ).hexdigest()[:12]
 
     data = Path(a.data_dir)

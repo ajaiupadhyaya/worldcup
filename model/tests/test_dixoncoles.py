@@ -23,6 +23,22 @@ def test_expected_goals_are_positive():
     assert la > 0 and lb > 0
 
 
+def test_home_advantage_applied():
+    """Fit on non-neutral matches and verify home team gets a boost."""
+    matches = [
+        Match(date(2024, 1, i + 1), "A", "B", 1, 1, False, "t") for i in range(30)
+    ] + [
+        Match(date(2024, 1, i + 1), "B", "A", 1, 1, False, "t") for i in range(30)
+    ]
+    s = fit_strengths(matches, as_of=date(2024, 6, 1))
+    # Home advantage coefficient should be positive (home team boosted).
+    assert s.home_adv > 0.0
+    # Expected goals for A at home should exceed A on a neutral venue.
+    lh_home, _ = expected_goals(s, "A", "B", neutral=False)
+    lh_neutral, _ = expected_goals(s, "A", "B", neutral=True)
+    assert lh_home > lh_neutral
+
+
 def test_fit_strengths_excludes_post_cutoff_matches():
     """Leak-guard: matches after as_of must not influence the fit.
 
