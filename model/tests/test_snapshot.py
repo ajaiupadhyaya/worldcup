@@ -1,7 +1,15 @@
 import json
 from pathlib import Path
 
-from model.snapshot import build_predictions, write_json, validate_predictions
+from model.predict import Outcome
+from model.snapshot import (
+    _TEAM_KEYS,
+    build_calibration,
+    build_predictions,
+    build_ratings,
+    validate_predictions,
+    write_json,
+)
 
 
 def test_build_and_validate_roundtrip(tmp_path: Path):
@@ -10,13 +18,14 @@ def test_build_and_validate_roundtrip(tmp_path: Path):
     sim = {"teams": {"Brazil": {**stages,
                                 "mcStdErr": {k: 0.003 for k in stages}}},
            "simCount": 10000, "seed": 42}
-    obj = build_predictions(sim, fixtures=[], groups_meta=[],
+    obj = build_predictions(sim, fixtures=[],
                             generated_at="2026-06-20T00:00:00Z", inputs_hash="abc")
     validate_predictions(obj)  # should not raise
     p = tmp_path / "latest.json"
     write_json(obj, p)
     reloaded = json.loads(p.read_text())
     assert reloaded["teams"][0]["winCup"] == 0.12
+    assert reloaded["teams"][0]["id"] == "brazil"
     assert reloaded["seed"] == 42
 
 
@@ -24,3 +33,69 @@ def test_validate_rejects_missing_field():
     import pytest
     with pytest.raises(ValueError):
         validate_predictions({"teams": [{"name": "X"}]})  # missing required keys
+
+
+def test_team_keys_include_reachR32_and_groups_bracket():
+    assert "reachR32" in _TEAM_KEYS
+    sim = {"teams": {"Brazil": {k: 0.5 for k in
+            ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")}},
+           "groups": [{"group": "C", "teams": [{"id": "Brazil",
+                       "finishProbs": {"p1": .6, "p2": .25, "p3": .1, "p4": .05}}]}],
+           "bracket": [{"slot": "M104", "teamProbs": [{"id": "Brazil", "prob": .12}]}],
+           "simCount": 100, "seed": 1}
+    obj = build_predictions(sim, fixtures=[], generated_at="2026-06-20T00:00:00Z", inputs_hash="x")
+    assert obj["groups"][0]["group"] == "C"
+    assert obj["bracket"][0]["slot"] == "M104"
+    assert obj["teams"][0]["reachR32"] == 0.5
+    assert obj["teams"][0]["id"] == "brazil"
+
+
+def test_build_predictions_passes_through_thirds_table_complete():
+    sim = {"teams": {"Brazil": {k: 0.5 for k in
+            ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")}},
+           "groups": [], "bracket": [], "thirdsTableComplete": False,
+           "simCount": 100, "seed": 1}
+    obj = build_predictions(sim, fixtures=[], generated_at="2026-06-20T00:00:00Z", inputs_hash="x")
+    assert obj["thirdsTableComplete"] is False
+
+
+class _Strengths:
+    def __init__(self, attack, defense):
+        self.attack = attack
+        self.defense = defense
+
+
+def test_build_ratings_rows():
+    s = _Strengths(attack={"Brazil": 0.4, "Spain": 0.3},
+                   defense={"Brazil": 0.2, "Spain": 0.25})
+    out = build_ratings(s, {"Brazil": 1850.0}, {"Brazil": {"possession": 0.6}},
+                        generated_at="2026-06-20T00:00:00Z")
+    by_name = {r["name"]: r for r in out["teams"]}
+    bra = by_name["Brazil"]
+    assert bra["id"] == "brazil"
+    assert bra["attack"] == 0.4 and bra["defense"] == 0.2
+    assert bra["elo"] == 1850.0
+    assert abs(bra["overall"] - 0.6) < 1e-9
+    assert bra["style"] == {"possession": 0.6}
+    # team absent from elo/style maps gets defaults
+    esp = by_name["Spain"]
+    assert esp["elo"] == 1500.0 and esp["style"] == {}
+    assert out["generatedAt"] == "2026-06-20T00:00:00Z"
+
+
+def test_build_calibration_metrics():
+    samples = [
+        (Outcome(home=0.7, draw=0.2, away=0.1), "h"),
+        (Outcome(home=0.2, draw=0.6, away=0.2), "d"),
+        (Outcome(home=0.1, draw=0.3, away=0.6), "a"),
+    ]
+    out = build_calibration(samples, generated_at="2026-06-20T00:00:00Z")
+    assert out["generatedAt"] == "2026-06-20T00:00:00Z"
+    assert out["brier"] > 0.0
+    assert out["logloss"] > 0.0
+    assert isinstance(out["reliability"], list) and out["reliability"]
+
+
+def test_build_calibration_empty_samples_safe():
+    out = build_calibration([], generated_at="2026-06-20T00:00:00Z")
+    assert out["brier"] == 0.0 and out["logloss"] == 0.0

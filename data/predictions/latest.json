@@ -1,4 +1,5 @@
 {
+  "bracket": [],
   "fixtures": [
     {
       "away": "Saudi Arabia",
@@ -2754,491 +2755,1410 @@
     }
   ],
   "generatedAt": "2026-06-20T00:00:00Z",
-  "groups": [],
+  "groups": [
+    {
+      "group": "?",
+      "teams": [
+        {
+          "finishProbs": {
+            "p1": 0.0445,
+            "p2": 0.122,
+            "p3": 0.197,
+            "p4": 0.1595
+          },
+          "id": "mexico"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "south-africa"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "south-korea"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "czechia"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0005,
+            "p2": 0.011,
+            "p3": 0.042,
+            "p4": 0.0665
+          },
+          "id": "canada"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "bosnia-herzegovina"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.111,
+            "p2": 0.1415,
+            "p3": 0.1045,
+            "p4": 0.054
+          },
+          "id": "united-states"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "paraguay"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "qatar"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.001,
+            "p3": 0.005,
+            "p4": 0.01
+          },
+          "id": "switzerland"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0005,
+            "p2": 0.0025,
+            "p3": 0.0125,
+            "p4": 0.0395
+          },
+          "id": "brazil"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.005
+          },
+          "id": "morocco"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "haiti"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "scotland"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "australia"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "turkey"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.2135,
+            "p2": 0.103,
+            "p3": 0.0575,
+            "p4": 0.072
+          },
+          "id": "germany"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "curacao"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0015,
+            "p2": 0.015,
+            "p3": 0.0495,
+            "p4": 0.1215
+          },
+          "id": "netherlands"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0035,
+            "p2": 0.029,
+            "p3": 0.074,
+            "p4": 0.137
+          },
+          "id": "japan"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "ivory-coast"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "ecuador"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "sweden"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "tunisia"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0035,
+            "p4": 0.0035
+          },
+          "id": "spain"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0005
+          },
+          "id": "cape-verde"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.002,
+            "p4": 0.005
+          },
+          "id": "belgium"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0005
+          },
+          "id": "egypt"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "saudi-arabia"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.001,
+            "p4": 0.0005
+          },
+          "id": "uruguay"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0005,
+            "p3": 0.0,
+            "p4": 0.0015
+          },
+          "id": "iran"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0005,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "new-zealand"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.05,
+            "p2": 0.085,
+            "p3": 0.0785,
+            "p4": 0.0705
+          },
+          "id": "france"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "senegal"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "iraq"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.027,
+            "p2": 0.0385,
+            "p3": 0.0345,
+            "p4": 0.0255
+          },
+          "id": "norway"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.2795,
+            "p2": 0.161,
+            "p3": 0.108,
+            "p4": 0.0665
+          },
+          "id": "argentina"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "algeria"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.004,
+            "p2": 0.0075,
+            "p3": 0.009,
+            "p4": 0.007
+          },
+          "id": "austria"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "jordan"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0015,
+            "p4": 0.002
+          },
+          "id": "portugal"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "congo-dr"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.1145,
+            "p2": 0.1445,
+            "p3": 0.118,
+            "p4": 0.081
+          },
+          "id": "england"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "croatia"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0005,
+            "p2": 0.002,
+            "p3": 0.009,
+            "p4": 0.0055
+          },
+          "id": "ghana"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "panama"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 0.0,
+            "p4": 0.0
+          },
+          "id": "uzbekistan"
+        },
+        {
+          "finishProbs": {
+            "p1": 0.1495,
+            "p2": 0.1355,
+            "p3": 0.093,
+            "p4": 0.0655
+          },
+          "id": "colombia"
+        }
+      ]
+    }
+  ],
   "inputsHash": "1d230256a05b",
   "modelVersion": "0.1.0",
   "seed": 42,
   "simCount": 2000,
   "teams": [
     {
-      "mcStdErr": 0.0,
+      "id": "mexico",
+      "mcStdErr": {
+        "qualify": 0.008329998499399626,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Mexico",
-      "qualify": 0.1465,
+      "qualify": 0.1665,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.069,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "south-africa",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "South Africa",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "south-korea",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "South Korea",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "czechia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Czechia",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "canada",
+      "mcStdErr": {
+        "qualify": 0.0023840878758971955,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Canada",
-      "qualify": 0.011,
+      "qualify": 0.0115,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0055,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "bosnia-herzegovina",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Bosnia-Herzegovina",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "united-states",
+      "mcStdErr": {
+        "qualify": 0.009714518773464798,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "United States",
-      "qualify": 0.2655,
+      "qualify": 0.2525,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0605,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "paraguay",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Paraguay",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "qatar",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Qatar",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "switzerland",
+      "mcStdErr": {
+        "qualify": 0.0007067531393633848,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Switzerland",
-      "qualify": 0.0005,
+      "qualify": 0.001,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "brazil",
+      "mcStdErr": {
+        "qualify": 0.0012229063741758812,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Brazil",
-      "qualify": 0.0025,
+      "qualify": 0.003,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0015,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "morocco",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Morocco",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "haiti",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Haiti",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "scotland",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Scotland",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "australia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Australia",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "turkey",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Turkey",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "germany",
+      "mcStdErr": {
+        "qualify": 0.010400186296408348,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Germany",
-      "qualify": 0.341,
+      "qualify": 0.3165,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.152,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "curacao",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Curacao",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "netherlands",
+      "mcStdErr": {
+        "qualify": 0.0028484864401994267,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Netherlands",
-      "qualify": 0.0175,
+      "qualify": 0.0165,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0085,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "japan",
+      "mcStdErr": {
+        "qualify": 0.003965081966365891,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Japan",
-      "qualify": 0.026,
+      "qualify": 0.0325,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0135,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "ivory-coast",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Ivory Coast",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "ecuador",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Ecuador",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "sweden",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Sweden",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "tunisia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Tunisia",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "spain",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Spain",
-      "qualify": 0.0005,
+      "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0005,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "cape-verde",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Cape Verde",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "belgium",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Belgium",
-      "qualify": 0.001,
+      "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "egypt",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Egypt",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "saudi-arabia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Saudi Arabia",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "uruguay",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Uruguay",
+      "qualify": 0.0,
+      "reachFinal": 0.0,
+      "reachQF": 0.0,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
+      "reachSF": 0.0,
+      "winCup": 0.0
+    },
+    {
+      "id": "iran",
+      "mcStdErr": {
+        "qualify": 0.0004998749843710925,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
+      "name": "Iran",
       "qualify": 0.0005,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0005,
-      "reachSF": 0.0,
-      "winCup": 0.0
-    },
-    {
-      "mcStdErr": 0.0,
-      "name": "Iran",
-      "qualify": 0.0,
-      "reachFinal": 0.0,
-      "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "new-zealand",
+      "mcStdErr": {
+        "qualify": 0.0004998749843710925,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "New Zealand",
-      "qualify": 0.0,
+      "qualify": 0.0005,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "france",
+      "mcStdErr": {
+        "qualify": 0.007641171376170017,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "France",
-      "qualify": 0.1345,
+      "qualify": 0.135,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0635,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "senegal",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Senegal",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "iraq",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Iraq",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "norway",
+      "mcStdErr": {
+        "qualify": 0.005532167296819575,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Norway",
-      "qualify": 0.0615,
+      "qualify": 0.0655,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.027,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "argentina",
+      "mcStdErr": {
+        "qualify": 0.01110089523416918,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Argentina",
-      "qualify": 0.441,
+      "qualify": 0.4405,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.3425,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "algeria",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Algeria",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "austria",
+      "mcStdErr": {
+        "qualify": 0.0023840878758971955,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Austria",
       "qualify": 0.0115,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0045,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "jordan",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Jordan",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "portugal",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Portugal",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "congo-dr",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Congo DR",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "england",
+      "mcStdErr": {
+        "qualify": 0.009795891996137973,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "England",
-      "qualify": 0.251,
+      "qualify": 0.259,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.112,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "croatia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Croatia",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "ghana",
+      "mcStdErr": {
+        "qualify": 0.001116635571706365,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Ghana",
-      "qualify": 0.0035,
+      "qualify": 0.0025,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.001,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "panama",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Panama",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "uzbekistan",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Uzbekistan",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
       "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
-      "mcStdErr": 0.0,
+      "id": "colombia",
+      "mcStdErr": {
+        "qualify": 0.010093933821855581,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
       "name": "Colombia",
-      "qualify": 0.2845,
+      "qualify": 0.285,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.138,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     }
-  ]
+  ],
+  "thirdsTableComplete": false
 }

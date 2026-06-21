@@ -2,18 +2,30 @@ import argparse
 import hashlib
 import json
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from model.dixoncoles import fit_strengths, expected_goals
+from model.elo import elo_ratings
 from model.espn import parse_scoreboard, fetch_fixtures, Fixture
-from model.history import load_results
+from model.history import Match, load_results
 from model.market import blend
 from model.predict import score_matrix, outcome_probs, top_scores
 from model.simulate import Tournament, simulate
-from model.snapshot import build_predictions, write_json, validate_predictions
+from model.snapshot import (
+    build_calibration,
+    build_predictions,
+    build_ratings,
+    validate_predictions,
+    write_json,
+)
 
 _HISTORY = Path(__file__).resolve().parent.parent / "data" / "history" / "results.csv"
+
+# Cap on post-cutoff matches scored in the calibration backtest, to keep the
+# cron runtime bounded over the full ~45k-row history. We take the most-recent
+# matches after the cutoff (the largest in-distribution OOS window).
+_CALIBRATION_MAX_SAMPLES = 3000
 
 
 def build_tournament(fixtures: list[Fixture]):
@@ -58,6 +70,46 @@ def _fixture_rows(fixtures, s):
     return rows
 
 
+def _outcome_label(home_goals: int, away_goals: int) -> str:
+    if home_goals > away_goals:
+        return "h"
+    if home_goals < away_goals:
+        return "a"
+    return "d"
+
+
+def _calibration_samples(history: list[Match], as_of: date) -> list[tuple]:
+    """Frozen-cutoff out-of-sample backtest.
+
+    Fit strengths ONCE on all matches up to a cutoff (~1 year before the most
+    recent match, but never after `as_of`), then predict every later match with
+    that frozen fit. This is a legitimate OOS evaluation at a fraction of the
+    cost of a per-match walk-forward refit. Only matches whose BOTH teams were
+    present in the fit are scored (others would fall back to default strengths
+    and add no signal). Caps to the most-recent `_CALIBRATION_MAX_SAMPLES`.
+    """
+    in_window = [m for m in history if m.date <= as_of]
+    if not in_window:
+        return []
+    latest = max(m.date for m in in_window)
+    cutoff = min(latest - timedelta(days=365), as_of)
+    fit_matches = [m for m in in_window if m.date <= cutoff]
+    if not fit_matches:
+        return []
+    s = fit_strengths(history, as_of=cutoff)
+    known = set(s.attack)
+    post = [m for m in in_window if m.date > cutoff and m.home in known and m.away in known]
+    post.sort(key=lambda m: m.date)
+    post = post[-_CALIBRATION_MAX_SAMPLES:]
+
+    samples: list[tuple] = []
+    for m in post:
+        lh, la = expected_goals(s, m.home, m.away, neutral=m.neutral)
+        o = outcome_probs(score_matrix(lh, la, s.rho))
+        samples.append((o, _outcome_label(m.home_goals, m.away_goals)))
+    return samples
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=42)
@@ -86,14 +138,25 @@ def main(argv: list[str] | None = None) -> int:
     ).hexdigest()[:12]
 
     data = Path(a.data_dir)
-    pred = build_predictions(sim, rows, [], generated_at=a.generated_at, inputs_hash=inputs_hash)
+    pred = build_predictions(sim, rows, generated_at=a.generated_at, inputs_hash=inputs_hash)
     validate_predictions(pred)
     write_json(pred, data / "predictions" / "latest.json")
     write_json(pred, data / "predictions" / "history" / f"{a.generated_at.replace(':', '-')}.json")
+
+    # Ratings: attack/defense from the fit + Elo over the as_of-filtered history.
+    # `style` is left empty here (per-team ESPN season stats aren't fetched in
+    # this plan — an explicit follow-on populates them via model.style.fingerprint).
+    elo = elo_ratings([m for m in history if m.date <= as_of])
     write_json(
-        {"generatedAt": a.generated_at,
-         "teams": [{"name": t, "attack": s.attack[t], "defense": s.defense[t]} for t in s.attack]},
+        build_ratings(s, elo, {t: {} for t in s.attack}, generated_at=a.generated_at),
         data / "ratings" / "latest.json",
+    )
+
+    # Calibration: frozen-cutoff out-of-sample backtest over the history.
+    cal_samples = _calibration_samples(history, as_of)
+    write_json(
+        build_calibration(cal_samples, generated_at=a.generated_at),
+        data / "predictions" / "calibration.json",
     )
     return 0
 
