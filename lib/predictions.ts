@@ -76,3 +76,35 @@ export function formatProb(p: number): string {
   if (p < 0.1) return `${(p * 100).toFixed(1)}%`;
   return `${Math.round(p * 100)}%`;
 }
+
+export const FUNNEL_STAGES: { key: Stage; label: string }[] = [
+  { key: "reachR16", label: "Round of 16" },
+  { key: "reachQF", label: "Quarterfinal" },
+  { key: "reachSF", label: "Semifinal" },
+  { key: "reachFinal", label: "Final" },
+  { key: "winCup", label: "Champion" },
+];
+
+export interface FunnelEntry {
+  id: string;
+  name: string;
+  prob: number;
+  stdErr: number;
+}
+export interface FunnelColumn {
+  key: Stage;
+  label: string;
+  entries: FunnelEntry[];
+}
+
+/** For each knockout stage, the topN teams by probability of reaching it. */
+export function funnelRows(teams: PredTeam[], topN = 8): FunnelColumn[] {
+  return FUNNEL_STAGES.map(({ key, label }) => ({
+    key,
+    label,
+    entries: teams
+      .map((t) => ({ id: t.id, name: t.name, prob: t[key], stdErr: t.mcStdErr?.[key] ?? 0 }))
+      .sort((a, b) => b.prob - a.prob)
+      .slice(0, topN),
+  }));
+}
