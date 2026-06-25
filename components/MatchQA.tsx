@@ -62,26 +62,26 @@ export function MatchQA({ matchId }: { matchId: string }) {
   }
 
   return (
-    <section>
-      <h2 className="mb-3 font-display text-lg text-text">Ask the analyst</h2>
+    <section className="art-panel p-5">
+      <h2 className="mb-4 border-l-2 border-home pl-3 font-display text-2xl text-text">Ask the analyst</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           ask(question);
         }}
-        className="flex gap-2"
+        className="grid gap-2 sm:grid-cols-[1fr_auto]"
       >
         <input
           ref={inputRef}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask anything about this match…"
-          className="flex-1 rounded-[var(--radius-card)] border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-muted focus:border-home focus:outline-none"
+          className="min-w-0 border border-border bg-bg/45 px-3 py-2 text-sm text-text placeholder:text-muted focus:border-home focus:outline-none"
         />
         <button
           type="submit"
           disabled={streaming || !question.trim()}
-          className="rounded-[var(--radius-card)] border border-home px-4 py-2 font-mono text-xs uppercase tracking-widest text-home transition-colors hover:bg-home hover:text-bg disabled:opacity-40"
+          className="border border-home px-4 py-2 font-mono text-xs uppercase tracking-widest text-home transition-colors hover:bg-home hover:text-bg disabled:opacity-40"
         >
           {streaming ? "…" : "Ask"}
         </button>
@@ -96,7 +96,7 @@ export function MatchQA({ matchId }: { matchId: string }) {
               ask(sug);
             }}
             disabled={streaming}
-            className="rounded-full border border-border px-2.5 py-1 font-mono text-[10px] text-muted hover:border-home hover:text-text disabled:opacity-40"
+            className="border border-border px-2.5 py-1 font-mono text-[10px] text-muted hover:border-home hover:text-text disabled:opacity-40"
           >
             {sug}
           </button>
@@ -104,7 +104,7 @@ export function MatchQA({ matchId }: { matchId: string }) {
       </div>
 
       {(answer || error) && (
-        <div className="mt-4 rounded-[var(--radius-card)] border border-border bg-surface p-4">
+        <div className="mt-4 border border-border bg-bg/45 p-4">
           {error ? (
             <p className="font-mono text-xs text-danger/90">{error}</p>
           ) : (

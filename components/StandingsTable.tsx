@@ -16,9 +16,9 @@ export function StandingsTable({
   projected?: Record<string, number>;
 }) {
   return (
-    <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
+    <div className="art-panel overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <span className="font-display text-sm text-text">{group}</span>
+        <span className="font-display text-base text-text">{group}</span>
         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
           P W D L GD Pts{projected ? " · Q%" : ""}
         </span>
@@ -28,9 +28,9 @@ export function StandingsTable({
           const q = projected?.[slugifyTeam(r.team.name)];
           return (
             <div key={r.team.id}>
-              <div className="flex items-center gap-2 px-3 py-2 font-mono text-[13px]">
+              <div className="flex items-center gap-2 px-3 py-2 font-mono text-[13px] transition-colors hover:bg-surface-2/70">
                 <span className="w-3 text-center text-muted">{r.rank || i + 1}</span>
-                <span className="h-5 w-[3px] shrink-0 rounded-full" style={{ background: kitColor(r.team) }} />
+                <span className="h-5 w-[3px] shrink-0" style={{ background: kitColor(r.team) }} />
                 <Flag team={r.team} size={18} />
                 <span className="flex-1 truncate font-[family-name:var(--font-body)] text-text">
                   {r.team.name}

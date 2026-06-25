@@ -81,15 +81,15 @@ export function ScenarioLab() {
 
   if (loadingMatches || loadingStandings) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-6">
-        <div className="h-64 animate-pulse rounded-[var(--radius-card)] border border-border bg-surface" />
+      <div className="mx-auto max-w-7xl px-4 py-7">
+        <div className="art-panel h-64 animate-pulse" />
       </div>
     );
   }
 
   if (matchesError || standingsError) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-10">
+      <div className="mx-auto max-w-7xl px-4 py-10">
         <p className="font-mono text-sm text-danger/90">
           Couldn&apos;t load scenario data: {((matchesError || standingsError) as Error).message}
         </p>
@@ -98,10 +98,10 @@ export function ScenarioLab() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+    <div className="mx-auto max-w-7xl px-4 py-7">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-l border-border pl-4">
         <div>
-          <h1 className="font-display text-3xl leading-none text-text">Scenario Lab</h1>
+          <h1 className="font-display text-4xl leading-none text-text sm:text-5xl">Scenario Lab</h1>
           <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
             group tables · third-place line · model {Number.isNaN(modelDate.getTime()) ? "snapshot" : modelDate.toLocaleDateString(undefined, { month: "short", day: "numeric" })}
           </p>
@@ -109,7 +109,7 @@ export function ScenarioLab() {
       </div>
 
       {!activeGroup ? (
-        <div className="rounded-[var(--radius-card)] border border-border bg-surface p-5 font-mono text-sm text-muted">
+        <div className="art-panel p-5 font-mono text-sm text-muted">
           No upcoming group fixtures are available in the feed.
         </div>
       ) : (
@@ -123,10 +123,10 @@ export function ScenarioLab() {
                     onClick={() => {
                       setSelectedGroup(group);
                     }}
-                    className={`w-full border px-3 py-2 text-left transition-colors ${
+                    className={`w-full border px-3 py-3 text-left transition-colors ${
                       activeGroup === group
-                        ? "border-home bg-home/5"
-                        : "border-border bg-bg/20 hover:border-home/50"
+                        ? "border-home bg-home/8"
+                        : "border-border bg-bg/35 hover:border-home/50"
                     }`}
                   >
                     <div className="mb-1 flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
@@ -144,7 +144,7 @@ export function ScenarioLab() {
             <Panel title="Results" kicker="defaults draw">
               <div className="space-y-3">
                 {groupMatches.map((match) => (
-                  <div key={match.id} className="border border-border bg-bg/20 p-2">
+                  <div key={match.id} className="border border-border bg-bg/35 p-2">
                     <div className="mb-2 flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
                       <span>{kickoffDay(match.kickoff)}</span>
                       <span>{kickoffTime(match.kickoff)}</span>
@@ -195,7 +195,7 @@ export function ScenarioLab() {
                   <div
                     key={`${entry.row.group}-${entry.row.team.id}`}
                     className={`flex items-center gap-2 border px-2 py-1.5 ${
-                      entry.insideCut ? "border-home/30 bg-home/5" : "border-border bg-bg/20"
+                      entry.insideCut ? "border-home/40 bg-home/8" : "border-border bg-bg/35"
                     }`}
                   >
                     <span className={`w-4 font-mono text-[10px] tabular-nums ${entry.insideCut ? "text-home" : "text-muted"}`}>
@@ -219,9 +219,9 @@ export function ScenarioLab() {
 
 function Panel({ title, kicker, children }: { title: string; kicker: string; children: ReactNode }) {
   return (
-    <section className="rounded-[var(--radius-card)] border border-border bg-surface p-3">
-      <div className="mb-3 flex items-baseline justify-between gap-3">
-        <h2 className="font-display text-base leading-none text-text">{title}</h2>
+    <section className="art-panel p-3">
+      <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
+        <h2 className="font-display text-lg leading-none text-text">{title}</h2>
         <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">{kicker}</span>
       </div>
       {children}
@@ -232,7 +232,7 @@ function Panel({ title, kicker, children }: { title: string; kicker: string; chi
 function FixtureTeam({ team }: { team: Match["homeTeam"] }) {
   return (
     <div className="flex items-center gap-2 py-0.5">
-      <span className="h-5 w-[3px] shrink-0 rounded-full" style={{ background: kitColor(team) }} />
+      <span className="h-5 w-[3px] shrink-0" style={{ background: kitColor(team) }} />
       <Flag team={team} size={18} />
       <span className="truncate text-sm text-text">{team.name}</span>
     </div>
@@ -253,7 +253,7 @@ function ScenarioTable({
   showOutlook?: boolean;
 }) {
   return (
-    <div className="overflow-hidden border border-border bg-bg/20">
+    <div className="overflow-hidden border border-border bg-bg/35">
       <div className="border-b border-border px-2 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
         {title}
       </div>
@@ -264,9 +264,9 @@ function ScenarioTable({
           const qualify = qualificationForTeam(row.team.name);
           const outlook = qualificationOutlook(row, thirdPlace);
           return (
-            <div key={row.team.id} className="flex items-center gap-2 border-b border-border px-2 py-2 last:border-b-0">
+            <div key={row.team.id} className="flex items-center gap-2 border-b border-border px-2 py-2 transition-colors last:border-b-0 hover:bg-surface-2/60">
               <span className="w-4 font-mono text-xs text-muted tabular-nums">{row.rank}</span>
-              <span className="h-5 w-[3px] shrink-0 rounded-full" style={{ background: kitColor(row.team) }} />
+              <span className="h-5 w-[3px] shrink-0" style={{ background: kitColor(row.team) }} />
               <Flag team={row.team} size={18} />
               <span className="min-w-0 flex-1 truncate text-[13px] text-text">{row.team.name}</span>
               {rankDelta !== 0 && (

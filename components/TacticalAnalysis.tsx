@@ -55,21 +55,21 @@ export function TacticalAnalysis({ match }: { match: Match }) {
   }
 
   return (
-    <section>
-      <div className="mb-3 flex items-center gap-2">
+    <section className="art-panel p-5 md:p-6">
+      <div className="mb-4 flex items-center gap-2 border-b border-border pb-3">
         <ChalkBadge />
-        <h2 className="font-display text-lg text-text">Tactical read</h2>
+        <h2 className="font-display text-2xl text-text">Tactical read</h2>
         {result && (
           <span className="ml-auto font-mono text-[10px] text-muted">{result.model}</span>
         )}
       </div>
 
       {result ? (
-        <article className="max-w-[64ch] whitespace-pre-wrap font-[family-name:var(--font-body)] text-[15px] leading-relaxed text-text/90">
+        <article className="max-w-[74ch] whitespace-pre-wrap border-l-2 border-home pl-4 font-[family-name:var(--font-body)] text-[15px] leading-relaxed text-text/90">
           {result.text}
         </article>
       ) : (
-        <div className="rounded-[var(--radius-card)] border border-dashed border-border p-5">
+        <div className="slash-field border border-border p-5">
           <p className="mb-3 max-w-prose text-sm text-muted">
             A UEFA-Pro-License read of this match — the key tactical battle, why the
             result is unfolding the way it is, and the decisive calls — written by Claude
@@ -78,7 +78,7 @@ export function TacticalAnalysis({ match }: { match: Match }) {
           <button
             onClick={run}
             disabled={loading}
-            className="rounded-[var(--radius-card)] px-4 py-2 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
             style={{ background: "var(--accent)" }}
           >
             {loading ? "drawing…" : cta}

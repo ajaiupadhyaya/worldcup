@@ -17,7 +17,7 @@ export function CalibrationPanel({
 }) {
   const maxN = Math.max(1, ...cal.reliability.map((b) => b.n));
   return (
-    <div className="grid gap-4 rounded-[var(--radius-card)] border border-border bg-surface p-4 sm:grid-cols-[200px_1fr]">
+    <div className="art-panel grid gap-4 p-4 sm:grid-cols-[200px_1fr]">
       <svg width={SIZE} height={SIZE} className="shrink-0" role="img" aria-label="Reliability curve">
         {/* perfect-calibration diagonal */}
         <line x1={xy(0)} y1={xy(1)} x2={xy(1)} y2={xy(0)} stroke="var(--chalk-faint)" strokeWidth={1} strokeDasharray="3 3" />

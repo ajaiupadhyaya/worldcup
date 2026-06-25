@@ -1,20 +1,22 @@
-/* FLOODLIT CHALK — the page IS the broadcast tactics-cam.
+/* FLOODLIT ATLAS — modern-art football intelligence.
    Fonts loaded in layout.tsx via next/font/google (Anton / Hanken Grotesk /
    Spline Sans Mono). Tailwind v4, dark by default. */
 @import "tailwindcss";
 
 :root {
-  --bg: #0a1410;            /* Pitch Black-Green — floodlit grass, warmer than #000 */
-  --surface: #13201a;      /* Touchline Slate — panels, rows, tables */
-  --surface-2: #182b22;    /* lifted surface for hovers / nested panels */
-  --border: #23332b;       /* Box Line — painted pitch-line hairlines */
-  --text: #e8ede6;         /* Chalk Line — never pure #fff */
-  --muted: #84968b;        /* Faded Chalk — captions, axis labels, secondary */
-  --accent: #ffb627;       /* Sodium Amber — primary + AWAY chalk + live */
-  --home: #3fd0e0;         /* Telestrator Cyan — HOME chalk + xG + links */
-  --danger: #e5484d;       /* Linesman Red — events only (goals, cards) */
-  --chalk: #e8ede6;
-  --chalk-faint: #23332b;
+  --bg: #080908;           /* Gallery Black — matte, not blue-black */
+  --surface: #11130f;      /* Ink Slab — primary panels */
+  --surface-2: #191c15;    /* Olive Graphite — selected/hover surfaces */
+  --border: #30342a;       /* Gallery Rule — visible hairlines */
+  --text: #f2efe3;         /* Museum Wall — warm white, not cream */
+  --muted: #9b9a8f;        /* Archived Paper — secondary text */
+  --accent: #ffb000;       /* Sodium Amber — alerts/live/away */
+  --home: #4fd8df;         /* Signal Cyan — links/probability */
+  --danger: #ff3b30;       /* Constructivist Red — stakes/cards */
+  --chalk: #f2efe3;
+  --chalk-faint: #34382e;
+  --rule-strong: #d8d4c6;
+  --ink-red: #c91d14;
 }
 
 @theme {
@@ -33,13 +35,23 @@
   --font-body: var(--font-hanken), system-ui, sans-serif;        /* tactical prose */
   --font-mono: var(--font-spline-mono), ui-monospace, monospace; /* clocks, xG, tables */
 
-  --radius-card: 4px; /* near-square — programme print, not soft SaaS */
+  --radius-card: 2px; /* gallery frames, not soft SaaS */
 }
 
-html { background: var(--bg); }
+html {
+  background: var(--bg);
+  overflow-x: hidden;
+}
 
 body {
-  background: var(--bg);
+  overflow-x: hidden;
+  background:
+    linear-gradient(90deg, rgba(242, 239, 227, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(242, 239, 227, 0.03) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(201, 29, 20, 0.11) 0 1px, transparent 1px 100%),
+    var(--bg);
+  background-size: 96px 96px, 96px 96px, 420px 420px, auto;
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
   font-feature-settings: "tnum" 1; /* tabular figures so live scores don't jitter */
@@ -49,7 +61,7 @@ body {
 /* Anton needs slight tracking and never lowercase. */
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.012em;
   text-transform: uppercase;
 }
 .font-mono { font-family: var(--font-mono); }
@@ -69,10 +81,59 @@ a { color: inherit; text-decoration: none; }
   .chalk-stroke, .chalk-draw { stroke-dashoffset: 0 !important; animation: none !important; }
 }
 
-/* Faint chalk noise on the page so the grass reads as a lit surface, not flat. */
+/* Precise pitch-grid surface: modern-art geometry, no atmospheric blobs. */
 .tactics-grain {
-  background-image: radial-gradient(rgba(232, 237, 230, 0.018) 1px, transparent 1px);
-  background-size: 3px 3px;
+  position: relative;
+}
+
+.tactics-grain::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, transparent 0 48px, rgba(79, 216, 223, 0.045) 48px 49px, transparent 49px 96px),
+    linear-gradient(180deg, transparent 0 48px, rgba(255, 176, 0, 0.035) 48px 49px, transparent 49px 96px);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.28));
+}
+
+.art-panel {
+  position: relative;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(242, 239, 227, 0.035), transparent 46px),
+    var(--surface);
+  box-shadow: inset 0 1px 0 rgba(242, 239, 227, 0.055);
+}
+
+.art-panel::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 34px;
+  height: 3px;
+  background: var(--danger);
+}
+
+.art-panel-quiet {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+.data-rule {
+  border-color: var(--border);
+  background-image: linear-gradient(90deg, rgba(242, 239, 227, 0.055) 1px, transparent 1px);
+  background-size: 12px 1px;
+}
+
+.slash-field {
+  background:
+    linear-gradient(125deg, transparent 0 42%, rgba(201, 29, 20, 0.24) 42% 42.5%, transparent 42.5% 100%),
+    linear-gradient(90deg, rgba(242, 239, 227, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(242, 239, 227, 0.035) 1px, transparent 1px);
+  background-size: auto, 36px 36px, 36px 36px;
 }
 
 /* Custom scrollbar in the floodlit palette. */

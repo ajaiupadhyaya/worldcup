@@ -25,7 +25,7 @@ export default function Home() {
   const groups = groupStandings(standings);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
+    <div className="mx-auto max-w-7xl px-4 py-7">
       <TournamentPulse
         matches={matches}
         standings={standings}

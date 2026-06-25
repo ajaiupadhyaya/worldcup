@@ -10,15 +10,15 @@ export function WinCupLeaderboard({ teams }: { teams: PredTeam[] }) {
   const ranked = [...teams].sort((a, b) => b.winCup - a.winCup);
   const top = ranked[0]?.winCup ?? 1;
   return (
-    <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
+    <div className="art-panel overflow-hidden">
       {ranked.map((t, i) => (
         <div
           key={t.id}
-          className="flex items-center gap-3 border-b border-border px-3 py-2 last:border-b-0"
+          className="flex items-center gap-3 border-b border-border px-3 py-2 transition-colors last:border-b-0 hover:bg-surface-2/70"
         >
           <span className="w-5 text-right font-mono text-xs text-muted">{i + 1}</span>
           <span
-            className="h-5 w-[3px] shrink-0 rounded-full"
+            className="h-5 w-[3px] shrink-0"
             style={{ background: kitColor({ name: t.name, shortName: t.name }) }}
           />
           <span className="w-36 truncate text-[13px] text-text sm:w-44">{t.name}</span>

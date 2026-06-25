@@ -16,7 +16,7 @@ export function RatingsTable({ teams }: { teams: RatingTeam[] }) {
   const rows = [...teams].sort((a, b) => b[sort] - a[sort]);
   const fmt = (k: Col, v: number) => (k === "elo" ? Math.round(v).toString() : v.toFixed(2));
   return (
-    <div className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
+    <div className="art-panel overflow-hidden">
       <div className="flex items-center gap-2 border-b border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
         <span className="w-5 text-right">#</span>
         <span className="flex-1">Team</span>
@@ -33,7 +33,7 @@ export function RatingsTable({ teams }: { teams: RatingTeam[] }) {
       </div>
       <div>
         {rows.map((r, i) => (
-          <div key={r.id} className="flex items-center gap-2 border-b border-border px-3 py-2 text-[13px] last:border-b-0">
+          <div key={r.id} className="flex items-center gap-2 border-b border-border px-3 py-2 text-[13px] transition-colors last:border-b-0 hover:bg-surface-2/70">
             <span className="w-5 text-right font-mono text-xs text-muted">{i + 1}</span>
             <span className="flex-1 truncate text-text">{r.name}</span>
             {COLS.map((c) => (

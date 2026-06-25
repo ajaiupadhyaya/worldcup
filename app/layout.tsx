@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Anton, Hanken_Grotesk, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   title: "Floodlit — World Cup Tactical Intelligence",
   description:
     "Live World Cup scores, group standings, and Claude-powered tactical breakdowns — the broadcast tactics-cam, in your browser.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#080908",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

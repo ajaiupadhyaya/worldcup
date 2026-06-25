@@ -31,20 +31,20 @@ export function TournamentPulse({
     : `model ${modelDate.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
 
   return (
-    <section className="mb-7">
-      <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+    <section className="mb-8 border-l border-border pl-3 sm:pl-5">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl leading-none text-text">Tournament Pulse</h1>
-          <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+          <h1 className="font-display text-4xl leading-none text-text sm:text-5xl">Tournament Pulse</h1>
+          <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted sm:text-xs">
             group-stage command center · {modelLabel}
           </p>
         </div>
-        <Link href="/predict" className="font-mono text-[11px] uppercase tracking-widest text-home hover:text-text">
+        <Link href="/predict" className="border border-border px-3 py-2 font-mono text-[11px] uppercase tracking-widest text-home transition-colors hover:border-home hover:bg-home hover:text-bg">
           open model room -&gt;
         </Link>
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="grid gap-3 lg:grid-cols-[0.72fr_1.28fr]">
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
           <PulseStat label="Groups complete" value={`${pulse.completedGroups}/12`} />
           <PulseStat label="Top-two spots locked" value={String(pulse.topTwoLocked)} />
@@ -91,9 +91,9 @@ export function TournamentPulse({
 
 function Panel({ title, kicker, children }: { title: string; kicker: string; children: ReactNode }) {
   return (
-    <div className="rounded-[var(--radius-card)] border border-border bg-surface p-3">
-      <div className="mb-2 flex items-baseline justify-between gap-3">
-        <h2 className="font-display text-base leading-none text-text">{title}</h2>
+    <div className="art-panel p-3">
+      <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
+        <h2 className="font-display text-lg leading-none text-text">{title}</h2>
         <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">{kicker}</span>
       </div>
       {children}
@@ -103,9 +103,9 @@ function Panel({ title, kicker, children }: { title: string; kicker: string; chi
 
 function PulseStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[var(--radius-card)] border border-border bg-surface px-3 py-2">
+    <div className="art-panel slash-field min-h-[108px] px-4 py-3">
       <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">{label}</div>
-      <div className="mt-1 font-display text-3xl leading-none text-text">{value}</div>
+      <div className="mt-3 font-display text-5xl leading-none text-text">{value}</div>
     </div>
   );
 }
@@ -143,7 +143,7 @@ function StakeRow({
   return (
     <Link
       href={`/match/${match.id}`}
-      className="block border-t border-border pt-2 first:border-t-0 first:pt-0 hover:text-text"
+      className="block border-t border-border pt-3 first:border-t-0 first:pt-0 hover:text-text"
     >
       <div className="mb-1 flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.16em]">
         <span className="truncate text-muted">{stake.group ?? match.round ?? "World Cup"}</span>
@@ -162,7 +162,7 @@ function StakeRow({
           {stake.impacts.map((impact) => (
             <div
               key={impact.outcome}
-              className="flex items-center gap-2 border border-border bg-bg/20 px-2 py-1 font-mono text-[10px]"
+              className="flex items-center gap-2 border border-border bg-bg/40 px-2 py-1 font-mono text-[10px]"
             >
               <span className="w-12 shrink-0 uppercase tracking-[0.1em] text-home">{impact.label}</span>
               <span className="min-w-0 truncate text-muted">{impact.summary}</span>
@@ -182,7 +182,7 @@ function TeamPressure({
   const toneClass =
     entry.tone === "safe" ? "text-home" : entry.tone === "danger" ? "text-danger/90" : "text-accent";
   return (
-    <div className="flex items-center gap-2 border-t border-border pt-1.5 first:border-t-0 first:pt-0">
+    <div className="flex items-center gap-2 border-t border-border pt-2 first:border-t-0 first:pt-0">
       <Flag team={entry.row.team} size={18} />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
@@ -206,7 +206,7 @@ function ThirdPlaceChip({
   return (
     <div
       className={`flex items-center gap-2 border px-2 py-1.5 ${
-        entry.insideCut ? "border-home/30 bg-home/5" : "border-border bg-bg/20"
+        entry.insideCut ? "border-home/40 bg-home/8" : "border-border bg-bg/35"
       }`}
     >
       <span className={`w-4 font-mono text-[10px] tabular-nums ${entry.insideCut ? "text-home" : "text-muted"}`}>

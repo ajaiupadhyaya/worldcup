@@ -34,7 +34,7 @@ export function ShareButton({ matchId }: { matchId: string }) {
     <div className="flex items-center gap-2">
       <button
         onClick={share}
-        className="rounded-[var(--radius-card)] border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:text-text"
+        className="border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:bg-home hover:text-bg"
       >
         {copied ? "link copied" : "Share report"}
       </button>
@@ -42,7 +42,7 @@ export function ShareButton({ matchId }: { matchId: string }) {
         href={cardUrl}
         target="_blank"
         rel="noreferrer"
-        className="rounded-[var(--radius-card)] border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:text-text"
+        className="border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:text-text"
       >
         View card
       </a>

@@ -57,9 +57,9 @@ export function CVUpload({ matchId }: { matchId: string }) {
   }
 
   return (
-    <section>
-      <h2 className="mb-1 font-display text-lg text-text">Freeze the frame</h2>
-      <p className="mb-3 max-w-prose text-sm text-muted">
+    <section className="art-panel p-5">
+      <h2 className="mb-2 border-l-2 border-accent pl-3 font-display text-2xl text-text">Freeze the frame</h2>
+      <p className="mb-4 max-w-prose text-sm text-muted">
         Drop a broadcast screenshot and Claude reads the shape off the pitch —
         formation, press triggers, line height, width.
       </p>
@@ -70,7 +70,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
           e.preventDefault();
           onFile(e.dataTransfer.files?.[0]);
         }}
-        className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[var(--radius-card)] border border-dashed border-border bg-surface p-6 text-center transition-colors hover:border-home"
+        className="slash-field flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 border border-border bg-bg/45 p-6 text-center transition-colors hover:border-home"
       >
         <input
           type="file"
@@ -80,7 +80,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
         />
         {preview ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="frame to analyze" className="max-h-56 rounded-[2px]" />
+          <img src={preview} alt="frame to analyze" className="max-h-56 border border-border" />
         ) : (
           <>
             <span className="font-mono text-xs uppercase tracking-widest text-muted">
@@ -95,7 +95,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
         <button
           onClick={analyze}
           disabled={loading}
-          className="mt-3 rounded-[var(--radius-card)] px-4 py-2 font-mono text-xs uppercase tracking-widest text-bg disabled:opacity-50"
+          className="mt-3 border border-accent px-4 py-2 font-mono text-xs uppercase tracking-widest text-bg disabled:opacity-50"
           style={{ background: "var(--accent)" }}
         >
           {loading ? "reading the pitch…" : "Analyze frame"}
@@ -114,7 +114,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
               ["Width", result.width],
               ["Press trigger", result.press_trigger],
             ].map(([k, v]) => (
-              <div key={k} className="rounded-[var(--radius-card)] border border-border bg-surface p-2.5">
+              <div key={k} className="border border-border bg-bg/45 p-2.5">
                 <div className="font-mono text-[9px] uppercase tracking-widest text-muted">{k}</div>
                 <div className="mt-0.5 text-[13px] text-text">{v}</div>
               </div>
@@ -123,7 +123,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
           {result.key_patterns?.length > 0 && (
             <ul className="flex flex-wrap gap-1.5">
               {result.key_patterns.map((p, i) => (
-                <li key={i} className="rounded-full border border-home/40 px-2.5 py-1 text-[11px] text-home">
+                <li key={i} className="border border-home/40 px-2.5 py-1 text-[11px] text-home">
                   {p}
                 </li>
               ))}

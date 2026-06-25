@@ -9,9 +9,9 @@ export const metadata = { title: "Predict — Floodlit" };
 
 function Section({ kicker, title, children }: { kicker: string; title: string; children: ReactNode }) {
   return (
-    <section className="mb-10">
-      <div className="mb-3 flex items-baseline gap-3">
-        <h2 className="font-display text-2xl text-text">{title}</h2>
+    <section className="mb-10 border-l border-border pl-4">
+      <div className="mb-3 flex flex-wrap items-baseline gap-3">
+        <h2 className="font-display text-3xl leading-none text-text">{title}</h2>
         <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">{kicker}</span>
       </div>
       {children}
@@ -26,9 +26,9 @@ export default function PredictPage() {
   const wcIds = new Set(p.teams.map((t) => t.id));
   const wcRatings = ratings.teams.filter((t) => wcIds.has(t.id));
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
-      <div className="mb-6 flex items-baseline gap-3">
-        <h1 className="font-display text-3xl text-text">Predict</h1>
+    <div className="mx-auto max-w-7xl px-4 py-7">
+      <div className="mb-7 flex flex-wrap items-baseline gap-3 border-l border-border pl-4">
+        <h1 className="font-display text-5xl leading-none text-text">Predict</h1>
         <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
           dixon-coles · elo · monte-carlo
         </span>
