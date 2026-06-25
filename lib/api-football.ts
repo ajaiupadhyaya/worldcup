@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // API-Football v3 client — the primary data source.
 // Activates only when API_FOOTBALL_KEY is set; otherwise callers fall back to
 // ESPN. Free tier is 100 req/day, so the cache layer in front of this is load
@@ -122,7 +123,7 @@ export async function getMatch(id: string): Promise<Match> {
   const match = mapFixture(fixtures[0]);
   match.stats = mapStats(stats, match.homeTeam.id);
   match.lineups = mapLineups(lineups, match.homeTeam.id);
-  match.events = mapEvents(events, match.homeTeam.id);
+  match.events = mapEvents(events);
   return match;
 }
 
@@ -198,7 +199,7 @@ function mapEventType(type: string | undefined, detail: string | undefined): Mat
   }
 }
 
-function mapEvents(raw: any[], _homeTeamId?: string): MatchEvent[] {
+function mapEvents(raw: any[]): MatchEvent[] {
   if (!raw?.length) return [];
   const out: MatchEvent[] = [];
   for (const e of raw) {

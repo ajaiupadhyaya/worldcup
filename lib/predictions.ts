@@ -1,6 +1,7 @@
 import calibrationJson from "@/data/predictions/calibration.json";
 import predictionsJson from "@/data/predictions/latest.json";
 import ratingsJson from "@/data/ratings/latest.json";
+export { formatProb } from "./probability";
 
 export type Stage =
   | "qualify" | "reachR32" | "reachR16" | "reachQF"
@@ -68,14 +69,6 @@ export interface CalibrationSnapshot {
 export const predictions = predictionsJson as unknown as PredictionsSnapshot;
 export const ratings = ratingsJson as unknown as RatingsSnapshot;
 export const calibration = calibrationJson as unknown as CalibrationSnapshot;
-
-/** Format a probability in [0,1] as a chalk-friendly percentage string. */
-export function formatProb(p: number): string {
-  if (p <= 0) return "0%";
-  if (p < 0.001) return "<0.1%";
-  if (p < 0.1) return `${(p * 100).toFixed(1)}%`;
-  return `${Math.round(p * 100)}%`;
-}
 
 export const FUNNEL_STAGES: { key: Stage; label: string }[] = [
   { key: "reachR16", label: "Round of 16" },

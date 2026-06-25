@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ESPN hidden-endpoint client — the fallback data source.
 // No auth, no SLA. Every call is wrapped in try/catch by callers; this module
 // throws on hard failures and returns normalized domain types on success.
@@ -124,7 +125,7 @@ export async function getMatch(id: string): Promise<Match> {
 
   base.stats = mapStats(summary);
   base.lineups = mapLineups(summary);
-  base.events = mapEvents(summary, base.homeTeam.id);
+  base.events = mapEvents(summary);
   return base;
 }
 
@@ -220,7 +221,7 @@ function mapEventType(raw: string | undefined): MatchEventType | null {
   }
 }
 
-function mapEvents(summary: any, homeTeamId: string): MatchEvent[] {
+function mapEvents(summary: any): MatchEvent[] {
   const key: any[] = summary?.keyEvents ?? [];
   const out: MatchEvent[] = [];
   for (const e of key) {

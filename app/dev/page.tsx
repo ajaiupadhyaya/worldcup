@@ -44,7 +44,7 @@ export default function DevPage() {
   }
 
   useEffect(() => {
-    loadAll();
+    void Promise.resolve().then(loadAll);
   }, []);
 
   const [analysis, setAnalysis] = useState<string | null>(null);

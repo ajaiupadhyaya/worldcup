@@ -2,10 +2,13 @@
 
 import { useMatches, useStandings, groupStandings } from "@/lib/hooks";
 import { byInterest, groupByDay } from "@/lib/format";
+import { qualificationByTeam, qualificationGeneratedAt } from "@/lib/qualification";
+import { hydrateStandingTeams } from "@/lib/tournament";
 import { FeaturedMatch } from "@/components/FeaturedMatch";
 import { MatchRow } from "@/components/MatchRow";
 import { StandingsTable } from "@/components/StandingsTable";
 import { PitchDivider } from "@/components/PitchDivider";
+import { TournamentPulse } from "@/components/TournamentPulse";
 
 export default function Home() {
   const { data: matchesEnv, isLoading: loadingMatches, error: matchesError } = useMatches();
@@ -18,10 +21,18 @@ export default function Home() {
     matches[0];
   const rest = matches.filter((m) => m.id !== featured?.id);
   const days = groupByDay(rest);
-  const groups = standingsEnv ? groupStandings(standingsEnv.data) : {};
+  const standings = standingsEnv ? hydrateStandingTeams(standingsEnv.data, matches) : [];
+  const groups = groupStandings(standings);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
+      <TournamentPulse
+        matches={matches}
+        standings={standings}
+        projected={qualificationByTeam}
+        modelGeneratedAt={qualificationGeneratedAt}
+      />
+
       {/* HERO — the featured match as a broadcast frame */}
       {loadingMatches && !featured ? (
         <div className="h-48 animate-pulse rounded-[var(--radius-card)] border border-border bg-surface" />
