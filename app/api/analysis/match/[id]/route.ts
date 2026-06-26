@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getBreakdown } from "@/lib/analysis";
-import { hasAnthropicKey } from "@/lib/claude";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -11,12 +10,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  if (!hasAnthropicKey()) {
-    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 503 });
-  }
-  // `?force=1` bypasses the cache and forces a fresh (paid) Claude generation,
-  // so it's gated behind a server-side admin token — public callers are
-  // always cache-first, preventing unbounded generation abuse.
+  // `?force=1` bypasses the cache. Keep it admin-gated so public callers stay
+  // cache-first even though the analysis engine is free.
   const force =
     new URL(req.url).searchParams.get("force") === "1" &&
     Boolean(process.env.ADMIN_TOKEN) &&

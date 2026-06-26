@@ -1,8 +1,8 @@
 # Floodlit — World Cup Intelligence System
 
-A public-facing World Cup dashboard combining live match data, Claude-powered
-tactical analysis, and computer-vision formation analysis. Built to be genuinely
-useful and shareable during a live tournament.
+A public-facing World Cup dashboard combining live match data, free/open-data
+tactical analysis, and transparent frame-review checklists. Built to be
+genuinely useful and shareable during a live tournament.
 
 **Live:** <https://worldcup-sable.vercel.app>
 
@@ -12,9 +12,9 @@ useful and shareable during a live tournament.
 
 - **Frontend + API:** Next.js 16 (App Router, TypeScript, Turbopack)
 - **Styling:** Tailwind CSS v4
-- **Data:** API-Football (primary, paid) → ESPN hidden endpoints (fallback, no auth)
-- **AI:** Anthropic Claude (`claude-sonnet-4-6`) — Phase 2+
-- **CV:** FastAPI microservice — Phase 3
+- **Data:** API-Football free tier (optional richer source) → ESPN hidden endpoints (fallback, no auth)
+- **Analysis:** deterministic free/open-data engine (`lib/free-analysis.ts`)
+- **Frame review:** free tactical checklist; optional external frame-analysis service via `CV_SERVICE_URL`
 - **State/caching:** in-memory TTL cache (Phase 1) → Redis (Phase 5)
 
 ## Getting started
@@ -34,9 +34,8 @@ All keys are optional in development:
 
 | Var | Purpose | Phase |
 | --- | --- | --- |
-| `API_FOOTBALL_KEY` | Primary data (richer: xG, ratings). Falls back to ESPN if unset. | 1 |
-| `ANTHROPIC_API_KEY` | Tactical analysis + vision | 2, 3 |
-| `CV_SERVICE_URL` | FastAPI CV service URL | 3 |
+| `API_FOOTBALL_KEY` | Optional richer data source. Falls back to ESPN if unset. | 1 |
+| `CV_SERVICE_URL` | Optional external frame-analysis service URL. Free mode works without it. | 3 |
 | `UPSTASH_REDIS_REST_*` | Distributed cache + rate limiting | 5 |
 
 ## Architecture (Phase 1)
@@ -72,12 +71,12 @@ for every response.
 ## Roadmap
 
 - [x] **Phase 1 — Data Layer** (live scores, lineups, stats, standings, caching, `/dev`)
-- [x] **Phase 2 — Analysis Engine** (Claude tactical breakdowns, previews, live reads, streaming Q&A)
-- [x] **Phase 3 — Computer Vision** (screenshot → formation analysis, FastAPI in `cv-service/`)
+- [x] **Phase 2 — Analysis Engine** (free tactical breakdowns, previews, live reads, streaming Q&A)
+- [x] **Phase 3 — Frame Review** (screenshot → tactical checklist, optional FastAPI CV service)
 - [x] **Phase 4 — Shareable Cards** (`next/og` match report cards at `/api/og/match/[id]`)
 - [x] **Phase 5 — Public Web App** ("FLOODLIT CHALK" tactics-cam UI: `/`, `/match/[id]`, `/standings`)
 - [x] **Deployed** — Vercel (<https://worldcup-sable.vercel.app>), auto-deploys from GitHub `main`.
-      Vision runs in-process via `lib/vision.ts` (the `cv-service/` FastAPI worker is optional — see `DEPLOY.md`).
+      Analysis runs without paid LLM keys; an external frame-analysis service can be added later via `CV_SERVICE_URL`.
 - [ ] Phase-5 rate limiting (Upstash) — not yet wired
 
 ## Design

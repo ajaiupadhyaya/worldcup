@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getPreview } from "@/lib/analysis";
-import { hasAnthropicKey } from "@/lib/claude";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -11,11 +10,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  if (!hasAnthropicKey()) {
-    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 503 });
-  }
   // Admin-gated cache bypass (see analysis/match route) — public callers stay
-  // cache-first to prevent unbounded paid generations.
+  // cache-first.
   const force =
     new URL(req.url).searchParams.get("force") === "1" &&
     Boolean(process.env.ADMIN_TOKEN) &&

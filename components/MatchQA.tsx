@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 
-// Ask Claude anything about this match. Streams the answer token-by-token from
-// /api/analysis/ask.
+// Ask the free analyst engine anything about this match. The route streams a
+// text response so the UI stays compatible with generated answers.
 export function MatchQA({ matchId }: { matchId: string }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -28,8 +28,8 @@ export function MatchQA({ matchId }: { matchId: string }) {
         const j = await res.json().catch(() => ({}));
         setError(
           res.status === 503
-            ? "Q&A needs an ANTHROPIC_API_KEY in .env.local."
-            : j.error || "Could not reach Claude.",
+            ? "The free analyst engine is unavailable."
+            : j.error || "Could not answer the question.",
         );
         setStreaming(false);
         return;
@@ -46,11 +46,11 @@ export function MatchQA({ matchId }: { matchId: string }) {
         full += decoder.decode(value, { stream: true });
         setAnswer(full);
       }
-      // The route writes a sentinel into the 200 stream if Claude fails mid-flight.
+      // The route writes a sentinel into the 200 stream if generation fails mid-flight.
       const sentinel = full.match(/\n?\[error: ([^\]]*)\]\s*$/);
       if (sentinel) {
         setAnswer(full.slice(0, sentinel.index).trim());
-        setError(sentinel[1] || "Claude could not finish the answer.");
+        setError(sentinel[1] || "The analyst engine could not finish the answer.");
       } else {
         setAnswer(full);
       }

@@ -9,7 +9,7 @@ interface AnalysisResult {
   generatedAt: string;
 }
 
-// Claude tactical breakdown. Picks the right endpoint for the match state:
+// Free tactical breakdown. Picks the right endpoint for the match state:
 // finished -> post-match breakdown, live -> live read, scheduled -> preview.
 export function TacticalAnalysis({ match }: { match: Match }) {
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -39,7 +39,7 @@ export function TacticalAnalysis({ match }: { match: Match }) {
         const staleState = res.status === 400 && /only available for/i.test(json.error ?? "");
         setError(
           res.status === 503
-            ? "Claude analysis needs an ANTHROPIC_API_KEY. Add one to .env.local to enable tactical breakdowns."
+            ? "The free analysis service is unavailable. Refresh and try again."
             : staleState
               ? "The match state just changed — refresh and try again."
               : json.error || "Analysis failed.",
@@ -72,8 +72,8 @@ export function TacticalAnalysis({ match }: { match: Match }) {
         <div className="slash-field border border-border p-5">
           <p className="mb-3 max-w-prose text-sm text-muted">
             A UEFA-Pro-License read of this match — the key tactical battle, why the
-            result is unfolding the way it is, and the decisive calls — written by Claude
-            from the live data.
+            result is unfolding the way it is, and the decisive calls — generated from
+            free/open match data.
           </p>
           <button
             onClick={run}

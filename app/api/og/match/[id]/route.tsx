@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 // A premium 1200x630 match report card. Doubles as the OpenGraph image when a
 // match URL is shared on Twitter/Discord. Renders purely from data + any
-// already-cached Claude verdict — never triggers a Claude call.
+// already-cached free-engine verdict — never triggers external generation.
 
 const W = 1200;
 const H = 630;
@@ -155,7 +155,7 @@ export async function GET(
           ))}
         </div>
 
-        {/* Claude verdict */}
+        {/* Free-engine verdict */}
         <div style={{ display: "flex", flex: 1, alignItems: "flex-end", marginTop: 20 }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {verdict && (
@@ -164,7 +164,7 @@ export async function GET(
               </div>
             )}
             <div style={{ display: "flex", fontSize: 15, color: "#52525b", marginTop: 10, letterSpacing: 1 }}>
-              {verdict ? "— tactical verdict by Claude" : "World Cup Intelligence"}
+              {verdict ? "— tactical verdict by Floodlit" : "World Cup Intelligence"}
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Floodlit — World Cup Tactical Intelligence",
   description:
-    "Live World Cup scores, group standings, and Claude-powered tactical breakdowns — the broadcast tactics-cam, in your browser.",
+    "Live World Cup scores, group standings, and free/open-data tactical breakdowns — the broadcast tactics-cam, in your browser.",
 };
 
 export const viewport: Viewport = {
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteNav />
           <main className="flex-1 w-full">{children}</main>
           <footer className="border-t border-border px-4 py-6 text-center text-xs text-muted">
-            Floodlit · data via API-Football & ESPN · tactical analysis by Claude ·
+            Floodlit · data via API-Football & ESPN · free/open-data tactical analysis ·
             not affiliated with FIFA
           </footer>
         </Providers>

@@ -214,7 +214,7 @@ export default function DevPage() {
                   disabled={analyzing}
                   className="rounded border border-emerald-700 px-3 py-1 text-emerald-300 hover:bg-emerald-900/30 disabled:opacity-50"
                 >
-                  {analyzing ? "analyzing…" : "🧠 Claude analysis"}
+                  {analyzing ? "analyzing…" : "Free analysis"}
                 </button>
               )}
             </div>

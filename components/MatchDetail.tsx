@@ -95,7 +95,7 @@ export function MatchDetail({ id }: { id: string }) {
 
       <PitchDivider />
 
-      {/* Claude tactical read */}
+      {/* Free tactical read */}
       <TacticalAnalysis match={match} />
 
       <PitchDivider />

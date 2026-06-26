@@ -1,5 +1,5 @@
-// Analysis orchestration (Phase 2).
-// Bridges the data layer (lib/data) and the Claude engine (lib/claude), with a
+// Analysis orchestration.
+// Bridges the data layer and the free deterministic analysis engine, with a
 // caching policy tuned per analysis type:
 //   - post-match breakdown: generate ONCE, cache for a day (immutable result)
 //   - pre-match preview: cache 30 min, regenerate when lineups change
@@ -7,7 +7,7 @@
 
 import { cache } from "./cache";
 import { getMatch } from "./data";
-import * as claude from "./claude";
+import { FREE_ANALYSIS_MODEL, buildAnalysisText } from "./free-analysis";
 import type { Match } from "./types";
 
 export interface AnalysisResult {
@@ -27,7 +27,7 @@ function result(matchId: string, type: AnalysisResult["type"], text: string): An
     matchId,
     type,
     text,
-    model: claude.ANALYSIS_MODEL,
+    model: FREE_ANALYSIS_MODEL,
     generatedAt: new Date().toISOString(),
   };
 }
@@ -49,7 +49,7 @@ export async function getBreakdown(matchId: string, force = false): Promise<Anal
   if (match.status !== "finished") {
     throw new Error("Breakdown is only available for finished matches");
   }
-  const text = await claude.postMatchBreakdown(match);
+  const text = buildAnalysisText(match, "breakdown");
   const res = result(matchId, "breakdown", text);
   cache.set(key, res, DAY);
   return res;
@@ -63,7 +63,7 @@ export async function getPreview(matchId: string, force = false): Promise<Analys
     const hit = cache.get<AnalysisResult>(key);
     if (hit) return hit;
   }
-  const text = await claude.preMatchPreview(match);
+  const text = buildAnalysisText(match, "preview");
   const res = result(matchId, "preview", text);
   cache.set(key, res, PREVIEW_TTL);
   return res;
@@ -82,7 +82,7 @@ export async function getLive(matchId: string, force = false): Promise<AnalysisR
     const hit = cache.get<AnalysisResult>(key);
     if (hit) return hit;
   }
-  const text = await claude.liveCommentary(match);
+  const text = buildAnalysisText(match, "live");
   const res = result(matchId, "live", text);
   cache.set(key, res, LIVE_TTL);
   return res;
@@ -95,9 +95,9 @@ export async function matchForQA(matchId: string): Promise<Match> {
 }
 
 /**
- * Returns a one-sentence Claude verdict for a match IF a breakdown is already
+ * Returns a one-sentence tactical verdict for a match IF a breakdown is already
  * cached — never triggers a generation. Used by the OG card so rendering an
- * image is always cheap and never blocks on (or pays for) a Claude call.
+ * image is always cheap and never blocks on external services.
  */
 export function peekVerdict(matchId: string): string | null {
   const hit = cache.get<AnalysisResult>(`analysis:breakdown:${matchId}`);

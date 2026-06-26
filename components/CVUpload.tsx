@@ -13,8 +13,8 @@ interface CVResult {
   cached?: boolean;
 }
 
-// Upload a broadcast screenshot; the CV microservice (Claude vision) returns a
-// structured tactical read of the frozen frame.
+// Upload a broadcast screenshot. In free mode this returns an auditable frame
+// checklist grounded in match context; an optional CV service can replace it.
 export function CVUpload({ matchId }: { matchId: string }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -43,7 +43,7 @@ export function CVUpload({ matchId }: { matchId: string }) {
       if (!res.ok) {
         setError(
           res.status === 503
-            ? "Vision analysis needs an ANTHROPIC_API_KEY."
+            ? "Frame analysis is unavailable."
             : json.error || "Analysis failed — try a clearer broadcast frame.",
         );
       } else {
@@ -60,8 +60,8 @@ export function CVUpload({ matchId }: { matchId: string }) {
     <section className="art-panel p-5">
       <h2 className="mb-2 border-l-2 border-accent pl-3 font-display text-2xl text-text">Freeze the frame</h2>
       <p className="mb-4 max-w-prose text-sm text-muted">
-        Drop a broadcast screenshot and Claude reads the shape off the pitch —
-        formation, press triggers, line height, width.
+        Drop a broadcast screenshot and get a free tactical frame checklist —
+        formation context, press triggers, line height, width.
       </p>
 
       <label

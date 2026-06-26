@@ -1,18 +1,17 @@
 import { NextResponse } from "next/server";
 import { getMatch } from "@/lib/data";
-import { matchContext } from "@/lib/claude";
-import { analyzeFrame, hasAnthropicKey } from "@/lib/vision";
+import { frameChecklist } from "@/lib/free-analysis";
+import type { Match } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
-type MediaType = "image/png" | "image/jpeg" | "image/webp" | "image/gif";
 
 // Optional external FastAPI CV service. When CV_SERVICE_URL is set, the frame
-// is forwarded there; otherwise it's analyzed in-process via Claude vision
-// (the default production path on Vercel).
+// is forwarded there; otherwise free mode returns an auditable tactical
+// checklist grounded in match context without pretending to perform CV.
 const CV_SERVICE_URL = process.env.CV_SERVICE_URL;
 
 /**
@@ -40,17 +39,12 @@ export async function POST(req: Request) {
       { status: 415 },
     );
   }
-  if (!CV_SERVICE_URL && !hasAnthropicKey()) {
-    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 503 });
-  }
-
   // Optionally enrich with match context so the read is grounded.
-  let context: string | undefined;
+  let match: Match | undefined;
   const matchId = form.get("matchId");
   if (typeof matchId === "string" && matchId) {
     try {
-      const { data } = await getMatch(matchId);
-      context = matchContext(data);
+      match = (await getMatch(matchId)).data;
     } catch {
       // Context is best-effort; proceed without it.
     }
@@ -68,7 +62,13 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
           ...(process.env.CV_SHARED_SECRET ? { "X-CV-Token": process.env.CV_SHARED_SECRET } : {}),
         },
-        body: JSON.stringify({ image_base64: imageBase64, media_type: image.type, match_context: context }),
+        body: JSON.stringify({
+          image_base64: imageBase64,
+          media_type: image.type,
+          match_context: match
+            ? `${match.homeTeam.name} ${match.lineups?.home.formation || "unknown"} vs ${match.awayTeam.name} ${match.lineups?.away.formation || "unknown"}`
+            : undefined,
+        }),
         signal: AbortSignal.timeout(55_000),
       });
       const payload = await cvRes.json().catch(() => ({ error: "CV service returned non-JSON" }));
@@ -85,14 +85,5 @@ export async function POST(req: Request) {
     }
   }
 
-  // In-process path: call Claude vision directly.
-  try {
-    const result = await analyzeFrame(imageBase64, image.type as MediaType, context);
-    return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
-  } catch (err) {
-    console.error("vision analyze failed", err);
-    const message = (err as Error).message;
-    const status = message.includes("declined") ? 422 : 502;
-    return NextResponse.json({ error: message }, { status });
-  }
+  return NextResponse.json(frameChecklist(match), { headers: { "Cache-Control": "no-store" } });
 }
