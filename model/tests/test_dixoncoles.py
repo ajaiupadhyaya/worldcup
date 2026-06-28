@@ -72,3 +72,17 @@ def test_fit_strengths_excludes_post_cutoff_matches():
 
     assert la_clean > lb_clean, "baseline: A should dominate B on pre-cutoff data"
     assert la_leaked > lb_leaked, "leak guard failed: post-cutoff matches flipped the ordering"
+
+
+def test_friendly_weight_down_weights_friendlies():
+    # Competitive matches: A beats B. Friendlies: B thrashes A. Down-weighting
+    # the friendlies must make A look *relatively* stronger than at full weight.
+    comp = [Match(date(2024, 1, 1), "A", "B", 2, 0, True,
+                  "FIFA World Cup qualification") for _ in range(12)]
+    friend = [Match(date(2024, 1, 1), "B", "A", 5, 0, True, "Friendly")
+              for _ in range(12)]
+    s_down = fit_strengths(comp + friend, as_of=date(2024, 6, 1), friendly_weight=0.1)
+    s_full = fit_strengths(comp + friend, as_of=date(2024, 6, 1), friendly_weight=1.0)
+    a_down, b_down = expected_goals(s_down, "A", "B", neutral=True)
+    a_full, b_full = expected_goals(s_full, "A", "B", neutral=True)
+    assert (a_down - b_down) > (a_full - b_full)

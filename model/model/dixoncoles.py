@@ -30,6 +30,7 @@ def fit_strengths(
     half_life_days: float = 365.0,
     as_of: date,
     elo_prior_weight: float = 0.1,
+    friendly_weight: float = 0.4,
 ) -> Strengths:
     # Enforce as_of semantics: exclude any match dated after the cutoff so that
     # callers (e.g. walk-forward backtests) cannot leak future results into the
@@ -41,6 +42,13 @@ def fit_strengths(
     idx = {t: i for i, t in enumerate(teams)}
     n = len(teams)
     w = _weights(matches, as_of, half_life_days)
+    # Importance weighting: ~37% of the history is friendlies, which are weaker
+    # signal. Multiply each match's likelihood weight by `friendly_weight`
+    # (tuned by the OOS backtest, Step 3) for tournament == 'Friendly', else 1.0.
+    importance = np.array(
+        [friendly_weight if m.tournament == "Friendly" else 1.0 for m in matches]
+    )
+    w = w * importance
     hi = np.array([idx[m.home] for m in matches])
     ai = np.array([idx[m.away] for m in matches])
     hg = np.array([m.home_goals for m in matches], dtype=float)
