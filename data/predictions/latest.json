@@ -2659,7 +2659,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-06-28T00:00:00Z",
+  "generatedAt": "2026-06-28T13:06:12Z",
   "groups": [
     {
       "group": "A",
@@ -3154,7 +3154,7 @@
       ]
     }
   ],
-  "inputsHash": "608b798a25fc",
+  "inputsHash": "c0e0b35647b7",
   "modelVersion": "0.1.0",
   "seed": 42,
   "simCount": 10000,
@@ -3280,7 +3280,7 @@
       "winCup": 0.0544
     },
     {
-      "id": "france",
+      "id": "morocco",
       "mcStdErr": {
         "qualify": 0.0,
         "reachFinal": 0.0032507843668874744,
@@ -3290,7 +3290,7 @@
         "reachSF": 0.004117900435901772,
         "winCup": 0.0021439941697681923
       },
-      "name": "France",
+      "name": "Morocco",
       "qualify": 1.0,
       "reachFinal": 0.1201,
       "reachQF": 0.457,
@@ -3300,7 +3300,7 @@
       "winCup": 0.0483
     },
     {
-      "id": "england",
+      "id": "japan",
       "mcStdErr": {
         "qualify": 0.0,
         "reachFinal": 0.002788816953476868,
@@ -3310,7 +3310,7 @@
         "reachSF": 0.0041350065296199955,
         "winCup": 0.002064239327209905
       },
-      "name": "England",
+      "name": "Japan",
       "qualify": 1.0,
       "reachFinal": 0.085,
       "reachQF": 0.4766,
@@ -3718,6 +3718,26 @@
       "reachR32": 1.0,
       "reachSF": 0.0052,
       "winCup": 0.0002
+    },
+    {
+      "id": "ghana",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 9.999499987499375e-05,
+        "reachQF": 0.0018703558484951465,
+        "reachR16": 0.003424697212893426,
+        "reachR32": 0.0,
+        "reachSF": 0.0005092386473943233,
+        "winCup": 9.999499987499375e-05
+      },
+      "name": "Ghana",
+      "qualify": 0.0,
+      "reachFinal": 0.0001,
+      "reachQF": 0.0363,
+      "reachR16": 0.1357,
+      "reachR32": 1.0,
+      "reachSF": 0.0026,
+      "winCup": 0.0001
     },
     {
       "id": "south-africa",
