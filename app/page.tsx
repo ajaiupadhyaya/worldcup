@@ -2,7 +2,7 @@
 
 import { useMatches, useStandings } from "@/lib/hooks";
 import { byInterest, groupByDay } from "@/lib/format";
-import { qualificationByTeam, qualificationGeneratedAt } from "@/lib/qualification";
+import { qualificationByTeam, qualificationGeneratedAt, reachR32ByTeam } from "@/lib/qualification";
 import { hydrateStandingTeams } from "@/lib/tournament";
 import { predictions } from "@/lib/predictions";
 import { FeaturedMatch } from "@/components/FeaturedMatch";
@@ -29,7 +29,7 @@ export default function Home() {
   const standings = standingsEnv ? hydrateStandingTeams(standingsEnv.data, matches) : [];
 
   const topTeams = [...predictions.teams]
-    .sort((a, b) => b.qualify - a.qualify)
+    .sort((a, b) => b.reachR32 - a.reachR32)
     .slice(0, 6)
     .map((t, i) => ({ name: t.name, rank: i + 1 }));
 
@@ -71,7 +71,7 @@ export default function Home() {
       )}
 
       <Reveal>
-        <QualificationBars teams={topTeams} projected={qualificationByTeam} />
+        <QualificationBars teams={topTeams} projected={reachR32ByTeam} />
       </Reveal>
 
       {standings.length > 0 && (
