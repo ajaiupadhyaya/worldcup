@@ -1,7 +1,9 @@
 name: Web CI
 on:
   push:
+    paths-ignore: ["data/**", "model/**"]
   pull_request:
+    paths-ignore: ["data/**", "model/**"]
 permissions:
   contents: read
 concurrency:

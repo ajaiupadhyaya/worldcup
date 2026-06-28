@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { predictions, formatProb } from "@/lib/predictions";
 import { bracketOgData } from "@/lib/og";
 
@@ -9,8 +9,10 @@ export const dynamic = "force-dynamic";
 // 1200x630 share card for THE DRAW: the projected champion + the top-4
 // title-odds ladder, in the editorial palette. The champion is the single
 // source of truth winCup distribution (== the M104 winner). satori cannot read
-// the CSS @import font, so static Bodoni Moda .ttf weights are shipped in
-// /public and loaded here via readFile(join(process.cwd(), ...)).
+// the CSS @import font, so static Bodoni Moda .ttf weights are co-located next
+// to this route. They are loaded via readFile(fileURLToPath(new URL(...,
+// import.meta.url))) — the ESM module-relative pattern that @vercel/nft traces
+// statically and includes in the serverless bundle reliably.
 
 const W = 1200;
 const H = 630;
@@ -21,8 +23,8 @@ const VERMILION = "#ed3419";
 
 export async function GET() {
   const [bodoni, bodoniBold] = await Promise.all([
-    readFile(join(process.cwd(), "public/fonts/BodoniModa-Regular.ttf")),
-    readFile(join(process.cwd(), "public/fonts/BodoniModa-Bold.ttf")),
+    readFile(fileURLToPath(new URL("./BodoniModa-Regular.ttf", import.meta.url))),
+    readFile(fileURLToPath(new URL("./BodoniModa-Bold.ttf", import.meta.url))),
   ]);
 
   const { champion, ladder } = bracketOgData(predictions.teams);
