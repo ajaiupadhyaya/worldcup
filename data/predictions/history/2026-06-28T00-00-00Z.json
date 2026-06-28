@@ -1,954 +1,1499 @@
 {
   "bracket": [
     {
-      "slot": "M89",
-      "teamProbs": [
-        {
-          "id": "france",
-          "prob": 0.3945
-        },
-        {
-          "id": "germany",
-          "prob": 0.3467
-        },
-        {
-          "id": "ecuador",
-          "prob": 0.1562
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0567
-        },
-        {
-          "id": "iran",
-          "prob": 0.0338
-        },
-        {
-          "id": "sweden",
-          "prob": 0.0081
-        },
-        {
-          "id": "algeria",
-          "prob": 0.004
-        }
-      ]
-    },
-    {
-      "slot": "M90",
-      "teamProbs": [
-        {
-          "id": "morocco",
-          "prob": 0.4096
-        },
-        {
-          "id": "netherlands",
-          "prob": 0.3128
-        },
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "south-africa",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "canada",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M73",
+      "winner": [
         {
           "id": "canada",
-          "prob": 0.2549
+          "prob": 0.7955
         },
         {
           "id": "south-africa",
-          "prob": 0.0227
+          "prob": 0.2045
         }
       ]
     },
     {
-      "slot": "M91",
-      "teamProbs": [
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "germany",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "paraguay",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M74",
+      "winner": [
+        {
+          "id": "germany",
+          "prob": 0.6228
+        },
+        {
+          "id": "paraguay",
+          "prob": 0.3772
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "netherlands",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "morocco",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M75",
+      "winner": [
+        {
+          "id": "morocco",
+          "prob": 0.6584
+        },
+        {
+          "id": "netherlands",
+          "prob": 0.3416
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "brazil",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "japan",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M76",
+      "winner": [
         {
           "id": "japan",
-          "prob": 0.3567
+          "prob": 0.5352
         },
         {
           "id": "brazil",
-          "prob": 0.3437
-        },
-        {
-          "id": "norway",
-          "prob": 0.2308
-        },
-        {
-          "id": "ivory-coast",
-          "prob": 0.0688
+          "prob": 0.4648
         }
       ]
     },
     {
-      "slot": "M92",
-      "teamProbs": [
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "france",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "sweden",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M77",
+      "winner": [
         {
-          "id": "england",
-          "prob": 0.5279
+          "id": "france",
+          "prob": 0.8532
         },
+        {
+          "id": "sweden",
+          "prob": 0.1468
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "ivory-coast",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "norway",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M78",
+      "winner": [
+        {
+          "id": "norway",
+          "prob": 0.6513
+        },
+        {
+          "id": "ivory-coast",
+          "prob": 0.3487
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "mexico",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "ecuador",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M79",
+      "winner": [
         {
           "id": "mexico",
-          "prob": 0.3592
+          "prob": 0.5345
         },
         {
-          "id": "south-korea",
-          "prob": 0.0692
+          "id": "ecuador",
+          "prob": 0.4655
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "england",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "congo-dr",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M80",
+      "winner": [
+        {
+          "id": "england",
+          "prob": 0.9465
         },
         {
-          "id": "ghana",
-          "prob": 0.0362
+          "id": "congo-dr",
+          "prob": 0.0535
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "united-states",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "bosnia-herzegovina",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M81",
+      "winner": [
+        {
+          "id": "united-states",
+          "prob": 0.8729
         },
         {
           "id": "bosnia-herzegovina",
+          "prob": 0.1271
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "belgium",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "senegal",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M82",
+      "winner": [
+        {
+          "id": "senegal",
+          "prob": 0.5128
+        },
+        {
+          "id": "belgium",
+          "prob": 0.4872
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "portugal",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "croatia",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M83",
+      "winner": [
+        {
+          "id": "portugal",
+          "prob": 0.684
+        },
+        {
+          "id": "croatia",
+          "prob": 0.316
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "spain",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "austria",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M84",
+      "winner": [
+        {
+          "id": "spain",
+          "prob": 0.7819
+        },
+        {
+          "id": "austria",
+          "prob": 0.2181
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "switzerland",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "algeria",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M85",
+      "winner": [
+        {
+          "id": "switzerland",
+          "prob": 0.5824
+        },
+        {
+          "id": "algeria",
+          "prob": 0.4176
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "argentina",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "cape-verde",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M86",
+      "winner": [
+        {
+          "id": "argentina",
+          "prob": 0.9596
+        },
+        {
+          "id": "cape-verde",
+          "prob": 0.0404
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "colombia",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "ghana",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M87",
+      "winner": [
+        {
+          "id": "colombia",
+          "prob": 0.8774
+        },
+        {
+          "id": "ghana",
+          "prob": 0.1226
+        }
+      ]
+    },
+    {
+      "round": "R32",
+      "sides": [
+        [
+          {
+            "id": "australia",
+            "prob": 1.0
+          }
+        ],
+        [
+          {
+            "id": "egypt",
+            "prob": 1.0
+          }
+        ]
+      ],
+      "slot": "M88",
+      "winner": [
+        {
+          "id": "australia",
+          "prob": 0.7793
+        },
+        {
+          "id": "egypt",
+          "prob": 0.2207
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "germany",
+            "prob": 0.6228
+          },
+          {
+            "id": "paraguay",
+            "prob": 0.3772
+          }
+        ],
+        [
+          {
+            "id": "france",
+            "prob": 0.8532
+          },
+          {
+            "id": "sweden",
+            "prob": 0.1468
+          }
+        ]
+      ],
+      "slot": "M89",
+      "winner": [
+        {
+          "id": "france",
+          "prob": 0.457
+        },
+        {
+          "id": "germany",
+          "prob": 0.3495
+        },
+        {
+          "id": "paraguay",
+          "prob": 0.1661
+        },
+        {
+          "id": "sweden",
+          "prob": 0.0274
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "canada",
+            "prob": 0.7955
+          },
+          {
+            "id": "south-africa",
+            "prob": 0.2045
+          }
+        ],
+        [
+          {
+            "id": "morocco",
+            "prob": 0.6584
+          },
+          {
+            "id": "netherlands",
+            "prob": 0.3416
+          }
+        ]
+      ],
+      "slot": "M90",
+      "winner": [
+        {
+          "id": "morocco",
+          "prob": 0.4821
+        },
+        {
+          "id": "canada",
+          "prob": 0.2852
+        },
+        {
+          "id": "netherlands",
+          "prob": 0.2069
+        },
+        {
+          "id": "south-africa",
+          "prob": 0.0258
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "japan",
+            "prob": 0.5352
+          },
+          {
+            "id": "brazil",
+            "prob": 0.4648
+          }
+        ],
+        [
+          {
+            "id": "norway",
+            "prob": 0.6513
+          },
+          {
+            "id": "ivory-coast",
+            "prob": 0.3487
+          }
+        ]
+      ],
+      "slot": "M91",
+      "winner": [
+        {
+          "id": "japan",
+          "prob": 0.398
+        },
+        {
+          "id": "brazil",
+          "prob": 0.3357
+        },
+        {
+          "id": "norway",
+          "prob": 0.192
+        },
+        {
+          "id": "ivory-coast",
+          "prob": 0.0743
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "mexico",
+            "prob": 0.5345
+          },
+          {
+            "id": "ecuador",
+            "prob": 0.4655
+          }
+        ],
+        [
+          {
+            "id": "england",
+            "prob": 0.9465
+          },
+          {
+            "id": "congo-dr",
+            "prob": 0.0535
+          }
+        ]
+      ],
+      "slot": "M92",
+      "winner": [
+        {
+          "id": "england",
+          "prob": 0.4766
+        },
+        {
+          "id": "mexico",
+          "prob": 0.2914
+        },
+        {
+          "id": "ecuador",
+          "prob": 0.2283
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "portugal",
+            "prob": 0.684
+          },
+          {
+            "id": "croatia",
+            "prob": 0.316
+          }
+        ],
+        [
+          {
+            "id": "spain",
+            "prob": 0.7819
+          },
+          {
+            "id": "austria",
+            "prob": 0.2181
+          }
+        ]
+      ],
+      "slot": "M93",
+      "winner": [
+        {
+          "id": "spain",
+          "prob": 0.5441
+        },
+        {
+          "id": "portugal",
+          "prob": 0.2843
+        },
+        {
+          "id": "austria",
+          "prob": 0.0893
+        },
+        {
+          "id": "croatia",
+          "prob": 0.0823
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "united-states",
+            "prob": 0.8729
+          },
+          {
+            "id": "bosnia-herzegovina",
+            "prob": 0.1271
+          }
+        ],
+        [
+          {
+            "id": "senegal",
+            "prob": 0.5128
+          },
+          {
+            "id": "belgium",
+            "prob": 0.4872
+          }
+        ]
+      ],
+      "slot": "M94",
+      "winner": [
+        {
+          "id": "united-states",
+          "prob": 0.4836
+        },
+        {
+          "id": "senegal",
+          "prob": 0.2564
+        },
+        {
+          "id": "belgium",
+          "prob": 0.2406
+        },
+        {
+          "id": "bosnia-herzegovina",
+          "prob": 0.0194
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "argentina",
+            "prob": 0.9596
+          },
+          {
+            "id": "cape-verde",
+            "prob": 0.0404
+          }
+        ],
+        [
+          {
+            "id": "australia",
+            "prob": 0.7793
+          },
+          {
+            "id": "egypt",
+            "prob": 0.2207
+          }
+        ]
+      ],
+      "slot": "M95",
+      "winner": [
+        {
+          "id": "argentina",
+          "prob": 0.6986
+        },
+        {
+          "id": "australia",
+          "prob": 0.2664
+        },
+        {
+          "id": "egypt",
+          "prob": 0.0283
+        },
+        {
+          "id": "cape-verde",
+          "prob": 0.0067
+        }
+      ]
+    },
+    {
+      "round": "R16",
+      "sides": [
+        [
+          {
+            "id": "switzerland",
+            "prob": 0.5824
+          },
+          {
+            "id": "algeria",
+            "prob": 0.4176
+          }
+        ],
+        [
+          {
+            "id": "colombia",
+            "prob": 0.8774
+          },
+          {
+            "id": "ghana",
+            "prob": 0.1226
+          }
+        ]
+      ],
+      "slot": "M96",
+      "winner": [
+        {
+          "id": "colombia",
+          "prob": 0.6445
+        },
+        {
+          "id": "switzerland",
+          "prob": 0.2027
+        },
+        {
+          "id": "algeria",
+          "prob": 0.1188
+        },
+        {
+          "id": "ghana",
+          "prob": 0.034
+        }
+      ]
+    },
+    {
+      "round": "QF",
+      "sides": [
+        [
+          {
+            "id": "france",
+            "prob": 0.457
+          },
+          {
+            "id": "germany",
+            "prob": 0.3495
+          },
+          {
+            "id": "paraguay",
+            "prob": 0.1661
+          },
+          {
+            "id": "sweden",
+            "prob": 0.0274
+          }
+        ],
+        [
+          {
+            "id": "morocco",
+            "prob": 0.4821
+          },
+          {
+            "id": "canada",
+            "prob": 0.2852
+          },
+          {
+            "id": "netherlands",
+            "prob": 0.2069
+          },
+          {
+            "id": "south-africa",
+            "prob": 0.0258
+          }
+        ]
+      ],
+      "slot": "M97",
+      "winner": [
+        {
+          "id": "morocco",
+          "prob": 0.3197
+        },
+        {
+          "id": "france",
+          "prob": 0.2164
+        },
+        {
+          "id": "germany",
+          "prob": 0.1622
+        },
+        {
+          "id": "canada",
+          "prob": 0.1254
+        },
+        {
+          "id": "netherlands",
+          "prob": 0.1029
+        },
+        {
+          "id": "paraguay",
+          "prob": 0.0633
+        },
+        {
+          "id": "sweden",
+          "prob": 0.0052
+        }
+      ]
+    },
+    {
+      "round": "QF",
+      "sides": [
+        [
+          {
+            "id": "spain",
+            "prob": 0.5441
+          },
+          {
+            "id": "portugal",
+            "prob": 0.2843
+          },
+          {
+            "id": "austria",
+            "prob": 0.0893
+          },
+          {
+            "id": "croatia",
+            "prob": 0.0823
+          }
+        ],
+        [
+          {
+            "id": "united-states",
+            "prob": 0.4836
+          },
+          {
+            "id": "senegal",
+            "prob": 0.2564
+          },
+          {
+            "id": "belgium",
+            "prob": 0.2406
+          },
+          {
+            "id": "bosnia-herzegovina",
+            "prob": 0.0194
+          }
+        ]
+      ],
+      "slot": "M98",
+      "winner": [
+        {
+          "id": "spain",
+          "prob": 0.3944
+        },
+        {
+          "id": "united-states",
+          "prob": 0.1901
+        },
+        {
+          "id": "portugal",
+          "prob": 0.1667
+        },
+        {
+          "id": "senegal",
+          "prob": 0.0875
+        },
+        {
+          "id": "belgium",
+          "prob": 0.0859
+        },
+        {
+          "id": "austria",
+          "prob": 0.0393
+        },
+        {
+          "id": "croatia",
+          "prob": 0.0341
+        }
+      ]
+    },
+    {
+      "round": "QF",
+      "sides": [
+        [
+          {
+            "id": "japan",
+            "prob": 0.398
+          },
+          {
+            "id": "brazil",
+            "prob": 0.3357
+          },
+          {
+            "id": "norway",
+            "prob": 0.192
+          },
+          {
+            "id": "ivory-coast",
+            "prob": 0.0743
+          }
+        ],
+        [
+          {
+            "id": "england",
+            "prob": 0.4766
+          },
+          {
+            "id": "mexico",
+            "prob": 0.2914
+          },
+          {
+            "id": "ecuador",
+            "prob": 0.2283
+          }
+        ]
+      ],
+      "slot": "M99",
+      "winner": [
+        {
+          "id": "japan",
+          "prob": 0.2479
+        },
+        {
+          "id": "england",
+          "prob": 0.2189
+        },
+        {
+          "id": "brazil",
+          "prob": 0.2005
+        },
+        {
+          "id": "mexico",
+          "prob": 0.1331
+        },
+        {
+          "id": "ecuador",
+          "prob": 0.0975
+        },
+        {
+          "id": "norway",
+          "prob": 0.08
+        },
+        {
+          "id": "ivory-coast",
+          "prob": 0.0217
+        }
+      ]
+    },
+    {
+      "round": "QF",
+      "sides": [
+        [
+          {
+            "id": "argentina",
+            "prob": 0.6986
+          },
+          {
+            "id": "australia",
+            "prob": 0.2664
+          },
+          {
+            "id": "egypt",
+            "prob": 0.0283
+          },
+          {
+            "id": "cape-verde",
+            "prob": 0.0067
+          }
+        ],
+        [
+          {
+            "id": "colombia",
+            "prob": 0.6445
+          },
+          {
+            "id": "switzerland",
+            "prob": 0.2027
+          },
+          {
+            "id": "algeria",
+            "prob": 0.1188
+          },
+          {
+            "id": "ghana",
+            "prob": 0.034
+          }
+        ]
+      ],
+      "slot": "M100",
+      "winner": [
+        {
+          "id": "argentina",
+          "prob": 0.4962
+        },
+        {
+          "id": "colombia",
+          "prob": 0.2737
+        },
+        {
+          "id": "australia",
+          "prob": 0.1413
+        },
+        {
+          "id": "switzerland",
+          "prob": 0.0519
+        },
+        {
+          "id": "algeria",
+          "prob": 0.0241
+        },
+        {
+          "id": "egypt",
+          "prob": 0.0072
+        }
+      ]
+    },
+    {
+      "round": "SF",
+      "sides": [
+        [
+          {
+            "id": "morocco",
+            "prob": 0.3197
+          },
+          {
+            "id": "france",
+            "prob": 0.2164
+          },
+          {
+            "id": "germany",
+            "prob": 0.1622
+          },
+          {
+            "id": "canada",
+            "prob": 0.1254
+          },
+          {
+            "id": "netherlands",
+            "prob": 0.1029
+          },
+          {
+            "id": "paraguay",
+            "prob": 0.0633
+          },
+          {
+            "id": "sweden",
+            "prob": 0.0052
+          }
+        ],
+        [
+          {
+            "id": "spain",
+            "prob": 0.3944
+          },
+          {
+            "id": "united-states",
+            "prob": 0.1901
+          },
+          {
+            "id": "portugal",
+            "prob": 0.1667
+          },
+          {
+            "id": "senegal",
+            "prob": 0.0875
+          },
+          {
+            "id": "belgium",
+            "prob": 0.0859
+          },
+          {
+            "id": "austria",
+            "prob": 0.0393
+          },
+          {
+            "id": "croatia",
+            "prob": 0.0341
+          }
+        ]
+      ],
+      "slot": "M101",
+      "winner": [
+        {
+          "id": "spain",
+          "prob": 0.2199
+        },
+        {
+          "id": "morocco",
+          "prob": 0.2086
+        },
+        {
+          "id": "france",
+          "prob": 0.1201
+        },
+        {
+          "id": "germany",
+          "prob": 0.0909
+        },
+        {
+          "id": "united-states",
+          "prob": 0.0746
+        },
+        {
+          "id": "portugal",
+          "prob": 0.0702
+        },
+        {
+          "id": "canada",
+          "prob": 0.0571
+        },
+        {
+          "id": "netherlands",
+          "prob": 0.051
+        },
+        {
+          "id": "senegal",
+          "prob": 0.0287
+        },
+        {
+          "id": "belgium",
+          "prob": 0.0277
+        },
+        {
+          "id": "paraguay",
+          "prob": 0.0274
+        },
+        {
+          "id": "austria",
+          "prob": 0.0112
+        }
+      ]
+    },
+    {
+      "round": "SF",
+      "sides": [
+        [
+          {
+            "id": "japan",
+            "prob": 0.2479
+          },
+          {
+            "id": "england",
+            "prob": 0.2189
+          },
+          {
+            "id": "brazil",
+            "prob": 0.2005
+          },
+          {
+            "id": "mexico",
+            "prob": 0.1331
+          },
+          {
+            "id": "ecuador",
+            "prob": 0.0975
+          },
+          {
+            "id": "norway",
+            "prob": 0.08
+          },
+          {
+            "id": "ivory-coast",
+            "prob": 0.0217
+          }
+        ],
+        [
+          {
+            "id": "argentina",
+            "prob": 0.4962
+          },
+          {
+            "id": "colombia",
+            "prob": 0.2737
+          },
+          {
+            "id": "australia",
+            "prob": 0.1413
+          },
+          {
+            "id": "switzerland",
+            "prob": 0.0519
+          },
+          {
+            "id": "algeria",
+            "prob": 0.0241
+          },
+          {
+            "id": "egypt",
+            "prob": 0.0072
+          }
+        ]
+      ],
+      "slot": "M102",
+      "winner": [
+        {
+          "id": "argentina",
+          "prob": 0.3333
+        },
+        {
+          "id": "colombia",
+          "prob": 0.1509
+        },
+        {
+          "id": "japan",
+          "prob": 0.1242
+        },
+        {
+          "id": "brazil",
+          "prob": 0.0911
+        },
+        {
+          "id": "england",
+          "prob": 0.085
+        },
+        {
+          "id": "australia",
+          "prob": 0.0692
+        },
+        {
+          "id": "mexico",
+          "prob": 0.0563
+        },
+        {
+          "id": "ecuador",
+          "prob": 0.0337
+        },
+        {
+          "id": "norway",
+          "prob": 0.0233
+        },
+        {
+          "id": "switzerland",
+          "prob": 0.0186
+        },
+        {
+          "id": "algeria",
           "prob": 0.0075
         }
       ]
     },
     {
-      "slot": "M93",
-      "teamProbs": [
-        {
-          "id": "spain",
-          "prob": 0.4339
-        },
-        {
-          "id": "portugal",
-          "prob": 0.2524
-        },
-        {
-          "id": "colombia",
-          "prob": 0.1365
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0759
-        },
-        {
-          "id": "croatia",
-          "prob": 0.0578
-        },
-        {
-          "id": "austria",
-          "prob": 0.0428
-        },
+      "round": "F",
+      "sides": [
+        [
+          {
+            "id": "spain",
+            "prob": 0.2199
+          },
+          {
+            "id": "morocco",
+            "prob": 0.2086
+          },
+          {
+            "id": "france",
+            "prob": 0.1201
+          },
+          {
+            "id": "germany",
+            "prob": 0.0909
+          },
+          {
+            "id": "united-states",
+            "prob": 0.0746
+          },
+          {
+            "id": "portugal",
+            "prob": 0.0702
+          },
+          {
+            "id": "canada",
+            "prob": 0.0571
+          },
+          {
+            "id": "netherlands",
+            "prob": 0.051
+          },
+          {
+            "id": "senegal",
+            "prob": 0.0287
+          },
+          {
+            "id": "belgium",
+            "prob": 0.0277
+          },
+          {
+            "id": "paraguay",
+            "prob": 0.0274
+          },
+          {
+            "id": "austria",
+            "prob": 0.0112
+          }
+        ],
+        [
+          {
+            "id": "argentina",
+            "prob": 0.3333
+          },
+          {
+            "id": "colombia",
+            "prob": 0.1509
+          },
+          {
+            "id": "japan",
+            "prob": 0.1242
+          },
+          {
+            "id": "brazil",
+            "prob": 0.0911
+          },
+          {
+            "id": "england",
+            "prob": 0.085
+          },
+          {
+            "id": "australia",
+            "prob": 0.0692
+          },
+          {
+            "id": "mexico",
+            "prob": 0.0563
+          },
+          {
+            "id": "ecuador",
+            "prob": 0.0337
+          },
+          {
+            "id": "norway",
+            "prob": 0.0233
+          },
+          {
+            "id": "switzerland",
+            "prob": 0.0186
+          },
+          {
+            "id": "algeria",
+            "prob": 0.0075
+          }
+        ]
+      ],
+      "slot": "M104",
+      "winner": [
         {
           "id": "argentina",
-          "prob": 0.0007
-        }
-      ]
-    },
-    {
-      "slot": "M94",
-      "teamProbs": [
-        {
-          "id": "belgium",
-          "prob": 0.3402
+          "prob": 0.2396
         },
-        {
-          "id": "ecuador",
-          "prob": 0.2492
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.1815
-        },
-        {
-          "id": "united-states",
-          "prob": 0.1413
-        },
-        {
-          "id": "iran",
-          "prob": 0.0631
-        },
-        {
-          "id": "sweden",
-          "prob": 0.0206
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0041
-        }
-      ]
-    },
-    {
-      "slot": "M95",
-      "teamProbs": [
-        {
-          "id": "argentina",
-          "prob": 0.831
-        },
-        {
-          "id": "australia",
-          "prob": 0.1328
-        },
-        {
-          "id": "egypt",
-          "prob": 0.0295
-        },
-        {
-          "id": "cape-verde",
-          "prob": 0.0062
-        },
-        {
-          "id": "austria",
-          "prob": 0.0003
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0002
-        }
-      ]
-    },
-    {
-      "slot": "M96",
-      "teamProbs": [
-        {
-          "id": "colombia",
-          "prob": 0.3879
-        },
-        {
-          "id": "switzerland",
-          "prob": 0.2256
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.1253
-        },
-        {
-          "id": "portugal",
-          "prob": 0.1185
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0751
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0388
-        },
-        {
-          "id": "austria",
-          "prob": 0.0208
-        },
-        {
-          "id": "bosnia-herzegovina",
-          "prob": 0.0073
-        },
-        {
-          "id": "uzbekistan",
-          "prob": 0.0006
-        },
-        {
-          "id": "congo-dr",
-          "prob": 0.0001
-        }
-      ]
-    },
-    {
-      "slot": "M97",
-      "teamProbs": [
         {
           "id": "morocco",
-          "prob": 0.2262
+          "prob": 0.1075
         },
-        {
-          "id": "france",
-          "prob": 0.2193
-        },
-        {
-          "id": "germany",
-          "prob": 0.1792
-        },
-        {
-          "id": "netherlands",
-          "prob": 0.1604
-        },
-        {
-          "id": "ecuador",
-          "prob": 0.0919
-        },
-        {
-          "id": "canada",
-          "prob": 0.0853
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0219
-        },
-        {
-          "id": "iran",
-          "prob": 0.0098
-        },
-        {
-          "id": "south-africa",
-          "prob": 0.0024
-        },
-        {
-          "id": "sweden",
-          "prob": 0.0019
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0017
-        }
-      ]
-    },
-    {
-      "slot": "M98",
-      "teamProbs": [
         {
           "id": "spain",
-          "prob": 0.2794
-        },
-        {
-          "id": "portugal",
-          "prob": 0.1435
-        },
-        {
-          "id": "ecuador",
-          "prob": 0.1353
-        },
-        {
-          "id": "belgium",
-          "prob": 0.1322
+          "prob": 0.0995
         },
         {
           "id": "colombia",
-          "prob": 0.0913
+          "prob": 0.0882
         },
-        {
-          "id": "paraguay",
-          "prob": 0.0817
-        },
-        {
-          "id": "united-states",
-          "prob": 0.0409
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0392
-        },
-        {
-          "id": "croatia",
-          "prob": 0.0187
-        },
-        {
-          "id": "iran",
-          "prob": 0.0176
-        },
-        {
-          "id": "austria",
-          "prob": 0.0165
-        },
-        {
-          "id": "sweden",
-          "prob": 0.0024
-        },
-        {
-          "id": "argentina",
-          "prob": 0.0007
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0006
-        }
-      ]
-    },
-    {
-      "slot": "M99",
-      "teamProbs": [
         {
           "id": "japan",
-          "prob": 0.2333
-        },
-        {
-          "id": "england",
-          "prob": 0.2306
+          "prob": 0.0783
         },
         {
           "id": "brazil",
-          "prob": 0.229
-        },
-        {
-          "id": "mexico",
-          "prob": 0.1374
-        },
-        {
-          "id": "norway",
-          "prob": 0.1207
-        },
-        {
-          "id": "ivory-coast",
-          "prob": 0.0261
-        },
-        {
-          "id": "south-korea",
-          "prob": 0.0186
-        },
-        {
-          "id": "ghana",
-          "prob": 0.0039
-        },
-        {
-          "id": "bosnia-herzegovina",
-          "prob": 0.0004
-        }
-      ]
-    },
-    {
-      "slot": "M100",
-      "teamProbs": [
-        {
-          "id": "argentina",
-          "prob": 0.6625
-        },
-        {
-          "id": "colombia",
-          "prob": 0.1381
-        },
-        {
-          "id": "australia",
-          "prob": 0.0584
-        },
-        {
-          "id": "switzerland",
-          "prob": 0.0434
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.0324
-        },
-        {
-          "id": "portugal",
-          "prob": 0.0308
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0127
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0092
-        },
-        {
-          "id": "egypt",
-          "prob": 0.0077
-        },
-        {
-          "id": "austria",
-          "prob": 0.0035
-        },
-        {
-          "id": "cape-verde",
-          "prob": 0.001
-        },
-        {
-          "id": "bosnia-herzegovina",
-          "prob": 0.0002
-        },
-        {
-          "id": "uzbekistan",
-          "prob": 0.0001
-        }
-      ]
-    },
-    {
-      "slot": "M101",
-      "teamProbs": [
-        {
-          "id": "spain",
-          "prob": 0.1544
-        },
-        {
-          "id": "morocco",
-          "prob": 0.1307
-        },
-        {
-          "id": "ecuador",
-          "prob": 0.1241
-        },
-        {
-          "id": "france",
-          "prob": 0.1198
-        },
-        {
-          "id": "germany",
-          "prob": 0.0861
-        },
-        {
-          "id": "netherlands",
-          "prob": 0.0845
-        },
-        {
-          "id": "portugal",
-          "prob": 0.0698
-        },
-        {
-          "id": "colombia",
           "prob": 0.0544
         },
         {
-          "id": "belgium",
-          "prob": 0.0514
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.0364
-        },
-        {
-          "id": "canada",
-          "prob": 0.0325
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0157
-        },
-        {
-          "id": "united-states",
-          "prob": 0.0147
-        },
-        {
-          "id": "iran",
-          "prob": 0.0084
-        },
-        {
-          "id": "senegal",
-          "prob": 0.007
-        },
-        {
-          "id": "austria",
-          "prob": 0.0046
-        },
-        {
-          "id": "croatia",
-          "prob": 0.0039
-        },
-        {
-          "id": "south-africa",
-          "prob": 0.0007
-        },
-        {
-          "id": "sweden",
-          "prob": 0.0006
-        },
-        {
-          "id": "argentina",
-          "prob": 0.0003
-        }
-      ]
-    },
-    {
-      "slot": "M102",
-      "teamProbs": [
-        {
-          "id": "argentina",
-          "prob": 0.5013
-        },
-        {
-          "id": "japan",
-          "prob": 0.0984
-        },
-        {
-          "id": "brazil",
-          "prob": 0.0951
-        },
-        {
-          "id": "colombia",
-          "prob": 0.0809
+          "id": "france",
+          "prob": 0.0483
         },
         {
           "id": "england",
-          "prob": 0.0699
-        },
-        {
-          "id": "mexico",
-          "prob": 0.0361
-        },
-        {
-          "id": "norway",
-          "prob": 0.0318
+          "prob": 0.0446
         },
         {
           "id": "australia",
-          "prob": 0.0231
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.0149
-        },
-        {
-          "id": "switzerland",
-          "prob": 0.0148
-        },
-        {
-          "id": "portugal",
-          "prob": 0.0141
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0054
-        },
-        {
-          "id": "ivory-coast",
-          "prob": 0.0045
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0038
-        },
-        {
-          "id": "south-korea",
-          "prob": 0.003
-        },
-        {
-          "id": "egypt",
-          "prob": 0.0013
-        },
-        {
-          "id": "austria",
-          "prob": 0.0008
-        },
-        {
-          "id": "ghana",
-          "prob": 0.0005
-        },
-        {
-          "id": "bosnia-herzegovina",
-          "prob": 0.0002
-        },
-        {
-          "id": "cape-verde",
-          "prob": 0.0001
-        }
-      ]
-    },
-    {
-      "slot": "M104",
-      "teamProbs": [
-        {
-          "id": "argentina",
-          "prob": 0.388
-        },
-        {
-          "id": "colombia",
-          "prob": 0.0685
-        },
-        {
-          "id": "japan",
-          "prob": 0.0604
-        },
-        {
-          "id": "spain",
-          "prob": 0.0601
-        },
-        {
-          "id": "brazil",
-          "prob": 0.0582
-        },
-        {
-          "id": "morocco",
-          "prob": 0.0542
-        },
-        {
-          "id": "ecuador",
-          "prob": 0.05
-        },
-        {
-          "id": "france",
-          "prob": 0.0421
-        },
-        {
-          "id": "england",
-          "prob": 0.0349
+          "prob": 0.0371
         },
         {
           "id": "germany",
-          "prob": 0.03
-        },
-        {
-          "id": "netherlands",
-          "prob": 0.0282
-        },
-        {
-          "id": "portugal",
-          "prob": 0.0277
-        },
-        {
-          "id": "paraguay",
-          "prob": 0.016
+          "prob": 0.0339
         },
         {
           "id": "mexico",
-          "prob": 0.015
+          "prob": 0.0303
         },
         {
-          "id": "norway",
-          "prob": 0.0138
-        },
-        {
-          "id": "belgium",
-          "prob": 0.0114
-        },
-        {
-          "id": "australia",
-          "prob": 0.0112
-        },
-        {
-          "id": "canada",
-          "prob": 0.0065
-        },
-        {
-          "id": "algeria",
-          "prob": 0.0062
-        },
-        {
-          "id": "switzerland",
-          "prob": 0.0055
-        },
-        {
-          "id": "senegal",
-          "prob": 0.0042
-        },
-        {
-          "id": "united-states",
-          "prob": 0.0023
-        },
-        {
-          "id": "iran",
-          "prob": 0.0016
-        },
-        {
-          "id": "austria",
-          "prob": 0.0013
-        },
-        {
-          "id": "ivory-coast",
-          "prob": 0.0013
-        },
-        {
-          "id": "south-korea",
-          "prob": 0.0007
-        },
-        {
-          "id": "croatia",
-          "prob": 0.0005
-        },
-        {
-          "id": "egypt",
-          "prob": 0.0002
+          "id": "portugal",
+          "prob": 0.0226
         }
       ]
     }
   ],
   "fixtures": [
     {
-      "away": "Portugal",
-      "home": "Colombia",
-      "id": "760481",
-      "kickoff": "2026-06-27T23:30Z",
-      "lambdaAway": 1.2899457308097961,
-      "lambdaHome": 1.7411372835877021,
-      "pBlended": {
-        "a": 0.27609507294920754,
-        "d": 0.2518283425671197,
-        "h": 0.47207658448367285
-      },
-      "pMarket": null,
-      "pModel": {
-        "a": 0.27609507294920754,
-        "d": 0.2518283425671197,
-        "h": 0.47207658448367285
-      },
-      "played": false,
-      "round": "group-stage",
-      "topScores": [
-        {
-          "prob": 0.11678656364516432,
-          "score": "1-1"
-        },
-        {
-          "prob": 0.09436824859789862,
-          "score": "2-1"
-        },
-        {
-          "prob": 0.0756451405088579,
-          "score": "1-0"
-        },
-        {
-          "prob": 0.07315675872554467,
-          "score": "2-0"
-        },
-        {
-          "prob": 0.06991402719952454,
-          "score": "1-2"
-        }
-      ]
-    },
-    {
-      "away": "Uzbekistan",
-      "home": "Congo DR",
-      "id": "760482",
-      "kickoff": "2026-06-27T23:30Z",
-      "lambdaAway": 1.8185132847817844,
-      "lambdaHome": 0.5056573253757123,
-      "pBlended": {
-        "a": 0.6864377751321495,
-        "d": 0.22471106240864647,
-        "h": 0.08885116245920388
-      },
-      "pMarket": null,
-      "pModel": {
-        "a": 0.6864377751321495,
-        "d": 0.22471106240864647,
-        "h": 0.08885116245920388
-      },
-      "played": false,
-      "round": "group-stage",
-      "topScores": [
-        {
-          "prob": 0.17100488785869938,
-          "score": "0-1"
-        },
-        {
-          "prob": 0.1618191749647341,
-          "score": "0-2"
-        },
-        {
-          "prob": 0.10482867449357186,
-          "score": "0-0"
-        },
-        {
-          "prob": 0.09809010646859898,
-          "score": "0-3"
-        },
-        {
-          "prob": 0.09695491008266394,
-          "score": "1-1"
-        }
-      ]
-    },
-    {
-      "away": "Austria",
-      "home": "Algeria",
-      "id": "760484",
-      "kickoff": "2026-06-28T02:00Z",
-      "lambdaAway": 1.1986040199097905,
-      "lambdaHome": 1.6834872150047717,
-      "pBlended": {
-        "a": 0.26340729001401586,
-        "d": 0.25810108653354435,
-        "h": 0.47849162345244
-      },
-      "pMarket": null,
-      "pModel": {
-        "a": 0.26340729001401586,
-        "d": 0.25810108653354435,
-        "h": 0.47849162345244
-      },
-      "played": false,
-      "round": "group-stage",
-      "topScores": [
-        {
-          "prob": 0.12178112625709034,
-          "score": "1-1"
-        },
-        {
-          "prob": 0.0951458408458769,
-          "score": "2-1"
-        },
-        {
-          "prob": 0.0855580025615933,
-          "score": "1-0"
-        },
-        {
-          "prob": 0.07938054542236374,
-          "score": "2-0"
-        },
-        {
-          "prob": 0.06774164145656547,
-          "score": "1-2"
-        }
-      ]
-    },
-    {
-      "away": "Argentina",
-      "home": "Jordan",
-      "id": "760483",
-      "kickoff": "2026-06-28T02:00Z",
-      "lambdaAway": 3.1158600063604878,
-      "lambdaHome": 0.4472844812259156,
-      "pBlended": {
-        "a": 0.8840522234484497,
-        "d": 0.09010464346670606,
-        "h": 0.025843133084844462
-      },
-      "pMarket": null,
-      "pModel": {
-        "a": 0.8840522234484497,
-        "d": 0.09010464346670606,
-        "h": 0.025843133084844462
-      },
-      "played": false,
-      "round": "group-stage",
-      "topScores": [
-        {
-          "prob": 0.14298887565959054,
-          "score": "0-3"
-        },
-        {
-          "prob": 0.13767198336995584,
-          "score": "0-2"
-        },
-        {
-          "prob": 0.11138332975554269,
-          "score": "0-4"
-        },
-        {
-          "prob": 0.08530991008797723,
-          "score": "0-1"
-        },
-        {
-          "prob": 0.06941097251211154,
-          "score": "0-5"
-        }
-      ]
-    },
-    {
       "away": "Canada",
       "home": "South Africa",
       "id": "760486",
       "kickoff": "2026-06-28T19:00Z",
-      "lambdaAway": 1.4533037068172692,
-      "lambdaHome": 0.5710888544170292,
+      "lambdaAway": 1.796820066148313,
+      "lambdaHome": 0.7352610174145465,
       "pBlended": {
-        "a": 0.5795553399069046,
-        "d": 0.28361050709641367,
-        "h": 0.13683415299668186
+        "a": 0.622306157975215,
+        "d": 0.2348002499943102,
+        "h": 0.14289359203047453
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.5795553399069046,
-        "d": 0.28361050709641367,
-        "h": 0.13683415299668186
+        "a": 0.622306157975215,
+        "d": 0.2348002499943102,
+        "h": 0.14289359203047453
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.18346132062118087,
+          "prob": 0.13780435392682294,
           "score": "0-1"
         },
         {
-          "prob": 0.14055655704481848,
-          "score": "0-0"
-        },
-        {
-          "prob": 0.1394763022173436,
+          "prob": 0.12832511867204394,
           "score": "0-2"
         },
         {
-          "prob": 0.11809941006581784,
+          "prob": 0.11005304724749503,
           "score": "1-1"
         },
         {
-          "prob": 0.07965336165162612,
+          "prob": 0.09435245731464946,
           "score": "1-2"
+        },
+        {
+          "prob": 0.08452510914224198,
+          "score": "0-0"
         }
       ]
     },
@@ -957,41 +1502,41 @@
       "home": "Brazil",
       "id": "760487",
       "kickoff": "2026-06-29T17:00Z",
-      "lambdaAway": 1.3232299437822783,
-      "lambdaHome": 1.2736851738756836,
+      "lambdaAway": 1.4250579113592277,
+      "lambdaHome": 1.3023047239766186,
       "pBlended": {
-        "a": 0.36989549037128,
-        "d": 0.2834335925870084,
-        "h": 0.3466709170417117
+        "a": 0.39427149949471907,
+        "d": 0.267745566878154,
+        "h": 0.3379829336271269
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.36989549037128,
-        "d": 0.2834335925870084,
-        "h": 0.3466709170417117
+        "a": 0.39427149949471907,
+        "d": 0.267745566878154,
+        "h": 0.3379829336271269
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.13528250365790673,
+          "prob": 0.1271716316274435,
           "score": "1-1"
         },
         {
-          "prob": 0.08886807477314308,
+          "prob": 0.08737266899608064,
           "score": "0-1"
         },
         {
-          "prob": 0.08517683692903556,
+          "prob": 0.08647076698783285,
+          "score": "1-2"
+        },
+        {
+          "prob": 0.07934564721191384,
           "score": "1-0"
         },
         {
-          "prob": 0.08421970634321306,
-          "score": "0-0"
-        },
-        {
-          "prob": 0.083076262896748,
-          "score": "1-2"
+          "prob": 0.07902225406876759,
+          "score": "2-1"
         }
       ]
     },
@@ -1000,41 +1545,41 @@
       "home": "Germany",
       "id": "760489",
       "kickoff": "2026-06-29T20:30Z",
-      "lambdaAway": 1.3834457937630902,
-      "lambdaHome": 1.5696185602110286,
+      "lambdaAway": 1.1322170673004324,
+      "lambdaHome": 1.5539774490204055,
       "pBlended": {
-        "a": 0.3280373762650251,
-        "d": 0.2615751979442469,
-        "h": 0.41038742579072796
+        "a": 0.27142287837889345,
+        "d": 0.26377551019676815,
+        "h": 0.4648016114243384
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3280373762650251,
-        "d": 0.2615751979442469,
-        "h": 0.41038742579072796
+        "a": 0.27142287837889345,
+        "d": 0.26377551019676815,
+        "h": 0.4648016114243384
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.12207513228732995,
+          "prob": 0.12563156085303256,
           "score": "1-1"
         },
         {
-          "prob": 0.08892447888684475,
-          "score": "2-1"
-        },
-        {
-          "prob": 0.07837712893891895,
-          "score": "1-2"
-        },
-        {
-          "prob": 0.0731340899293229,
+          "prob": 0.10014404871670374,
           "score": "1-0"
         },
         {
-          "prob": 0.06427753027096393,
+          "prob": 0.09315153629905096,
+          "score": "2-1"
+        },
+        {
+          "prob": 0.08227356660605196,
           "score": "2-0"
+        },
+        {
+          "prob": 0.07388348050377683,
+          "score": "0-0"
         }
       ]
     },
@@ -1043,41 +1588,41 @@
       "home": "Netherlands",
       "id": "760488",
       "kickoff": "2026-06-30T01:00Z",
-      "lambdaAway": 1.227714081640429,
-      "lambdaHome": 1.0223854084785462,
+      "lambdaAway": 1.2751087643967205,
+      "lambdaHome": 0.8107696314642018,
       "pBlended": {
-        "a": 0.3981314150552106,
-        "d": 0.3059229321996659,
-        "h": 0.2959456527451235
+        "a": 0.467203122824668,
+        "d": 0.3021529807292695,
+        "h": 0.23064389644606256
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3981314150552106,
-        "d": 0.3059229321996659,
-        "h": 0.2959456527451235
+        "a": 0.467203122824668,
+        "d": 0.3021529807292695,
+        "h": 0.23064389644606256
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.14252010424096112,
-          "score": "1-1"
-        },
-        {
-          "prob": 0.11915078324503076,
+          "prob": 0.1522145505056308,
           "score": "0-1"
         },
         {
-          "prob": 0.11562521571826154,
+          "prob": 0.13454969779245304,
+          "score": "1-1"
+        },
+        {
+          "prob": 0.13034938841678342,
           "score": "0-0"
         },
         {
-          "prob": 0.09751145136008321,
-          "score": "1-0"
+          "prob": 0.10096690378688648,
+          "score": "0-2"
         },
         {
-          "prob": 0.08120324193955474,
-          "score": "1-2"
+          "prob": 0.09454456283274598,
+          "score": "1-0"
         }
       ]
     },
@@ -1086,40 +1631,40 @@
       "home": "Ivory Coast",
       "id": "760490",
       "kickoff": "2026-06-30T17:00Z",
-      "lambdaAway": 1.57857772651254,
-      "lambdaHome": 0.9485769775173921,
+      "lambdaAway": 1.4936571795958835,
+      "lambdaHome": 1.0037438715634972,
       "pBlended": {
-        "a": 0.5114011352464227,
-        "d": 0.2709926833599321,
-        "h": 0.21760618139364507
+        "a": 0.4794802977335588,
+        "d": 0.27222501515437353,
+        "h": 0.24829468711206776
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.5114011352464227,
-        "d": 0.2709926833599321,
-        "h": 0.21760618139364507
+        "a": 0.4794802977335588,
+        "d": 0.27222501515437353,
+        "h": 0.24829468711206776
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.1288782428180531,
+          "prob": 0.1292974698366555,
           "score": "1-1"
         },
         {
-          "prob": 0.11684972481852028,
+          "prob": 0.11701470380006844,
           "score": "0-1"
         },
         {
-          "prob": 0.09953435275277106,
-          "score": "0-2"
-        },
-        {
-          "prob": 0.09441599549337348,
+          "prob": 0.09214833902339888,
           "score": "1-2"
         },
         {
-          "prob": 0.08914271330495523,
+          "prob": 0.09180463426378144,
+          "score": "0-2"
+        },
+        {
+          "prob": 0.08820992873139173,
           "score": "0-0"
         }
       ]
@@ -1129,41 +1674,41 @@
       "home": "France",
       "id": "760492",
       "kickoff": "2026-06-30T21:00Z",
-      "lambdaAway": 1.1230535813660747,
-      "lambdaHome": 3.4205346128504823,
+      "lambdaAway": 1.1020998851965653,
+      "lambdaHome": 2.854418407697349,
       "pBlended": {
-        "a": 0.08075830700459533,
-        "d": 0.11860474858971508,
-        "h": 0.8006369444056897
+        "a": 0.11541192321280529,
+        "d": 0.15267601630500388,
+        "h": 0.7319120604821907
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.08075830700459533,
-        "d": 0.11860474858971508,
-        "h": 0.8006369444056897
+        "a": 0.11541192321280529,
+        "d": 0.15267601630500388,
+        "h": 0.7319120604821907
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.07973430447351042,
-          "score": "3-1"
-        },
-        {
-          "prob": 0.07099777410132306,
-          "score": "3-0"
-        },
-        {
-          "prob": 0.06993144069405949,
+          "prob": 0.08590449250841593,
           "score": "2-1"
         },
         {
-          "prob": 0.06818348707080034,
-          "score": "4-1"
+          "prob": 0.08173578823997384,
+          "score": "3-1"
         },
         {
-          "prob": 0.06226901534742034,
+          "prob": 0.07794619495227914,
           "score": "2-0"
+        },
+        {
+          "prob": 0.07416368456058393,
+          "score": "3-0"
+        },
+        {
+          "prob": 0.06307419099713309,
+          "score": "1-1"
         }
       ]
     },
@@ -1172,127 +1717,127 @@
       "home": "Mexico",
       "id": "760491",
       "kickoff": "2026-07-01T01:00Z",
-      "lambdaAway": 0.8085705553392712,
-      "lambdaHome": 0.5541938958839889,
+      "lambdaAway": 0.5940239349113355,
+      "lambdaHome": 0.6672015162657569,
       "pBlended": {
-        "a": 0.37602124664059633,
-        "d": 0.4019028931043876,
-        "h": 0.22207586025501636
+        "a": 0.26817662117912455,
+        "d": 0.41797709546800776,
+        "h": 0.3138462833528677
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.37602124664059633,
-        "d": 0.4019028931043876,
-        "h": 0.22207586025501636
+        "a": 0.26817662117912455,
+        "d": 0.41797709546800776,
+        "h": 0.3138462833528677
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.26482752092383394,
+          "prob": 0.28868601488822154,
           "score": "0-0"
         },
         {
-          "prob": 0.1980801474164011,
+          "prob": 0.18364323704618654,
+          "score": "1-0"
+        },
+        {
+          "prob": 0.16291154269353245,
           "score": "0-1"
         },
         {
-          "prob": 0.13297187394540377,
-          "score": "1-0"
-        },
-        {
-          "prob": 0.12356873020664448,
+          "prob": 0.11766333811427225,
           "score": "1-1"
         },
         {
-          "prob": 0.0836690364994627,
-          "score": "0-2"
+          "prob": 0.06305808821467991,
+          "score": "2-0"
         }
       ]
     },
     {
-      "away": "Third Place Group E/H/I/J/K",
+      "away": "Congo DR",
       "home": "England",
       "id": "760495",
       "kickoff": "2026-07-01T16:00Z",
-      "lambdaAway": 0.3785409199266919,
-      "lambdaHome": 2.878667806870878,
+      "lambdaAway": 0.4250365214549719,
+      "lambdaHome": 2.6587934679079375,
       "pBlended": {
-        "a": 0.025255777439139787,
-        "d": 0.09986692949292376,
-        "h": 0.8748772930679365
+        "a": 0.037044604455956705,
+        "d": 0.11908148165320728,
+        "h": 0.843873913890836
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.025255777439139787,
-        "d": 0.09986692949292376,
-        "h": 0.8748772930679365
+        "a": 0.037044604455956705,
+        "d": 0.11908148165320728,
+        "h": 0.843873913890836
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.15953472065363034,
+          "prob": 0.16184323426596117,
           "score": "2-0"
         },
         {
-          "prob": 0.15308248814124814,
+          "prob": 0.1434359113638106,
           "score": "3-0"
         },
         {
-          "prob": 0.11016840760197595,
-          "score": "4-0"
-        },
-        {
-          "prob": 0.10759250893602676,
+          "prob": 0.11926283877819163,
           "score": "1-0"
         },
         {
-          "prob": 0.06342764965960743,
-          "score": "5-0"
+          "prob": 0.09534161604938034,
+          "score": "4-0"
+        },
+        {
+          "prob": 0.06878928531342625,
+          "score": "2-1"
         }
       ]
     },
     {
-      "away": "Third Place Group A/E/H/I/J",
+      "away": "Senegal",
       "home": "Belgium",
       "id": "760493",
       "kickoff": "2026-07-01T20:00Z",
-      "lambdaAway": 0.5431048564585319,
-      "lambdaHome": 3.232274410201256,
+      "lambdaAway": 1.4614586663285583,
+      "lambdaHome": 1.4224756482184102,
       "pBlended": {
-        "a": 0.030905898142746926,
-        "d": 0.090972443228735,
-        "h": 0.8781216586285179
+        "a": 0.3789085924558885,
+        "d": 0.25963195581033977,
+        "h": 0.3614594517337718
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.030905898142746926,
-        "d": 0.090972443228735,
-        "h": 0.8781216586285179
+        "a": 0.3789085924558885,
+        "d": 0.25963195581033977,
+        "h": 0.3614594517337718
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.12911638709874096,
-          "score": "3-0"
+          "prob": 0.12180872521703234,
+          "score": "1-1"
         },
         {
-          "prob": 0.11983795684974184,
-          "score": "2-0"
+          "prob": 0.08493984992508323,
+          "score": "1-2"
         },
         {
-          "prob": 0.10433489848922499,
-          "score": "4-0"
+          "prob": 0.0826741603204493,
+          "score": "2-1"
         },
         {
-          "prob": 0.07103452301019686,
+          "prob": 0.07614766591831794,
+          "score": "0-1"
+        },
+        {
+          "prob": 0.0739679543433175,
           "score": "1-0"
-        },
-        {
-          "prob": 0.07012373688170596,
-          "score": "3-1"
         }
       ]
     },
@@ -1301,170 +1846,170 @@
       "home": "United States",
       "id": "760494",
       "kickoff": "2026-07-02T00:00Z",
-      "lambdaAway": 0.8175045649126924,
-      "lambdaHome": 2.1330868254613486,
+      "lambdaAway": 0.665625648151463,
+      "lambdaHome": 2.271408605718929,
       "pBlended": {
-        "a": 0.12452742599585714,
-        "d": 0.20601762411524868,
-        "h": 0.6694549498888941
+        "a": 0.08909582506186844,
+        "d": 0.17677643706460217,
+        "h": 0.7341277378735296
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.12452742599585714,
-        "d": 0.20601762411524868,
-        "h": 0.6694549498888941
+        "a": 0.08909582506186844,
+        "d": 0.17677643706460217,
+        "h": 0.7341277378735296
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.11900576814419017,
+          "prob": 0.13678365988875396,
           "score": "2-0"
         },
         {
-          "prob": 0.10452211855027904,
+          "prob": 0.1165987740230485,
           "score": "1-0"
         },
         {
-          "prob": 0.0982764963689488,
-          "score": "1-1"
+          "prob": 0.10356386073101559,
+          "score": "3-0"
         },
         {
-          "prob": 0.09728775870881692,
+          "prob": 0.0910467122699811,
           "score": "2-1"
         },
         {
-          "prob": 0.08461654539409329,
-          "score": "3-0"
+          "prob": 0.08400834843400838,
+          "score": "1-1"
         }
       ]
     },
     {
-      "away": "Group J 2nd Place",
+      "away": "Austria",
       "home": "Spain",
       "id": "760497",
       "kickoff": "2026-07-02T19:00Z",
-      "lambdaAway": 0.40682584629372853,
-      "lambdaHome": 3.7394124377109104,
+      "lambdaAway": 0.8814275791858238,
+      "lambdaHome": 1.9655397221619442,
       "pBlended": {
-        "a": 0.013301719331503946,
-        "d": 0.05457455227506912,
-        "h": 0.932123728393427
+        "a": 0.15663477136562193,
+        "d": 0.22106238650539017,
+        "h": 0.6223028421289878
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.013301719331503946,
-        "d": 0.05457455227506912,
-        "h": 0.932123728393427
+        "a": 0.15663477136562193,
+        "d": 0.22106238650539017,
+        "h": 0.6223028421289878
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.1381375849082464,
-          "score": "3-0"
-        },
-        {
-          "prob": 0.1291383507803109,
-          "score": "4-0"
-        },
-        {
-          "prob": 0.11082295992426633,
+          "prob": 0.11207649509675698,
           "score": "2-0"
         },
         {
-          "prob": 0.09658031101867386,
-          "score": "5-0"
+          "prob": 0.10922569626342449,
+          "score": "1-0"
         },
         {
-          "prob": 0.060192269376869445,
-          "score": "6-0"
+          "prob": 0.10533502359991075,
+          "score": "1-1"
+        },
+        {
+          "prob": 0.09878731375676636,
+          "score": "2-1"
+        },
+        {
+          "prob": 0.07343026767778808,
+          "score": "3-0"
         }
       ]
     },
     {
       "away": "Croatia",
-      "home": "Group K 2nd Place",
+      "home": "Portugal",
       "id": "760496",
       "kickoff": "2026-07-02T23:00Z",
-      "lambdaAway": 2.3566168867583137,
-      "lambdaHome": 0.6078614834273287,
+      "lambdaAway": 1.1345810086480104,
+      "lambdaHome": 1.8553678109018006,
       "pBlended": {
-        "a": 0.7596937083373656,
-        "d": 0.1680061053965805,
-        "h": 0.07230018626605389
+        "a": 0.22597665554018237,
+        "d": 0.2369094100976403,
+        "h": 0.5371139343621775
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.7596937083373656,
-        "d": 0.1680061053965805,
-        "h": 0.07230018626605389
+        "a": 0.22597665554018237,
+        "d": 0.2369094100976403,
+        "h": 0.5371139343621775
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.1432541720991774,
-          "score": "0-2"
-        },
-        {
-          "prob": 0.11585742845849087,
-          "score": "0-1"
-        },
-        {
-          "prob": 0.11253173368916773,
-          "score": "0-3"
-        },
-        {
-          "prob": 0.08707869355935981,
-          "score": "1-2"
-        },
-        {
-          "prob": 0.07962013681973787,
+          "prob": 0.11093600454779634,
           "score": "1-1"
+        },
+        {
+          "prob": 0.09820850326448342,
+          "score": "2-1"
+        },
+        {
+          "prob": 0.08823504029844345,
+          "score": "1-0"
+        },
+        {
+          "prob": 0.08655926947121267,
+          "score": "2-0"
+        },
+        {
+          "prob": 0.060737631904588994,
+          "score": "3-1"
         }
       ]
     },
     {
-      "away": "Third Place Group E/F/G/I/J",
+      "away": "Algeria",
       "home": "Switzerland",
       "id": "760498",
       "kickoff": "2026-07-03T03:00Z",
-      "lambdaAway": 0.5108208264030566,
-      "lambdaHome": 2.7219401938737793,
+      "lambdaAway": 1.2441213888157105,
+      "lambdaHome": 1.5341765309274449,
       "pBlended": {
-        "a": 0.0429483337389885,
-        "d": 0.1250859883791468,
-        "h": 0.8319656778818646
+        "a": 0.3030861343584561,
+        "d": 0.26227546237340527,
+        "h": 0.43463840326813874
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.0429483337389885,
-        "d": 0.1250859883791468,
-        "h": 0.8319656778818646
+        "a": 0.3030861343584561,
+        "d": 0.26227546237340527,
+        "h": 0.43463840326813874
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.14615469603359532,
-          "score": "2-0"
+          "prob": 0.12429750810321553,
+          "score": "1-1"
         },
         {
-          "prob": 0.13260811388574925,
-          "score": "3-0"
+          "prob": 0.09098804026956456,
+          "score": "2-1"
         },
         {
-          "prob": 0.10314509532373368,
+          "prob": 0.08965755120165662,
           "score": "1-0"
         },
         {
-          "prob": 0.09023783880485313,
-          "score": "4-0"
+          "prob": 0.07378562032711998,
+          "score": "1-2"
         },
         {
-          "prob": 0.07465886261056873,
-          "score": "2-1"
+          "prob": 0.07313437505979768,
+          "score": "2-0"
         }
       ]
     },
@@ -1473,41 +2018,41 @@
       "home": "Australia",
       "id": "760499",
       "kickoff": "2026-07-03T18:00Z",
-      "lambdaAway": 0.5984651544612648,
-      "lambdaHome": 1.079332071652352,
+      "lambdaAway": 0.5457345946142398,
+      "lambdaHome": 1.384909519589708,
       "pBlended": {
-        "a": 0.19301702823264005,
-        "d": 0.3470501022969489,
-        "h": 0.459932869470411
+        "a": 0.14084747576509182,
+        "d": 0.28772968118605785,
+        "h": 0.5714228430488503
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.19301702823264005,
-        "d": 0.3470501022969489,
-        "h": 0.459932869470411
+        "a": 0.14084747576509182,
+        "d": 0.28772968118605785,
+        "h": 0.5714228430488503
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.19612138109966176,
-          "score": "0-0"
-        },
-        {
-          "prob": 0.19226660233818915,
+          "prob": 0.19563543833522337,
           "score": "1-0"
         },
         {
-          "prob": 0.129988785975713,
-          "score": "1-1"
+          "prob": 0.15030707183156794,
+          "score": "0-0"
         },
         {
-          "prob": 0.10879829782314024,
+          "prob": 0.13910566944377362,
           "score": "2-0"
         },
         {
-          "prob": 0.1024478885233196,
-          "score": "0-1"
+          "prob": 0.11488368587429983,
+          "score": "1-1"
+        },
+        {
+          "prob": 0.07591477612244023,
+          "score": "2-1"
         }
       ]
     },
@@ -1516,84 +2061,84 @@
       "home": "Argentina",
       "id": "760500",
       "kickoff": "2026-07-03T22:00Z",
-      "lambdaAway": 0.285124964053308,
-      "lambdaHome": 2.9880650505654365,
+      "lambdaAway": 0.3601761403151773,
+      "lambdaHome": 2.583138798386355,
       "pBlended": {
-        "a": 0.015832192447929088,
-        "d": 0.08274295988203262,
-        "h": 0.9014248476700383
+        "a": 0.03211222465189435,
+        "d": 0.1190728650227282,
+        "h": 0.8488149103253773
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.015832192447929088,
-        "d": 0.08274295988203262,
-        "h": 0.9014248476700383
+        "a": 0.03211222465189435,
+        "d": 0.1190728650227282,
+        "h": 0.8488149103253773
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.16917826822813553,
+          "prob": 0.17580679155278228,
           "score": "2-0"
         },
         {
-          "prob": 0.1685052235358923,
+          "prob": 0.15137778142660482,
           "score": "3-0"
         },
         {
-          "prob": 0.12587614232132907,
-          "score": "4-0"
-        },
-        {
-          "prob": 0.11073759061449162,
+          "prob": 0.133769927131136,
           "score": "1-0"
         },
         {
-          "prob": 0.07522522031407283,
-          "score": "5-0"
+          "prob": 0.09775745510417805,
+          "score": "4-0"
+        },
+        {
+          "prob": 0.06332141162267604,
+          "score": "2-1"
         }
       ]
     },
     {
       "away": "Ghana",
-      "home": "Group K Winner",
+      "home": "Colombia",
       "id": "760501",
       "kickoff": "2026-07-04T01:30Z",
-      "lambdaAway": 1.4153290485900178,
-      "lambdaHome": 0.6567196123722115,
+      "lambdaAway": 0.6800987942648223,
+      "lambdaHome": 2.313404487411511,
       "pBlended": {
-        "a": 0.5448139887399732,
-        "d": 0.29126494798085295,
-        "h": 0.16392106327917383
+        "a": 0.08867519686662728,
+        "d": 0.17351536870490272,
+        "h": 0.73780943442847
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.5448139887399732,
-        "d": 0.29126494798085295,
-        "h": 0.16392106327917383
+        "a": 0.08867519686662728,
+        "d": 0.17351536870490272,
+        "h": 0.73780943442847
       },
       "played": false,
       "round": "round-of-32",
       "topScores": [
         {
-          "prob": 0.1691715812910158,
-          "score": "0-1"
+          "prob": 0.13409873554146062,
+          "score": "2-0"
         },
         {
-          "prob": 0.13498494634105343,
-          "score": "0-0"
+          "prob": 0.11215456985738351,
+          "score": "1-0"
         },
         {
-          "prob": 0.1261263076491367,
-          "score": "0-2"
+          "prob": 0.10340820551927482,
+          "score": "3-0"
         },
         {
-          "prob": 0.12610382159368091,
+          "prob": 0.09120038835418465,
+          "score": "2-1"
+        },
+        {
+          "prob": 0.08262254337259428,
           "score": "1-1"
-        },
-        {
-          "prob": 0.08282961986927932,
-          "score": "1-2"
         }
       ]
     },
@@ -1605,33 +2150,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1648,33 +2193,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1691,33 +2236,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1734,33 +2279,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1777,33 +2322,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1820,33 +2365,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1863,33 +2408,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1906,33 +2451,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "round-of-16",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1949,33 +2494,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "quarterfinals",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -1992,33 +2537,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "quarterfinals",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -2035,33 +2580,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "quarterfinals",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -2078,33 +2623,33 @@
       "lambdaAway": 1.0,
       "lambdaHome": 1.0,
       "pBlended": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "pMarket": null,
       "pModel": {
-        "a": 0.3352732234622475,
-        "d": 0.32945355307550506,
-        "h": 0.33527322346224747
+        "a": 0.3392620966734727,
+        "d": 0.32147580665305453,
+        "h": 0.3392620966734727
       },
       "played": false,
       "round": "quarterfinals",
       "topScores": [
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "0-0"
         },
         {
-          "prob": 0.14580789811734482,
+          "prob": 0.14181902490611958,
           "score": "1-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "0-1"
         },
         {
-          "prob": 0.12486267379514993,
+          "prob": 0.12885154700637513,
           "score": "1-0"
         },
         {
@@ -2490,8 +3035,8 @@
       "teams": [
         {
           "finishProbs": {
-            "p1": 0.9986,
-            "p2": 0.0014,
+            "p1": 1.0,
+            "p2": 0.0,
             "p3": 0.0,
             "p4": 0.0
           },
@@ -2499,19 +3044,19 @@
         },
         {
           "finishProbs": {
-            "p1": 0.0006,
-            "p2": 0.482,
-            "p3": 0.5093,
-            "p4": 0.0081
+            "p1": 0.0,
+            "p2": 0.0,
+            "p3": 1.0,
+            "p4": 0.0
           },
           "id": "algeria"
         },
         {
           "finishProbs": {
-            "p1": 0.0008,
-            "p2": 0.5166,
-            "p3": 0.4756,
-            "p4": 0.007
+            "p1": 0.0,
+            "p2": 1.0,
+            "p3": 0.0,
+            "p4": 0.0
           },
           "id": "austria"
         },
@@ -2519,8 +3064,8 @@
           "finishProbs": {
             "p1": 0.0,
             "p2": 0.0,
-            "p3": 0.0151,
-            "p4": 0.9849
+            "p3": 0.0,
+            "p4": 1.0
           },
           "id": "jordan"
         }
@@ -2531,9 +3076,9 @@
       "teams": [
         {
           "finishProbs": {
-            "p1": 0.284,
-            "p2": 0.7155,
-            "p3": 0.0005,
+            "p1": 0.0,
+            "p2": 1.0,
+            "p3": 0.0,
             "p4": 0.0
           },
           "id": "portugal"
@@ -2541,9 +3086,9 @@
         {
           "finishProbs": {
             "p1": 0.0,
-            "p2": 0.0005,
-            "p3": 0.3039,
-            "p4": 0.6956
+            "p2": 0.0,
+            "p3": 1.0,
+            "p4": 0.0
           },
           "id": "congo-dr"
         },
@@ -2551,15 +3096,15 @@
           "finishProbs": {
             "p1": 0.0,
             "p2": 0.0,
-            "p3": 0.6956,
-            "p4": 0.3044
+            "p3": 0.0,
+            "p4": 1.0
           },
           "id": "uzbekistan"
         },
         {
           "finishProbs": {
-            "p1": 0.716,
-            "p2": 0.284,
+            "p1": 1.0,
+            "p2": 0.0,
             "p3": 0.0,
             "p4": 0.0
           },
@@ -2618,580 +3163,600 @@
       "id": "argentina",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.004999974399934463,
-        "reachQF": 0.0037413247653738913,
-        "reachR16": 0.0015335967527352165,
+        "reachFinal": 0.004713927343521536,
+        "reachQF": 0.004588660370957955,
+        "reachR16": 0.0019689550528135475,
         "reachR32": 0.0,
-        "reachSF": 0.00472615869390777,
-        "winCup": 0.004872945721019269
+        "reachSF": 0.004999855597914804,
+        "winCup": 0.004268393608841621
       },
       "name": "Argentina",
       "qualify": 1.0,
-      "reachFinal": 0.5016,
-      "reachQF": 0.8317,
-      "reachR16": 0.9759,
+      "reachFinal": 0.3333,
+      "reachQF": 0.6986,
+      "reachR16": 0.9596,
       "reachR32": 1.0,
-      "reachSF": 0.6632,
-      "winCup": 0.388
-    },
-    {
-      "id": "colombia",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0034204372527500046,
-        "reachQF": 0.004994042851237863,
-        "reachR16": 0.004149876986128624,
-        "reachR32": 0.0,
-        "reachSF": 0.004204469526587153,
-        "winCup": 0.002526019596123514
-      },
-      "name": "Colombia",
-      "qualify": 1.0,
-      "reachFinal": 0.1353,
-      "reachQF": 0.5244,
-      "reachR16": 0.7789,
-      "reachR32": 1.0,
-      "reachSF": 0.2294,
-      "winCup": 0.0685
-    },
-    {
-      "id": "japan",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0029785472969217726,
-        "reachQF": 0.0047902516635350174,
-        "reachR16": 0.004999116321911304,
-        "reachR32": 0.0,
-        "reachSF": 0.004229315665683989,
-        "winCup": 0.0023822644689454613
-      },
-      "name": "Japan",
-      "qualify": 1.0,
-      "reachFinal": 0.0984,
-      "reachQF": 0.3567,
-      "reachR16": 0.5094,
-      "reachR32": 1.0,
-      "reachSF": 0.2333,
-      "winCup": 0.0604
-    },
-    {
-      "id": "spain",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.003613317589141591,
-        "reachQF": 0.004956115313428452,
-        "reachR16": 0.0045495630559428445,
-        "reachR32": 0.0,
-        "reachSF": 0.004487044015830466,
-        "winCup": 0.0023767202191255074
-      },
-      "name": "Spain",
-      "qualify": 1.0,
-      "reachFinal": 0.1544,
-      "reachQF": 0.4339,
-      "reachR16": 0.7074,
-      "reachR32": 1.0,
-      "reachSF": 0.2794,
-      "winCup": 0.0601
-    },
-    {
-      "id": "brazil",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.002933530125974506,
-        "reachQF": 0.004749424280899739,
-        "reachR16": 0.004999116321911304,
-        "reachR32": 0.0,
-        "reachSF": 0.004201892430798295,
-        "winCup": 0.0023412125063735673
-      },
-      "name": "Brazil",
-      "qualify": 1.0,
-      "reachFinal": 0.0951,
-      "reachQF": 0.3437,
-      "reachR16": 0.4906,
-      "reachR32": 1.0,
-      "reachSF": 0.229,
-      "winCup": 0.0582
+      "reachSF": 0.4962,
+      "winCup": 0.2396
     },
     {
       "id": "morocco",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0033707196560971964,
-        "reachQF": 0.004917599414348428,
-        "reachR16": 0.0049607837082461075,
+        "reachFinal": 0.004063078143476938,
+        "reachQF": 0.00499679487271591,
+        "reachR16": 0.004742461807964299,
         "reachR32": 0.0,
-        "reachSF": 0.004183701232162737,
-        "winCup": 0.002264119254809693
+        "reachSF": 0.004663602791833798,
+        "winCup": 0.0030974788134868654
       },
       "name": "Morocco",
       "qualify": 1.0,
-      "reachFinal": 0.1307,
-      "reachQF": 0.4096,
-      "reachR16": 0.5625,
+      "reachFinal": 0.2086,
+      "reachQF": 0.4821,
+      "reachR16": 0.6584,
       "reachR32": 1.0,
-      "reachSF": 0.2262,
-      "winCup": 0.0542
+      "reachSF": 0.3197,
+      "winCup": 0.1075
     },
     {
-      "id": "ecuador",
+      "id": "spain",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0032969560203314815,
-        "reachQF": 0.004909692862084145,
-        "reachR16": 0.004808078202359026,
+        "reachFinal": 0.0041417869331968294,
+        "reachQF": 0.004980513929304886,
+        "reachR16": 0.004129556755875865,
         "reachR32": 0.0,
-        "reachSF": 0.004190228633380283,
-        "winCup": 0.0021794494717703367
+        "reachSF": 0.004887214339478063,
+        "winCup": 0.0029933217334593355
       },
-      "name": "Ecuador",
-      "qualify": 0.0,
-      "reachFinal": 0.1241,
-      "reachQF": 0.4054,
-      "reachR16": 0.6372,
+      "name": "Spain",
+      "qualify": 1.0,
+      "reachFinal": 0.2199,
+      "reachQF": 0.5441,
+      "reachR16": 0.7819,
       "reachR32": 1.0,
-      "reachSF": 0.2272,
-      "winCup": 0.05
+      "reachSF": 0.3944,
+      "winCup": 0.0995
+    },
+    {
+      "id": "colombia",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.003579513793799376,
+        "reachQF": 0.004786645485097053,
+        "reachR16": 0.0032797749922822456,
+        "reachR32": 0.0,
+        "reachSF": 0.00445856826795329,
+        "winCup": 0.0028358554264983253
+      },
+      "name": "Colombia",
+      "qualify": 1.0,
+      "reachFinal": 0.1509,
+      "reachQF": 0.6445,
+      "reachR16": 0.8774,
+      "reachR32": 1.0,
+      "reachSF": 0.2737,
+      "winCup": 0.0882
+    },
+    {
+      "id": "japan",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.003298095814254037,
+        "reachQF": 0.0048948544411453136,
+        "reachR16": 0.004987594209636546,
+        "reachR32": 0.0,
+        "reachSF": 0.004317934575697043,
+        "winCup": 0.002686430903634039
+      },
+      "name": "Japan",
+      "qualify": 1.0,
+      "reachFinal": 0.1242,
+      "reachQF": 0.398,
+      "reachR16": 0.5352,
+      "reachR32": 1.0,
+      "reachSF": 0.2479,
+      "winCup": 0.0783
+    },
+    {
+      "id": "brazil",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.002877512641153814,
+        "reachQF": 0.004722345921255663,
+        "reachR16": 0.004987594209636546,
+        "reachR32": 0.0,
+        "reachSF": 0.004003745121757878,
+        "winCup": 0.0022680529094357563
+      },
+      "name": "Brazil",
+      "qualify": 1.0,
+      "reachFinal": 0.0911,
+      "reachQF": 0.3357,
+      "reachR16": 0.4648,
+      "reachR32": 1.0,
+      "reachSF": 0.2005,
+      "winCup": 0.0544
     },
     {
       "id": "france",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0032472751654271615,
-        "reachQF": 0.0048874303064084705,
-        "reachR16": 0.004513668020579272,
+        "reachFinal": 0.0032507843668874744,
+        "reachQF": 0.0049814756849752865,
+        "reachR16": 0.0035390642831121337,
         "reachR32": 0.0,
-        "reachSF": 0.004137722924508116,
-        "winCup": 0.002008173050312149
+        "reachSF": 0.004117900435901772,
+        "winCup": 0.0021439941697681923
       },
       "name": "France",
       "qualify": 1.0,
-      "reachFinal": 0.1198,
-      "reachQF": 0.3945,
-      "reachR16": 0.7151,
+      "reachFinal": 0.1201,
+      "reachQF": 0.457,
+      "reachR16": 0.8532,
       "reachR32": 1.0,
-      "reachSF": 0.2193,
-      "winCup": 0.0421
+      "reachSF": 0.2164,
+      "winCup": 0.0483
     },
     {
       "id": "england",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0025497841085080127,
-        "reachQF": 0.004992209831327205,
-        "reachR16": 0.003482277415715181,
+        "reachFinal": 0.002788816953476868,
+        "reachQF": 0.004994521398492552,
+        "reachR16": 0.0022502833154960733,
         "reachR32": 0.0,
-        "reachSF": 0.004212168562628993,
-        "winCup": 0.001835265375906166
+        "reachSF": 0.0041350065296199955,
+        "winCup": 0.002064239327209905
       },
       "name": "England",
       "qualify": 1.0,
-      "reachFinal": 0.0699,
-      "reachQF": 0.5279,
-      "reachR16": 0.8588,
+      "reachFinal": 0.085,
+      "reachQF": 0.4766,
+      "reachR16": 0.9465,
       "reachR32": 1.0,
-      "reachSF": 0.2306,
-      "winCup": 0.0349
-    },
-    {
-      "id": "germany",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0028051165751176903,
-        "reachQF": 0.004759192263399326,
-        "reachR16": 0.0046822520222645,
-        "reachR32": 0.0,
-        "reachSF": 0.0038351969962441305,
-        "winCup": 0.001705872210923198
-      },
-      "name": "Germany",
-      "qualify": 1.0,
-      "reachFinal": 0.0861,
-      "reachQF": 0.3467,
-      "reachR16": 0.6754,
-      "reachR32": 1.0,
-      "reachSF": 0.1792,
-      "winCup": 0.03
-    },
-    {
-      "id": "netherlands",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.002781362076393507,
-        "reachQF": 0.004636336484768982,
-        "reachR16": 0.0049607837082461075,
-        "reachR32": 0.0,
-        "reachSF": 0.0036697662050871847,
-        "winCup": 0.001655438310538934
-      },
-      "name": "Netherlands",
-      "qualify": 1.0,
-      "reachFinal": 0.0845,
-      "reachQF": 0.3128,
-      "reachR16": 0.4375,
-      "reachR32": 1.0,
-      "reachSF": 0.1604,
-      "winCup": 0.0282
-    },
-    {
-      "id": "portugal",
-      "mcStdErr": {
-        "qualify": 0.00022355088906106927,
-        "reachFinal": 0.002772377860249212,
-        "reachQF": 0.004830457431755299,
-        "reachR16": 0.00448998886412873,
-        "reachR32": 0.0,
-        "reachSF": 0.0037936724950896855,
-        "winCup": 0.0016411188256796035
-      },
-      "name": "Portugal",
-      "qualify": 0.9995,
-      "reachFinal": 0.0839,
-      "reachQF": 0.3709,
-      "reachR16": 0.72,
-      "reachR32": 1.0,
-      "reachSF": 0.1743,
-      "winCup": 0.0277
-    },
-    {
-      "id": "paraguay",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0022060895267418316,
-        "reachQF": 0.004611656535346057,
-        "reachR16": 0.004893600310609766,
-        "reachR32": 0.0,
-        "reachSF": 0.003179326815538157,
-        "winCup": 0.0012547509713086498
-      },
-      "name": "Paraguay",
-      "qualify": 0.0,
-      "reachFinal": 0.0513,
-      "reachQF": 0.3068,
-      "reachR16": 0.6026,
-      "reachR32": 1.0,
-      "reachSF": 0.1141,
-      "winCup": 0.016
-    },
-    {
-      "id": "mexico",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0018653897716027071,
-        "reachQF": 0.004797659429346773,
-        "reachR16": 0.004323757509389258,
-        "reachR32": 0.0,
-        "reachSF": 0.003442691389015286,
-        "winCup": 0.0012155245781143218
-      },
-      "name": "Mexico",
-      "qualify": 1.0,
-      "reachFinal": 0.0361,
-      "reachQF": 0.3592,
-      "reachR16": 0.7511,
-      "reachR32": 1.0,
-      "reachSF": 0.1374,
-      "winCup": 0.015
-    },
-    {
-      "id": "norway",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.001754672619037523,
-        "reachQF": 0.00421344704487905,
-        "reachR16": 0.004641964670266245,
-        "reachR32": 0.0,
-        "reachSF": 0.00325778314195405,
-        "winCup": 0.0011666001885821894
-      },
-      "name": "Norway",
-      "qualify": 1.0,
-      "reachFinal": 0.0318,
-      "reachQF": 0.2308,
-      "reachR16": 0.6858,
-      "reachR32": 1.0,
-      "reachSF": 0.1207,
-      "winCup": 0.0138
-    },
-    {
-      "id": "belgium",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.002208122279222779,
-        "reachQF": 0.004737762763161533,
-        "reachR16": 0.004551839078877899,
-        "reachR32": 0.0,
-        "reachSF": 0.0033870807489636266,
-        "winCup": 0.001061604446109755
-      },
-      "name": "Belgium",
-      "qualify": 1.0,
-      "reachFinal": 0.0514,
-      "reachQF": 0.3402,
-      "reachR16": 0.7069,
-      "reachR32": 1.0,
-      "reachSF": 0.1322,
-      "winCup": 0.0114
+      "reachSF": 0.2189,
+      "winCup": 0.0446
     },
     {
       "id": "australia",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0015022113699476515,
-        "reachQF": 0.0033935845355611816,
-        "reachR16": 0.0046459547996079344,
+        "reachFinal": 0.0025379393215756757,
+        "reachQF": 0.004420758305992311,
+        "reachR16": 0.0041471859133634225,
         "reachR32": 0.0,
-        "reachSF": 0.002344982729147488,
-        "winCup": 0.0010523573537539422
+        "reachSF": 0.003483307479967854,
+        "winCup": 0.0018900685172765562
       },
       "name": "Australia",
       "qualify": 1.0,
-      "reachFinal": 0.0231,
-      "reachQF": 0.1328,
-      "reachR16": 0.6848,
+      "reachFinal": 0.0692,
+      "reachQF": 0.2664,
+      "reachR16": 0.7793,
       "reachR32": 1.0,
-      "reachSF": 0.0584,
-      "winCup": 0.0112
+      "reachSF": 0.1413,
+      "winCup": 0.0371
     },
     {
-      "id": "canada",
+      "id": "germany",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0017732385626305334,
-        "reachQF": 0.004358049907929005,
-        "reachR16": 0.004145163929207143,
+        "reachFinal": 0.002874668502627738,
+        "reachQF": 0.004768120698975646,
+        "reachR16": 0.004846856300737623,
         "reachR32": 0.0,
-        "reachSF": 0.0027932760336207376,
-        "winCup": 0.0008036012692872006
+        "reachSF": 0.003686341818117251,
+        "winCup": 0.0018097179338228374
       },
-      "name": "Canada",
+      "name": "Germany",
       "qualify": 1.0,
-      "reachFinal": 0.0325,
-      "reachQF": 0.2549,
-      "reachR16": 0.7796,
+      "reachFinal": 0.0909,
+      "reachQF": 0.3495,
+      "reachR16": 0.6228,
       "reachR32": 1.0,
-      "reachSF": 0.0853,
-      "winCup": 0.0065
+      "reachSF": 0.1622,
+      "winCup": 0.0339
     },
     {
-      "id": "algeria",
-      "mcStdErr": {
-        "qualify": 0.004996971482808362,
-        "reachFinal": 0.0013827418414150922,
-        "reachQF": 0.0032367080498555936,
-        "reachR16": 0.004311493476743296,
-        "reachR32": 0.004513191332084205,
-        "reachSF": 0.002181513007066426,
-        "winCup": 0.0007849560497250785
-      },
-      "name": "Algeria",
-      "qualify": 0.4826,
-      "reachFinal": 0.0195,
-      "reachQF": 0.1189,
-      "reachR16": 0.2468,
-      "reachR32": 0.7152,
-      "reachSF": 0.0501,
-      "winCup": 0.0062
-    },
-    {
-      "id": "switzerland",
+      "id": "mexico",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0012075164595151489,
-        "reachQF": 0.0041797684146373465,
-        "reachR16": 0.0048023261030463145,
+        "reachFinal": 0.0023050013015180706,
+        "reachQF": 0.004544073502926642,
+        "reachR16": 0.0049880832992242625,
         "reachR32": 0.0,
-        "reachSF": 0.002037558342722976,
-        "winCup": 0.0007395775821372629
+        "reachSF": 0.003396827784860457,
+        "winCup": 0.001714115223664967
       },
-      "name": "Switzerland",
+      "name": "Mexico",
       "qualify": 1.0,
-      "reachFinal": 0.0148,
-      "reachQF": 0.2256,
-      "reachR16": 0.6392,
+      "reachFinal": 0.0563,
+      "reachQF": 0.2914,
+      "reachR16": 0.5345,
       "reachR32": 1.0,
-      "reachSF": 0.0434,
-      "winCup": 0.0055
-    },
-    {
-      "id": "senegal",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0011066273085370702,
-        "reachQF": 0.0034268234562054695,
-        "reachR16": 0.004570253384660417,
-        "reachR32": 0.0,
-        "reachSF": 0.0018428499667634368,
-        "winCup": 0.0006467116822819887
-      },
-      "name": "Senegal",
-      "qualify": 0.0,
-      "reachFinal": 0.0124,
-      "reachQF": 0.1359,
-      "reachR16": 0.2972,
-      "reachR32": 1.0,
-      "reachSF": 0.0352,
-      "winCup": 0.0042
+      "reachSF": 0.1331,
+      "winCup": 0.0303
     },
     {
       "id": "united-states",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.001203491171550502,
-        "reachQF": 0.003483307479967854,
-        "reachR16": 0.0046735715464727825,
+        "reachFinal": 0.002627448191687136,
+        "reachQF": 0.0049973096762157936,
+        "reachR16": 0.003330849591320509,
         "reachR32": 0.0,
-        "reachSF": 0.0019805855194865987,
-        "winCup": 0.0004790313142165134
+        "reachSF": 0.003923799051939332,
+        "winCup": 0.0014862449327079303
       },
       "name": "United States",
       "qualify": 1.0,
-      "reachFinal": 0.0147,
-      "reachQF": 0.1413,
-      "reachR16": 0.3223,
+      "reachFinal": 0.0746,
+      "reachQF": 0.4836,
+      "reachR16": 0.8729,
       "reachR32": 1.0,
-      "reachSF": 0.0409,
-      "winCup": 0.0023
+      "reachSF": 0.1901,
+      "winCup": 0.0226
     },
     {
-      "id": "iran",
+      "id": "portugal",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0009126576576131929,
-        "reachQF": 0.0029582155093907546,
-        "reachR16": 0.004656994739099455,
-        "reachR32": 0.001483028994996388,
-        "reachSF": 0.0016324594941376034,
-        "winCup": 0.0003996798718974975
-      },
-      "name": "Iran",
-      "qualify": 0.0,
-      "reachFinal": 0.0084,
-      "reachQF": 0.0969,
-      "reachR16": 0.318,
-      "reachR32": 0.9775,
-      "reachSF": 0.0274,
-      "winCup": 0.0016
-    },
-    {
-      "id": "ivory-coast",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0006693093455196931,
-        "reachQF": 0.002531137293787123,
-        "reachR16": 0.004641964670266244,
+        "reachFinal": 0.0025548377639294435,
+        "reachQF": 0.004510803808635441,
+        "reachR16": 0.004649128950674523,
         "reachR32": 0.0,
-        "reachSF": 0.0015943271307984443,
-        "winCup": 0.00036032069049667407
+        "reachSF": 0.00372707807806598,
+        "winCup": 0.0014862449327079303
       },
-      "name": "Ivory Coast",
+      "name": "Portugal",
       "qualify": 1.0,
-      "reachFinal": 0.0045,
-      "reachQF": 0.0688,
-      "reachR16": 0.3142,
+      "reachFinal": 0.0702,
+      "reachQF": 0.2843,
+      "reachR16": 0.684,
       "reachR32": 1.0,
-      "reachSF": 0.0261,
-      "winCup": 0.0013
+      "reachSF": 0.1667,
+      "winCup": 0.0226
+    },
+    {
+      "id": "canada",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.002320335967053047,
+        "reachQF": 0.004515096455226621,
+        "reachR16": 0.004033357782295045,
+        "reachR32": 0.0,
+        "reachSF": 0.003311719190994309,
+        "winCup": 0.0013112494041943356
+      },
+      "name": "Canada",
+      "qualify": 1.0,
+      "reachFinal": 0.0571,
+      "reachQF": 0.2852,
+      "reachR16": 0.7955,
+      "reachR32": 1.0,
+      "reachSF": 0.1254,
+      "winCup": 0.0175
+    },
+    {
+      "id": "netherlands",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0021999772726098788,
+        "reachQF": 0.004050831889871512,
+        "reachR16": 0.004742461807964299,
+        "reachR32": 0.0,
+        "reachSF": 0.003038282244953553,
+        "winCup": 0.0012776713192366807
+      },
+      "name": "Netherlands",
+      "qualify": 1.0,
+      "reachFinal": 0.051,
+      "reachQF": 0.2069,
+      "reachR16": 0.3416,
+      "reachR32": 1.0,
+      "reachSF": 0.1029,
+      "winCup": 0.0166
+    },
+    {
+      "id": "ecuador",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0018045583947326283,
+        "reachQF": 0.004197369533410181,
+        "reachR16": 0.0049880832992242625,
+        "reachR32": 0.0,
+        "reachSF": 0.002966374049239239,
+        "winCup": 0.0012470108259353646
+      },
+      "name": "Ecuador",
+      "qualify": 0.0,
+      "reachFinal": 0.0337,
+      "reachQF": 0.2283,
+      "reachR16": 0.4655,
+      "reachR32": 1.0,
+      "reachSF": 0.0975,
+      "winCup": 0.0158
+    },
+    {
+      "id": "norway",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.001508545988692423,
+        "reachQF": 0.0039387307600291755,
+        "reachR16": 0.004765588211333413,
+        "reachR32": 0.0,
+        "reachSF": 0.002712931993250107,
+        "winCup": 0.0008741115489455566
+      },
+      "name": "Norway",
+      "qualify": 1.0,
+      "reachFinal": 0.0233,
+      "reachQF": 0.192,
+      "reachR16": 0.6513,
+      "reachR32": 1.0,
+      "reachSF": 0.08,
+      "winCup": 0.0077
+    },
+    {
+      "id": "paraguay",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0016324594941376034,
+        "reachQF": 0.0037217037764980705,
+        "reachR16": 0.004846856300737623,
+        "reachR32": 0.0,
+        "reachSF": 0.0024350176590735434,
+        "winCup": 0.0008627716963368698
+      },
+      "name": "Paraguay",
+      "qualify": 0.0,
+      "reachFinal": 0.0274,
+      "reachQF": 0.1661,
+      "reachR16": 0.3772,
+      "reachR32": 1.0,
+      "reachSF": 0.0633,
+      "winCup": 0.0075
+    },
+    {
+      "id": "switzerland",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0013510751274448064,
+        "reachQF": 0.004020108331873657,
+        "reachR16": 0.004931635022991867,
+        "reachR32": 0.0,
+        "reachSF": 0.0022182513383293607,
+        "winCup": 0.0008512761009214343
+      },
+      "name": "Switzerland",
+      "qualify": 1.0,
+      "reachFinal": 0.0186,
+      "reachQF": 0.2027,
+      "reachR16": 0.5824,
+      "reachR32": 1.0,
+      "reachSF": 0.0519,
+      "winCup": 0.0073
+    },
+    {
+      "id": "senegal",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0016696200166504951,
+        "reachQF": 0.0043664521066879925,
+        "reachR16": 0.004998361331476547,
+        "reachR32": 0.0,
+        "reachSF": 0.0028256636388643286,
+        "winCup": 0.0008396183656876498
+      },
+      "name": "Senegal",
+      "qualify": 0.0,
+      "reachFinal": 0.0287,
+      "reachQF": 0.2564,
+      "reachR16": 0.5128,
+      "reachR32": 1.0,
+      "reachSF": 0.0875,
+      "winCup": 0.0071
+    },
+    {
+      "id": "belgium",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0016411188256796035,
+        "reachQF": 0.004274478213770658,
+        "reachR16": 0.0049983613314765465,
+        "reachR32": 0.0,
+        "reachSF": 0.00280216327147438,
+        "winCup": 0.0007722693830523129
+      },
+      "name": "Belgium",
+      "qualify": 1.0,
+      "reachFinal": 0.0277,
+      "reachQF": 0.2406,
+      "reachR16": 0.4872,
+      "reachR32": 1.0,
+      "reachSF": 0.0859,
+      "winCup": 0.006
     },
     {
       "id": "austria",
       "mcStdErr": {
-        "qualify": 0.004996971482808362,
-        "reachFinal": 0.0007328601503697688,
-        "reachQF": 0.002445747125113306,
-        "reachR16": 0.0038360332376036576,
-        "reachR32": 0.004478149617866736,
-        "reachSF": 0.0014,
-        "winCup": 0.00036032069049667407
+        "qualify": 0.0,
+        "reachFinal": 0.0010523573537539422,
+        "reachQF": 0.002851762788171555,
+        "reachR16": 0.004129556755875866,
+        "reachR32": 0.0,
+        "reachSF": 0.0019430777133197736,
+        "winCup": 0.0004790313142165134
       },
       "name": "Austria",
-      "qualify": 0.5174,
-      "reachFinal": 0.0054,
-      "reachQF": 0.0639,
-      "reachR16": 0.1793,
-      "reachR32": 0.7224,
-      "reachSF": 0.02,
-      "winCup": 0.0013
+      "qualify": 1.0,
+      "reachFinal": 0.0112,
+      "reachQF": 0.0893,
+      "reachR16": 0.2181,
+      "reachR32": 1.0,
+      "reachSF": 0.0393,
+      "winCup": 0.0023
     },
     {
-      "id": "south-korea",
+      "id": "algeria",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0005469003565550127,
-        "reachQF": 0.0025379393215756757,
-        "reachR16": 0.0038534924419284904,
-        "reachR32": 0.004997439344304241,
-        "reachSF": 0.0013510751274448064,
-        "winCup": 0.00026448251359967073
+        "reachFinal": 0.0008627716963368698,
+        "reachQF": 0.0032355302502062935,
+        "reachR16": 0.004931635022991868,
+        "reachR32": 0.0,
+        "reachSF": 0.001533596752735216,
+        "winCup": 0.0004354756020720334
       },
-      "name": "South Korea",
+      "name": "Algeria",
       "qualify": 0.0,
-      "reachFinal": 0.003,
-      "reachQF": 0.0692,
-      "reachR16": 0.1814,
-      "reachR32": 0.484,
-      "reachSF": 0.0186,
-      "winCup": 0.0007
+      "reachFinal": 0.0075,
+      "reachQF": 0.1188,
+      "reachR16": 0.4176,
+      "reachR32": 1.0,
+      "reachSF": 0.0241,
+      "winCup": 0.0019
     },
     {
       "id": "croatia",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.0006232808355789547,
-        "reachQF": 0.002333648645362022,
-        "reachR16": 0.004244355192488018,
+        "reachFinal": 0.0009998994949493674,
+        "reachQF": 0.0027482123280416306,
+        "reachR16": 0.004649128950674523,
         "reachR32": 0.0,
-        "reachSF": 0.0013546331606748745,
-        "winCup": 0.0002235508890610816
+        "reachSF": 0.001814860600707393,
+        "winCup": 0.0003739037309254884
       },
       "name": "Croatia",
       "qualify": 1.0,
-      "reachFinal": 0.0039,
-      "reachQF": 0.0578,
-      "reachR16": 0.2357,
+      "reachFinal": 0.0101,
+      "reachQF": 0.0823,
+      "reachR16": 0.316,
       "reachR32": 1.0,
-      "reachSF": 0.0187,
-      "winCup": 0.0005
+      "reachSF": 0.0341,
+      "winCup": 0.0014
+    },
+    {
+      "id": "ivory-coast",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0006467116822819887,
+        "reachQF": 0.002622584793672075,
+        "reachR16": 0.004765588211333413,
+        "reachR32": 0.0,
+        "reachSF": 0.0014570212764403955,
+        "winCup": 0.0002998649696113236
+      },
+      "name": "Ivory Coast",
+      "qualify": 1.0,
+      "reachFinal": 0.0042,
+      "reachQF": 0.0743,
+      "reachR16": 0.3487,
+      "reachR32": 1.0,
+      "reachSF": 0.0217,
+      "winCup": 0.0009
     },
     {
       "id": "egypt",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.00036032069049667407,
-        "reachQF": 0.0016920328011004987,
-        "reachR16": 0.0046459547996079344,
+        "reachFinal": 0.0004467661580737735,
+        "reachQF": 0.0016582855604509136,
+        "reachR16": 0.0041471859133634225,
         "reachR32": 0.0,
-        "reachSF": 0.0008741115489455566,
-        "winCup": 0.00014140721339450828
+        "reachSF": 0.0008454679177828097,
+        "winCup": 0.0002235508890610816
       },
       "name": "Egypt",
       "qualify": 1.0,
-      "reachFinal": 0.0013,
-      "reachQF": 0.0295,
-      "reachR16": 0.3152,
+      "reachFinal": 0.002,
+      "reachQF": 0.0283,
+      "reachR16": 0.2207,
       "reachR32": 1.0,
-      "reachSF": 0.0077,
+      "reachSF": 0.0072,
+      "winCup": 0.0005
+    },
+    {
+      "id": "ghana",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.00026448251359967073,
+        "reachQF": 0.0018122913673027303,
+        "reachR16": 0.0032797749922822447,
+        "reachR32": 0.0,
+        "reachSF": 0.0006982828939620389,
+        "winCup": 0.00017317909804592468
+      },
+      "name": "Ghana",
+      "qualify": 0.0,
+      "reachFinal": 0.0007,
+      "reachQF": 0.034,
+      "reachR16": 0.1226,
+      "reachR32": 1.0,
+      "reachSF": 0.0049,
+      "winCup": 0.0003
+    },
+    {
+      "id": "sweden",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.00033148001448051134,
+        "reachQF": 0.0016324594941376034,
+        "reachR16": 0.0035390642831121337,
+        "reachR32": 0.0,
+        "reachSF": 0.0007192329247191065,
+        "winCup": 0.00014140721339450828
+      },
+      "name": "Sweden",
+      "qualify": 0.0,
+      "reachFinal": 0.0011,
+      "reachQF": 0.0274,
+      "reachR16": 0.1468,
+      "reachR32": 1.0,
+      "reachSF": 0.0052,
       "winCup": 0.0002
     },
     {
       "id": "south-africa",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.00026448251359967073,
-        "reachQF": 0.0014894532553927297,
-        "reachR16": 0.004145163929207143,
+        "reachFinal": 0.00036032069049667407,
+        "reachQF": 0.001585381972901168,
+        "reachR16": 0.004033357782295044,
         "reachR32": 0.0,
-        "reachSF": 0.0004893097178679368,
-        "winCup": 0.0
+        "reachSF": 0.0006982828939620389,
+        "winCup": 9.999499987499375e-05
       },
       "name": "South Africa",
       "qualify": 1.0,
-      "reachFinal": 0.0007,
-      "reachQF": 0.0227,
-      "reachR16": 0.2204,
+      "reachFinal": 0.0013,
+      "reachQF": 0.0258,
+      "reachR16": 0.2045,
       "reachR32": 1.0,
-      "reachSF": 0.0024,
+      "reachSF": 0.0049,
+      "winCup": 0.0001
+    },
+    {
+      "id": "south-korea",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
+      "name": "South Korea",
+      "qualify": 0.0,
+      "reachFinal": 0.0,
+      "reachQF": 0.0,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
+      "reachSF": 0.0,
       "winCup": 0.0
     },
     {
@@ -3218,20 +3783,20 @@
       "id": "bosnia-herzegovina",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 0.00014140721339450828,
-        "reachQF": 0.0012075164595151489,
-        "reachR16": 0.0034097435387430534,
+        "reachFinal": 9.999499987499375e-05,
+        "reachQF": 0.0013792621215708057,
+        "reachR16": 0.003330849591320509,
         "reachR32": 0.0,
-        "reachSF": 0.0002448754785600224,
+        "reachSF": 0.0004467661580737735,
         "winCup": 0.0
       },
       "name": "Bosnia-Herzegovina",
       "qualify": 0.0,
-      "reachFinal": 0.0002,
-      "reachQF": 0.0148,
-      "reachR16": 0.1343,
+      "reachFinal": 0.0001,
+      "reachQF": 0.0194,
+      "reachR16": 0.1271,
       "reachR32": 1.0,
-      "reachSF": 0.0006,
+      "reachSF": 0.002,
       "winCup": 0.0
     },
     {
@@ -3335,26 +3900,6 @@
       "winCup": 0.0
     },
     {
-      "id": "sweden",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0002448754785600224,
-        "reachQF": 0.0016696200166504951,
-        "reachR16": 0.0035380659971232867,
-        "reachR32": 0.0,
-        "reachSF": 0.0006543324842921984,
-        "winCup": 0.0
-      },
-      "name": "Sweden",
-      "qualify": 0.0,
-      "reachFinal": 0.0006,
-      "reachQF": 0.0287,
-      "reachR16": 0.1467,
-      "reachR32": 1.0,
-      "reachSF": 0.0043,
-      "winCup": 0.0
-    },
-    {
       "id": "tunisia",
       "mcStdErr": {
         "qualify": 0.0,
@@ -3378,20 +3923,20 @@
       "id": "cape-verde",
       "mcStdErr": {
         "qualify": 0.0,
-        "reachFinal": 9.999499987499375e-05,
-        "reachQF": 0.0007849560497250785,
-        "reachR16": 0.0015366964566888284,
+        "reachFinal": 0.0,
+        "reachQF": 0.0008157885755512883,
+        "reachR16": 0.0019689550528135475,
         "reachR32": 0.0,
-        "reachSF": 0.0003160696125855822,
+        "reachSF": 0.00026448251359967073,
         "winCup": 0.0
       },
       "name": "Cape Verde",
       "qualify": 1.0,
-      "reachFinal": 0.0001,
-      "reachQF": 0.0062,
-      "reachR16": 0.0242,
+      "reachFinal": 0.0,
+      "reachQF": 0.0067,
+      "reachR16": 0.0404,
       "reachR32": 1.0,
-      "reachSF": 0.001,
+      "reachSF": 0.0007,
       "winCup": 0.0
     },
     {
@@ -3426,6 +3971,26 @@
         "winCup": 0.0
       },
       "name": "Uruguay",
+      "qualify": 0.0,
+      "reachFinal": 0.0,
+      "reachQF": 0.0,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
+      "reachSF": 0.0,
+      "winCup": 0.0
+    },
+    {
+      "id": "iran",
+      "mcStdErr": {
+        "qualify": 0.0,
+        "reachFinal": 0.0,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
+        "winCup": 0.0
+      },
+      "name": "Iran",
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
@@ -3480,8 +4045,8 @@
         "qualify": 0.0,
         "reachFinal": 0.0,
         "reachQF": 0.0,
-        "reachR16": 0.00026448251359967073,
-        "reachR32": 0.0005647796030311293,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
         "reachSF": 0.0,
         "winCup": 0.0
       },
@@ -3489,29 +4054,29 @@
       "qualify": 0.0,
       "reachFinal": 0.0,
       "reachQF": 0.0,
-      "reachR16": 0.0007,
-      "reachR32": 0.0032,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
       "reachSF": 0.0,
       "winCup": 0.0
     },
     {
       "id": "congo-dr",
       "mcStdErr": {
-        "qualify": 0.0002235508890610816,
+        "qualify": 0.0,
         "reachFinal": 0.0,
-        "reachQF": 9.999499987499375e-05,
-        "reachR16": 0.0004577761461675346,
-        "reachR32": 0.00289025950392002,
-        "reachSF": 0.0,
+        "reachQF": 0.0006071498991188255,
+        "reachR16": 0.0022502833154960733,
+        "reachR32": 0.0,
+        "reachSF": 0.0001999599959991998,
         "winCup": 0.0
       },
       "name": "Congo DR",
-      "qualify": 0.0005,
+      "qualify": 0.0,
       "reachFinal": 0.0,
-      "reachQF": 0.0001,
-      "reachR16": 0.0021,
-      "reachR32": 0.092,
-      "reachSF": 0.0,
+      "reachQF": 0.0037,
+      "reachR16": 0.0535,
+      "reachR32": 1.0,
+      "reachSF": 0.0004,
       "winCup": 0.0
     },
     {
@@ -3519,39 +4084,19 @@
       "mcStdErr": {
         "qualify": 0.0,
         "reachFinal": 0.0,
-        "reachQF": 0.0002448754785600224,
-        "reachR16": 0.0003996798718974975,
-        "reachR32": 0.0007528286657666537,
-        "reachSF": 9.999499987499375e-05,
+        "reachQF": 0.0,
+        "reachR16": 0.0,
+        "reachR32": 0.0,
+        "reachSF": 0.0,
         "winCup": 0.0
       },
       "name": "Uzbekistan",
       "qualify": 0.0,
       "reachFinal": 0.0,
-      "reachQF": 0.0006,
-      "reachR16": 0.0016,
-      "reachR32": 0.0057,
-      "reachSF": 0.0001,
-      "winCup": 0.0
-    },
-    {
-      "id": "ghana",
-      "mcStdErr": {
-        "qualify": 0.0,
-        "reachFinal": 0.0002235508890610816,
-        "reachQF": 0.0018678747281335544,
-        "reachR16": 0.003482277415715181,
-        "reachR32": 0.0,
-        "reachSF": 0.0006232808355789547,
-        "winCup": 0.0
-      },
-      "name": "Ghana",
-      "qualify": 0.0,
-      "reachFinal": 0.0005,
-      "reachQF": 0.0362,
-      "reachR16": 0.1412,
-      "reachR32": 1.0,
-      "reachSF": 0.0039,
+      "reachQF": 0.0,
+      "reachR16": 0.0,
+      "reachR32": 0.0,
+      "reachSF": 0.0,
       "winCup": 0.0
     },
     {

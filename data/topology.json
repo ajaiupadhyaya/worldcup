@@ -1,0 +1,146 @@
+{
+  "progression": {
+    "M100": [
+      "M95",
+      "M96"
+    ],
+    "M101": [
+      "M97",
+      "M98"
+    ],
+    "M102": [
+      "M99",
+      "M100"
+    ],
+    "M104": [
+      "M101",
+      "M102"
+    ],
+    "M89": [
+      "M74",
+      "M77"
+    ],
+    "M90": [
+      "M73",
+      "M75"
+    ],
+    "M91": [
+      "M76",
+      "M78"
+    ],
+    "M92": [
+      "M79",
+      "M80"
+    ],
+    "M93": [
+      "M83",
+      "M84"
+    ],
+    "M94": [
+      "M81",
+      "M82"
+    ],
+    "M95": [
+      "M86",
+      "M88"
+    ],
+    "M96": [
+      "M85",
+      "M87"
+    ],
+    "M97": [
+      "M89",
+      "M90"
+    ],
+    "M98": [
+      "M93",
+      "M94"
+    ],
+    "M99": [
+      "M91",
+      "M92"
+    ]
+  },
+  "r32": [
+    {
+      "awayRef": "2B",
+      "homeRef": "2A",
+      "slot": "M73"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1E",
+      "slot": "M74"
+    },
+    {
+      "awayRef": "2C",
+      "homeRef": "1F",
+      "slot": "M75"
+    },
+    {
+      "awayRef": "2F",
+      "homeRef": "1C",
+      "slot": "M76"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1I",
+      "slot": "M77"
+    },
+    {
+      "awayRef": "2I",
+      "homeRef": "2E",
+      "slot": "M78"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1A",
+      "slot": "M79"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1L",
+      "slot": "M80"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1D",
+      "slot": "M81"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1G",
+      "slot": "M82"
+    },
+    {
+      "awayRef": "2L",
+      "homeRef": "2K",
+      "slot": "M83"
+    },
+    {
+      "awayRef": "2J",
+      "homeRef": "1H",
+      "slot": "M84"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1B",
+      "slot": "M85"
+    },
+    {
+      "awayRef": "2H",
+      "homeRef": "1J",
+      "slot": "M86"
+    },
+    {
+      "awayRef": "3X",
+      "homeRef": "1K",
+      "slot": "M87"
+    },
+    {
+      "awayRef": "2G",
+      "homeRef": "2D",
+      "slot": "M88"
+    }
+  ]
+}
