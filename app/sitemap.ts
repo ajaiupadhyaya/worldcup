@@ -6,7 +6,7 @@ const siteUrl =
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return ["", "/standings", "/predict", "/scenarios"].map((path) => ({
+  return ["", "/standings", "/predict", "/bracket", "/scenarios"].map((path) => ({
     url: `${siteUrl}${path}`,
     lastModified: now,
     changeFrequency: path === "" ? "hourly" : "daily",

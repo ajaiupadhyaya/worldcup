@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/#fixtures", label: "FIXTURES" },
   { href: "/standings", label: "TABLES" },
   { href: "/predict", label: "FORECAST" },
+  { href: "/bracket", label: "THE DRAW" },
   { href: "/scenarios", label: "SCENARIOS" },
 ];
 
