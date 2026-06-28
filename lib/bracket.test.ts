@@ -55,6 +55,17 @@ describe("buildBracketTree", () => {
     expect(tree.columns).toEqual([]);
     expect(tree.bySlot).toEqual({});
   });
+
+  it("null-coalesces a single-element progression entry so feeders is never [string, undefined]", () => {
+    // topology with only one feeder listed for M90 (under-specified); cast via unknown
+    // to simulate a malformed/partial payload that bypasses static typing at runtime.
+    const singleFeederTopo = {
+      r32: [],
+      progression: { M90: ["M73"] },
+    } as unknown as Topology;
+    const tree = buildBracketTree(bracket, singleFeederTopo);
+    expect(tree.bySlot.M90.feeders).toEqual(["M73", null]);
+  });
 });
 
 describe("tracePath", () => {

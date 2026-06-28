@@ -29,7 +29,10 @@ const ROUND_LABELS: Record<BracketRound, string> = {
   F: "Final",
 };
 
-const slotNum = (slot: string): number => Number.parseInt(slot.slice(1), 10);
+const slotNum = (slot: string): number => {
+  const n = Number.parseInt(slot.slice(1), 10);
+  return Number.isNaN(n) ? 0 : n;
+};
 
 /** Shape predictions.bracket + topology into round-column tree + slot index.
  *  Honors each slot's emitted `round`; feeders come from topology.progression.
@@ -46,7 +49,7 @@ export function buildBracketTree(
       round: s.round,
       sides: [s.sides[0] ?? [], s.sides[1] ?? []],
       winner: s.winner ?? [],
-      feeders: feeders ? [feeders[0], feeders[1]] : [null, null],
+      feeders: feeders ? [feeders[0] ?? null, feeders[1] ?? null] : [null, null],
     };
   }
   const columns: BracketColumn[] = BRACKET_ROUNDS.map((round) => ({
