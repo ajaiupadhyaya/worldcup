@@ -19,8 +19,15 @@ function isActive(pathname: string, href: string): boolean {
 
 export function SiteNav() {
   const pathname = usePathname();
+  // Pin to a fixed editorial dateline timezone so server (UTC) and client (local)
+  // render identical text — avoids a React #418 hydration mismatch near midnight.
   const today = new Date()
-    .toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    .toLocaleDateString("en-GB", {
+      timeZone: "America/New_York",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
     .toUpperCase();
 
   return (
@@ -45,7 +52,7 @@ export function SiteNav() {
             );
           })}
         </nav>
-        <span className="hidden shrink-0 text-[10px] tracking-[1.5px] text-[var(--foreground-secondary)] lg:inline">
+        <span suppressHydrationWarning className="hidden shrink-0 text-[10px] tracking-[1.5px] text-[var(--foreground-secondary)] lg:inline">
           {today}
         </span>
       </div>

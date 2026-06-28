@@ -164,7 +164,7 @@ export async function GET(
               </div>
             )}
             <div style={{ display: "flex", fontSize: 15, color: "#52525b", marginTop: 10, letterSpacing: 1 }}>
-              {verdict ? "— tactical verdict by Floodlit" : "World Cup Intelligence"}
+              {verdict ? "— tactical verdict · World Cup MMXXVI" : "World Cup Intelligence"}
             </div>
           </div>
         </div>

@@ -1,5 +1,7 @@
 export function HomeMasthead() {
+  // Fixed editorial dateline timezone keeps the server/client render identical.
   const today = new Date().toLocaleDateString("en-GB", {
+    timeZone: "America/New_York",
     day: "numeric",
     month: "long",
     year: "numeric",

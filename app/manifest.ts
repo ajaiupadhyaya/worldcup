@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Floodlit World Cup Intelligence",
-    short_name: "Floodlit",
+    name: "World Cup MMXXVI Intelligence",
+    short_name: "World Cup MMXXVI",
     description: "Live World Cup scores, standings, probability, and tactical intelligence.",
     start_url: "/",
     display: "standalone",
-    background_color: "#080908",
-    theme_color: "#080908",
+    background_color: "#ffffff",
+    theme_color: "#1a1a1a",
     icons: [
       {
         src: "/favicon.ico",

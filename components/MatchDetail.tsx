@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { Match, MatchEvent, Player, Team } from "@/lib/types";
+import type { Match, MatchEvent, Player } from "@/lib/types";
 import { useMatch } from "@/lib/hooks";
 import { statusLabel, kickoffDay, kickoffTime } from "@/lib/format";
 import { LiveDot } from "./LiveDot";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMatches, useStandings, groupStandings } from "@/lib/hooks";
+import { useMatches, useStandings } from "@/lib/hooks";
 import { byInterest, groupByDay } from "@/lib/format";
 import { qualificationByTeam, qualificationGeneratedAt } from "@/lib/qualification";
 import { hydrateStandingTeams } from "@/lib/tournament";

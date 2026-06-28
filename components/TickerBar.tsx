@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMatches } from "@/lib/hooks";
 import { byInterest, statusLabel } from "@/lib/format";
-import { LiveDot } from "./LiveDot";
 
 export function TickerBar() {
   const pathname = usePathname();

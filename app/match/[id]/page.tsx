@@ -12,7 +12,7 @@ export async function generateMetadata({
   const { id } = await params;
   try {
     const { data: m } = await getMatch(id);
-    const title = `${m.homeTeam.name} ${m.status === "scheduled" ? "vs" : `${m.score.home}–${m.score.away}`} ${m.awayTeam.name} · Floodlit`;
+    const title = `${m.homeTeam.name} ${m.status === "scheduled" ? "vs" : `${m.score.home}–${m.score.away}`} ${m.awayTeam.name} — World Cup MMXXVI`;
     const description =
       m.status === "finished"
         ? `Full tactical breakdown of ${m.homeTeam.name} vs ${m.awayTeam.name}.`
@@ -25,7 +25,7 @@ export async function generateMetadata({
       twitter: { card: "summary_large_image", title, description, images: [og] },
     };
   } catch {
-    return { title: "Match · Floodlit" };
+    return { title: "Match — World Cup MMXXVI" };
   }
 }
 
