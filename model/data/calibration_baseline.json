@@ -1,0 +1,6 @@
+{
+  "brier": 0.531633031653194,
+  "logloss": 0.9017186914568878,
+  "eps": 0.02,
+  "note": "Post-Fix-C (fw=0.4 + rho-in-MC) baseline, measured 2026-06-28 on 954 OOS samples from results.csv (as_of 2026-06-20). Pre-Fix-C was brier=0.5226177402045594/logloss=0.88646253996757; the friendly down-weight (Task 3) intentionally de-concentrates the champion at a calibration cost accepted by human decision 2026-06-27. eps=0.02 guards against future regressions beyond a generous MC-noise margin."
+}

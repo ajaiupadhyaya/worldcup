@@ -85,6 +85,55 @@ def validate_predictions(obj: dict) -> None:
             if k not in err or float(err[k]) < 0.0:
                 raise ValueError(f"{t.get('name')}: mcStdErr[{k}] invalid")
 
+    # --- Conservation caps — compute totals first (needed by nesting guards too).
+    caps = {"qualify": 24, "reachR32": 32, "reachR16": 16,
+            "reachQF": 8, "reachSF": 4, "reachFinal": 2, "winCup": 1}
+    totals = {k: sum(float(t[k]) for t in obj["teams"]) for k in caps}
+    for k, cap in caps.items():
+        if totals[k] > cap + 1e-6:
+            raise ValueError(f"conservation: sum {k}={totals[k]:.4f} exceeds cap {cap}")
+    if totals["reachR32"] >= 31.5:          # structurally complete field
+        for k, cap in caps.items():
+            if abs(totals[k] - cap) > 0.5:
+                raise ValueError(
+                    f"conservation: sum {k}={totals[k]:.4f} != {cap} (full field)")
+
+    # --- Per-team stage nesting. A team only reaches a later round through the
+    # earlier ones; reachR32 dominates qualify because best-thirds also advance.
+    # The qualify ≤ reachR32 constraint is only enforceable when the R32 bracket
+    # is structurally populated (partial-tournament states leave R32 refs
+    # unresolved so reachR32 stays at 0 for teams that genuinely qualified).
+    eps = 1e-9
+    chain = ("reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")
+    for t in obj["teams"]:
+        if totals["reachR32"] >= 31.5 and float(t["qualify"]) > float(t["reachR32"]) + eps:
+            raise ValueError(f"{t.get('name')}: qualify > reachR32")
+        for earlier, later in zip(chain, chain[1:]):
+            if float(t[later]) > float(t[earlier]) + eps:
+                raise ValueError(f"{t.get('name')}: {later} > {earlier} (nesting)")
+
+    # --- Bracket per-slot sanity: each side / winner list is a sub-distribution.
+    for sl in obj.get("bracket", []):
+        for lst in (*sl.get("sides", []), sl.get("winner", [])):
+            s = 0.0
+            for e in lst:
+                p = float(e["prob"])
+                if not 0.0 <= p <= 1.0:
+                    raise ValueError(f"{sl.get('slot')}: prob {p} out of [0,1]")
+                s += p
+            if s > 1.0 + 1e-6:
+                raise ValueError(f"{sl.get('slot')}: list sums to {s:.4f} > 1")
+
+
+def validate_calibration_nonregression(metrics: dict, baseline: dict) -> None:
+    """Fail if Brier or log-loss worsen beyond eps vs the recorded baseline."""
+    eps = float(baseline.get("eps", 0.01))
+    for k in ("brier", "logloss"):
+        if float(metrics[k]) > float(baseline[k]) + eps:
+            raise ValueError(
+                f"calibration regression: {k}={float(metrics[k]):.4f} > "
+                f"baseline {float(baseline[k]):.4f} + eps {eps}")
+
 
 def write_json(obj: dict, path: Path) -> None:
     path = Path(path)

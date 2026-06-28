@@ -17,6 +17,7 @@ from model.snapshot import (
     build_calibration,
     build_predictions,
     build_ratings,
+    validate_calibration_nonregression,
     validate_predictions,
     write_json,
 )
@@ -159,10 +160,13 @@ def main(argv: list[str] | None = None) -> int:
 
     # Calibration: frozen-cutoff out-of-sample backtest over the history.
     cal_samples = _calibration_samples(history, as_of)
-    write_json(
-        build_calibration(cal_samples, generated_at=a.generated_at),
-        data / "predictions" / "calibration.json",
-    )
+    cal = build_calibration(cal_samples, generated_at=a.generated_at)
+    baseline_path = Path(__file__).resolve().parent.parent / "data" / "calibration_baseline.json"
+    # Only enforce non-regression with a meaningful OOS window (tiny test
+    # fixtures produce a handful of samples whose metrics are not comparable).
+    if len(cal_samples) >= 500 and baseline_path.exists():
+        validate_calibration_nonregression(cal, json.loads(baseline_path.read_text()))
+    write_json(cal, data / "predictions" / "calibration.json")
     return 0
 
 

@@ -104,3 +104,68 @@ def test_build_calibration_metrics():
 def test_build_calibration_empty_samples_safe():
     out = build_calibration([], generated_at="2026-06-20T00:00:00Z")
     assert out["brier"] == 0.0 and out["logloss"] == 0.0
+
+
+def _full_field_teams():
+    # 48 teams, exact conservation: 24 qualify, 32 reachR32, 16/8/4/2/1.
+    teams = []
+    for i in range(48):
+        reach32 = 1.0 if i < 32 else 0.0
+        qual = 1.0 if i < 24 else 0.0
+        r16 = 1.0 if i < 16 else 0.0
+        qf = 1.0 if i < 8 else 0.0
+        sf = 1.0 if i < 4 else 0.0
+        fin = 1.0 if i < 2 else 0.0
+        cup = 1.0 if i < 1 else 0.0
+        st = {"qualify": qual, "reachR32": reach32, "reachR16": r16,
+              "reachQF": qf, "reachSF": sf, "reachFinal": fin, "winCup": cup}
+        teams.append({"id": f"t{i}", "name": f"t{i}", **st,
+                      "mcStdErr": {k: 0.0 for k in st}})
+    return teams
+
+
+def test_validate_accepts_full_field_conservation():
+    validate_predictions({"generatedAt": "x", "modelVersion": "v", "seed": 1,
+                          "teams": _full_field_teams()})
+
+
+def test_validate_rejects_double_champion():
+    import pytest
+    teams = _full_field_teams()
+    teams[1]["winCup"] = 1.0      # two champions -> Sum winCup = 2
+    teams[1]["reachFinal"] = 1.0
+    with pytest.raises(ValueError):
+        validate_predictions({"generatedAt": "x", "modelVersion": "v", "seed": 1,
+                              "teams": teams})
+
+
+def test_validate_rejects_stage_nesting_violation():
+    import pytest
+    teams = _full_field_teams()
+    teams[0]["winCup"] = 1.0
+    teams[0]["reachFinal"] = 0.5   # winCup > reachFinal
+    with pytest.raises(ValueError):
+        validate_predictions({"generatedAt": "x", "modelVersion": "v", "seed": 1,
+                              "teams": teams})
+
+
+def test_validate_rejects_bracket_list_oversum():
+    import pytest
+    teams = _full_field_teams()
+    obj = {"generatedAt": "x", "modelVersion": "v", "seed": 1, "teams": teams,
+           "bracket": [{"slot": "M104", "round": "F",
+                        "sides": [[{"id": "a", "prob": 0.9}], [{"id": "b", "prob": 0.9}]],
+                        "winner": [{"id": "a", "prob": 0.7}, {"id": "b", "prob": 0.6}]}]}
+    with pytest.raises(ValueError):     # winner sums to 1.3
+        validate_predictions(obj)
+
+
+def test_calibration_nonregression_gate():
+    import pytest
+    from model.snapshot import validate_calibration_nonregression
+    base = {"brier": 0.5226, "logloss": 0.8865, "eps": 0.01}
+    validate_calibration_nonregression({"brier": 0.52, "logloss": 0.88}, base)  # ok
+    with pytest.raises(ValueError):
+        validate_calibration_nonregression({"brier": 0.55, "logloss": 0.88}, base)
+    with pytest.raises(ValueError):
+        validate_calibration_nonregression({"brier": 0.52, "logloss": 0.95}, base)
