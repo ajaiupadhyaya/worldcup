@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { BracketTree, BracketMatch } from "@/lib/bracket";
 import type { PredTeam } from "@/lib/predictions";
 import {
@@ -9,10 +9,12 @@ import {
   prettifyId,
   computeLayout,
   slotState,
+  clampRoundIndex,
 } from "@/lib/bracketView";
 import { BracketSlot } from "@/components/bracket/BracketSlot";
 import { ChampionPanel } from "@/components/bracket/ChampionPanel";
 import { TeamPathProvider, useTeamPath } from "@/components/bracket/TeamPathProvider";
+import { RoundSelector } from "@/components/bracket/RoundSelector";
 
 // Desktop canvas geometry (deterministic from computeLayout).
 const ROW_H = 80;   // px per logical row unit
@@ -74,6 +76,9 @@ function BoardHeader({ generatedAt }: { generatedAt: string }) {
         Every figure is a simulated frequency, not a certainty — sides and
         advance odds carry Monte-Carlo error (±1σ whiskers shown). Tap a team
         to trace its road through the bracket.
+      </p>
+      <p className="mt-1 text-[11px] tracking-[0.04em] text-[var(--foreground-faint)]">
+        Keyboard: Tab to a team, Enter to trace, Enter again to clear.
       </p>
     </header>
   );
@@ -225,7 +230,7 @@ function DesktopBoard({
 }
 
 // ---------------------------------------------------------------------------
-// Mobile: stacked rounds (round selector + scroll-snap land in UV4)
+// Mobile: one round per screen, horizontal scroll-snap + tab selector (UV4)
 // ---------------------------------------------------------------------------
 function MobileBoard({
   tree,
@@ -237,16 +242,46 @@ function MobileBoard({
   stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
   const { tracedSlots, selectedTeamId, selectTeam } = useTeamPath();
+  const [index, setIndex] = useState(0);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+
+  // Drive the scroller from the tab selection.
+  const goTo = (i: number) => {
+    const next = clampRoundIndex(i);
+    setIndex(next);
+    const el = scrollerRef.current;
+    const page = el?.children[next] as HTMLElement | undefined;
+    page?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  };
+
+  // Keep the selector in sync when the user swipes the scroller.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const i = clampRoundIndex(Math.round(el.scrollLeft / el.clientWidth));
+      setIndex((prev) => (prev === i ? prev : i));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <div className="px-6 pt-8 lg:hidden">
-      {ROUND_ORDER.map((round) => {
-        const matches = tree.rounds[round];
-        if (!matches || matches.length === 0) return null;
-        return (
-          <section key={round} className="mb-8">
+    <div className="px-6 pt-6 lg:hidden">
+      <RoundSelector index={index} onChange={goTo} />
+      <div
+        ref={scrollerRef}
+        className="mt-4 flex snap-x snap-mandatory overflow-x-auto motion-reduce:overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {ROUND_ORDER.map((round) => (
+          <section
+            key={round}
+            className="w-full shrink-0 snap-start pr-2"
+            aria-label={ROUND_LABELS[round]}
+          >
             <RoundHeading round={round} />
             <div className="mt-3 flex flex-col gap-3">
-              {matches.map((m) => (
+              {tree.rounds[round].map((m) => (
                 <BracketSlot
                   key={m.slot}
                   match={m}
@@ -259,8 +294,17 @@ function MobileBoard({
               ))}
             </div>
           </section>
-        );
-      })}
+        ))}
+      </div>
+      {selectedTeamId && (
+        <button
+          type="button"
+          onClick={() => selectTeam(selectedTeamId)}
+          className="mt-4 w-full border border-[var(--foreground-accent)] px-3 py-2 text-[11px] tracking-[0.2em] text-[var(--foreground-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--foreground-accent)]"
+        >
+          CLEAR {name(selectedTeamId).toUpperCase()}&apos;S ROAD
+        </button>
+      )}
     </div>
   );
 }

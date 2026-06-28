@@ -112,3 +112,20 @@ describe("championLadder", () => {
     expect(championLadder(champ, 2).map((e) => e.id)).toEqual(["argentina", "france"]);
   });
 });
+
+// ---------------------------------------------------------------------------
+// UV4 additions
+// ---------------------------------------------------------------------------
+import { clampRoundIndex } from "@/lib/bracketView";
+
+describe("clampRoundIndex", () => {
+  it("keeps a valid index unchanged", () => {
+    expect(clampRoundIndex(0)).toBe(0);
+    expect(clampRoundIndex(4)).toBe(4);
+  });
+  it("clamps out-of-range and non-finite indices", () => {
+    expect(clampRoundIndex(-1)).toBe(0);
+    expect(clampRoundIndex(99)).toBe(4);
+    expect(clampRoundIndex(NaN)).toBe(0);
+  });
+});

@@ -105,3 +105,9 @@ export function slotState(slot: string, traced: Set<string> | null): SlotVisual 
 export function championLadder(champion: BracketSlotProb[], topN = 6): BracketSlotProb[] {
   return [...champion].sort((a, b) => b.prob - a.prob).slice(0, topN);
 }
+
+/** Bound a round index (e.g. from a mobile selector) into ROUND_ORDER range. */
+export function clampRoundIndex(i: number): number {
+  if (!Number.isFinite(i)) return 0;
+  return Math.max(0, Math.min(ROUND_ORDER.length - 1, Math.round(i)));
+}
