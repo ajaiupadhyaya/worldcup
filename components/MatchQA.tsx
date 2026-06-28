@@ -2,8 +2,6 @@
 
 import { useRef, useState } from "react";
 
-// Ask the free analyst engine anything about this match. The route streams a
-// text response so the UI stays compatible with generated answers.
 export function MatchQA({ matchId }: { matchId: string }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -40,13 +38,12 @@ export function MatchQA({ matchId }: { matchId: string }) {
       for (;;) {
         const { done, value } = await reader.read();
         if (done) {
-          full += decoder.decode(); // flush any buffered multibyte bytes
+          full += decoder.decode();
           break;
         }
         full += decoder.decode(value, { stream: true });
         setAnswer(full);
       }
-      // The route writes a sentinel into the 200 stream if generation fails mid-flight.
       const sentinel = full.match(/\n?\[error: ([^\]]*)\]\s*$/);
       if (sentinel) {
         setAnswer(full.slice(0, sentinel.index).trim());
@@ -62,8 +59,8 @@ export function MatchQA({ matchId }: { matchId: string }) {
   }
 
   return (
-    <section className="art-panel p-5">
-      <h2 className="mb-4 border-l-2 border-home pl-3 font-display text-2xl text-text">Ask the analyst</h2>
+    <section className="border border-[var(--border)] p-5">
+      <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--foreground)]">Ask the analyst</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -76,14 +73,14 @@ export function MatchQA({ matchId }: { matchId: string }) {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask anything about this match…"
-          className="min-w-0 border border-border bg-bg/45 px-3 py-2 text-sm text-text placeholder:text-muted focus:border-home focus:outline-none"
+          className="min-w-0 border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)] placeholder:text-[var(--foreground-secondary)] focus:border-[var(--border-strong)] focus:outline-none"
         />
         <button
           type="submit"
           disabled={streaming || !question.trim()}
-          className="border border-home px-4 py-2 font-mono text-xs uppercase tracking-widest text-home transition-colors hover:bg-home hover:text-bg disabled:opacity-40"
+          className="border border-[var(--border-strong)] bg-[var(--foreground)] px-4 py-2 text-[10px] tracking-[2px] text-[var(--foreground-inverse)] disabled:opacity-40"
         >
-          {streaming ? "…" : "Ask"}
+          {streaming ? "…" : "ASK"}
         </button>
       </form>
 
@@ -96,7 +93,7 @@ export function MatchQA({ matchId }: { matchId: string }) {
               ask(sug);
             }}
             disabled={streaming}
-            className="border border-border px-2.5 py-1 font-mono text-[10px] text-muted hover:border-home hover:text-text disabled:opacity-40"
+            className="border border-[var(--border)] px-2.5 py-1 text-[10px] text-[var(--foreground-secondary)] hover:border-[var(--border-strong)] disabled:opacity-40"
           >
             {sug}
           </button>
@@ -104,13 +101,15 @@ export function MatchQA({ matchId }: { matchId: string }) {
       </div>
 
       {(answer || error) && (
-        <div className="mt-4 border border-border bg-bg/45 p-4">
+        <div className="mt-4 border border-[var(--border)] bg-[var(--row-alt)] p-4">
           {error ? (
-            <p className="font-mono text-xs text-danger/90">{error}</p>
+            <p className="text-xs text-[var(--foreground-accent)]">{error}</p>
           ) : (
-            <p className="max-w-[64ch] whitespace-pre-wrap text-[15px] leading-relaxed text-text/90">
+            <p className="max-w-[64ch] whitespace-pre-wrap text-[15px] leading-relaxed text-[var(--foreground)]">
               {answer}
-              {streaming && <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-home align-middle" />}
+              {streaming && (
+                <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-[var(--foreground-accent)] align-middle" />
+              )}
             </p>
           )}
         </div>

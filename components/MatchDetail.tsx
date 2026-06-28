@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { Match, MatchEvent, Player, Team } from "@/lib/types";
 import { useMatch } from "@/lib/hooks";
 import { statusLabel, kickoffDay, kickoffTime } from "@/lib/format";
-import { Flag } from "./Flag";
 import { LiveDot } from "./LiveDot";
 import { FormationPitch } from "./FormationPitch";
 import { StatComparison } from "./StatComparison";
@@ -12,7 +11,6 @@ import { TacticalAnalysis } from "./TacticalAnalysis";
 import { MatchQA } from "./MatchQA";
 import { CVUpload } from "./CVUpload";
 import { ShareButton } from "./ShareButton";
-import { PitchDivider } from "./PitchDivider";
 
 export function MatchDetail({ id }: { id: string }) {
   const { data, isLoading, error } = useMatch(id);
@@ -20,103 +18,156 @@ export function MatchDetail({ id }: { id: string }) {
 
   if (isLoading && !match) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-7">
-        <div className="art-panel h-48 animate-pulse" />
+      <div className="mx-auto max-w-[1440px] px-6 py-12 sm:px-12">
+        <div className="h-64 animate-pulse bg-[var(--row-alt)]" />
       </div>
     );
   }
   if (error || !match) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-10 text-center">
-        <p className="text-danger/90">{error ? (error as Error).message : "Match not found."}</p>
-        <Link href="/" className="mt-4 inline-block border border-home px-3 py-2 font-mono text-xs uppercase tracking-widest text-home hover:bg-home hover:text-bg">
-          ← back to the board
+      <div className="mx-auto max-w-[1440px] px-6 py-16 text-center sm:px-12">
+        <p className="text-[var(--foreground-accent)]">{error ? (error as Error).message : "Match not found."}</p>
+        <Link
+          href="/"
+          className="mt-6 inline-block border border-[var(--border-strong)] px-4 py-2 text-[10px] tracking-[2px] hover:bg-[var(--row-alt)]"
+        >
+          ← BACK TO BOARD
         </Link>
       </div>
     );
   }
 
   const live = match.status === "live";
+  const decided = match.status !== "scheduled";
+  const breadcrumb = ["MATCHES", match.round?.toUpperCase() || "WORLD CUP", `MATCH ${match.id.slice(-2)}`]
+    .filter(Boolean)
+    .join("  /  ");
+
+  const metaCols = [
+    { label: "VENUE", value: match.venue?.toUpperCase() || "TBC" },
+    { label: "DATE", value: kickoffDay(match.kickoff).toUpperCase() },
+    { label: "KICK-OFF", value: kickoffTime(match.kickoff).toUpperCase() },
+    { label: "ROUND", value: (match.round || "GROUP STAGE").toUpperCase() },
+    { label: "ATTENDANCE", value: "—" },
+  ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-7">
-      <Link href="/" className="mb-5 inline-block border border-border px-3 py-2 font-mono text-[11px] uppercase tracking-widest text-muted hover:border-home hover:text-text">
-        ← board
-      </Link>
+    <div>
+      <section className="mx-auto max-w-[1440px] px-6 pt-6 sm:px-12">
+        <p className="text-[9px] tracking-[2.5px] text-[var(--foreground-secondary)]">{breadcrumb}</p>
+        <div className="mt-4 h-px bg-[var(--border)]" />
 
-      {/* Scoreboard */}
-      <div className="art-panel p-5 md:p-7">
-        <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] uppercase tracking-[0.2em]">
-          {live && <LiveDot size={7} />}
-          <span className={live ? "text-accent" : "text-muted"}>
-            {live ? `LIVE · ${statusLabel(match)}` : match.status === "finished" ? "FULL TIME" : `${kickoffDay(match.kickoff)} · ${kickoffTime(match.kickoff)}`}
-          </span>
-          <span className="text-muted">· {match.round || match.homeTeam.group || "World Cup"}</span>
-          {match.venue && <span className="text-muted">· {match.venue}</span>}
-        </div>
-
-        <div className="grid items-center gap-5 sm:grid-cols-[1fr_auto_1fr]">
-          <TeamHead team={match.homeTeam} color="var(--home)" />
-          <div className="slash-field flex min-h-24 min-w-0 items-center justify-center gap-3 border border-border px-4 py-4 font-display text-5xl tabular-nums text-text sm:min-h-28 sm:gap-4 sm:px-6 sm:text-7xl">
-            <span>{match.status === "scheduled" ? "" : match.score.home}</span>
-            <span className="text-muted">{match.status === "scheduled" ? "vs" : "–"}</span>
-            <span>{match.status === "scheduled" ? "" : match.score.away}</span>
+        <div className="overflow-hidden py-6">
+          <h1 className="font-heading text-[clamp(64px,14vw,200px)] font-bold leading-[0.82] tracking-[-0.04em] text-[var(--foreground)]">
+            {match.homeTeam.name.toUpperCase()}
+          </h1>
+          <div className="my-4 flex items-center gap-4">
+            <span className="text-[11px] tracking-[4px] text-[var(--foreground-secondary)]">VS</span>
+            <span className="h-1 w-[120px] bg-[var(--foreground-accent)]" />
           </div>
-          <TeamHead team={match.awayTeam} color="var(--accent)" align="right" />
+          <h1 className="font-heading text-[clamp(64px,14vw,200px)] font-bold leading-[0.82] tracking-[-0.04em] text-[var(--foreground)]">
+            {match.awayTeam.name.toUpperCase()}
+          </h1>
         </div>
+      </section>
 
-        <div className="mt-5">
+      <div className="section-rule" />
+      <div className="flex flex-wrap bg-[var(--surface-dark)]">
+        {metaCols.map((col, i) => (
+          <div
+            key={col.label}
+            className={`min-w-[140px] flex-1 px-6 py-3 sm:px-12 ${
+              i < metaCols.length - 1 ? "border-r border-[var(--foreground-secondary)]" : ""
+            }`}
+          >
+            <p className="text-[8px] tracking-[2px] text-[var(--foreground-secondary)]">{col.label}</p>
+            <p className="mt-1 text-[13px] text-[var(--foreground-inverse)]">{col.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <section className="py-12 text-center">
+        {live && (
+          <div className="mb-4 flex items-center justify-center gap-2">
+            <LiveDot size={8} />
+            <span className="text-[9px] tracking-[2px] text-[var(--foreground-accent)]">LIVE · {statusLabel(match)}</span>
+          </div>
+        )}
+        <p className="font-heading text-[clamp(72px,12vw,120px)] font-bold italic leading-none tabular-nums text-[var(--foreground)]">
+          {decided ? (
+            <>
+              {match.score.home}
+              <span className="mx-4 text-[clamp(48px,8vw,80px)] not-italic text-[var(--foreground-secondary)]">—</span>
+              {match.score.away}
+            </>
+          ) : (
+            "—"
+          )}
+        </p>
+        <div className="mt-6 flex justify-center">
           <ShareButton matchId={match.id} />
         </div>
-
         {data && <SourceBadges source={data.source} cached={data.cached} fetchedAt={data.fetchedAt} match={match} />}
-      </div>
+      </section>
 
-      {/* Tactics board + stats/events */}
-      <div className="mt-7 grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start">
-        <div className="art-panel p-4">
-          <div className="mb-3 flex items-center justify-between border-b border-border pb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-            <span>Shape Room</span>
-            <span>{match.lineups?.home.formation || "--"} / {match.lineups?.away.formation || "--"}</span>
+      <div className="section-rule mx-auto max-w-[1440px]" />
+
+      <section className="mx-auto max-w-[1440px] px-6 py-10 sm:px-12">
+        <h2 className="mb-6 section-label">MATCH STATISTICS</h2>
+        <StatComparison match={match} />
+      </section>
+
+      {match.events && match.events.length > 0 && (
+        <section className="mx-auto max-w-[1440px] px-6 py-10 sm:px-12">
+          <div className="section-rule mb-6 pt-6">
+            <h2 className="section-label">KEY EVENTS</h2>
           </div>
-          <FormationPitch homeFormation={match.lineups?.home.formation} awayFormation={match.lineups?.away.formation} />
-        </div>
-        <div className="space-y-6">
-          <div className="art-panel p-5">
-            <h2 className="mb-4 border-l-2 border-home pl-3 font-display text-xl text-text">By the numbers</h2>
-            <StatComparison match={match} />
-          </div>
-          {match.events && match.events.length > 0 && (
-            <div className="art-panel p-5">
-              <h2 className="mb-4 border-l-2 border-accent pl-3 font-display text-xl text-text">Timeline</h2>
-              <EventTimeline events={match.events} match={match} />
-            </div>
-          )}
-        </div>
-      </div>
+          <EventTimeline events={match.events} match={match} />
+        </section>
+      )}
 
-      <PitchDivider />
-
-      {/* Free tactical read */}
       <TacticalAnalysis match={match} />
 
-      <PitchDivider />
+      <section className="mx-auto max-w-[1440px] px-6 py-10 sm:px-12">
+        <div className="section-rule mb-6 pt-6">
+          <h2 className="section-label">SHAPE ROOM</h2>
+        </div>
+        <div className="border border-[var(--border)] p-4">
+          <p className="mb-4 text-[10px] tracking-[2px] text-[var(--foreground-secondary)]">
+            {match.lineups?.home.formation || "—"} / {match.lineups?.away.formation || "—"}
+          </p>
+          <FormationPitch
+            homeFormation={match.lineups?.home.formation}
+            awayFormation={match.lineups?.away.formation}
+          />
+        </div>
+      </section>
 
-      {/* Q&A + CV */}
-      <div className="grid gap-8 md:grid-cols-2">
+      <section className="mx-auto grid max-w-[1440px] gap-8 px-6 py-10 sm:grid-cols-2 sm:px-12">
         <MatchQA matchId={match.id} />
         <CVUpload matchId={match.id} />
-      </div>
+      </section>
 
-      {/* Lineups */}
       {match.lineups && (match.lineups.home.startingXI.length > 0 || match.lineups.away.startingXI.length > 0) && (
-        <>
-          <PitchDivider label="Teamsheets" />
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Lineup title={match.homeTeam.name} color="var(--home)" xi={match.lineups.home.startingXI} subs={match.lineups.home.substitutes} formation={match.lineups.home.formation} />
-            <Lineup title={match.awayTeam.name} color="var(--accent)" xi={match.lineups.away.startingXI} subs={match.lineups.away.substitutes} formation={match.lineups.away.formation} />
+        <section className="mx-auto max-w-[1440px] px-6 pb-12 sm:px-12">
+          <div className="section-rule mb-6 pt-6">
+            <h2 className="section-label">TEAMSHEETS</h2>
           </div>
-        </>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Lineup
+              title={match.homeTeam.name}
+              xi={match.lineups.home.startingXI}
+              subs={match.lineups.home.substitutes}
+              formation={match.lineups.home.formation}
+            />
+            <Lineup
+              title={match.awayTeam.name}
+              xi={match.lineups.away.startingXI}
+              subs={match.lineups.away.substitutes}
+              formation={match.lineups.away.formation}
+            />
+          </div>
+        </section>
       )}
     </div>
   );
@@ -137,79 +188,90 @@ function SourceBadges({
   const fetchedLabel = Number.isFinite(fetched.getTime()) ? fetched.toUTCString() : "unknown";
   const hasXg = Boolean(match.stats && (match.stats.xG.home > 0 || match.stats.xG.away > 0));
   return (
-    <div className="mt-4 flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.14em]">
-      <span className="border border-border px-2 py-1 text-muted">source: {source}</span>
-      <span className="border border-border px-2 py-1 text-muted">{cached ? "cached" : "fresh"} · {fetchedLabel}</span>
-      <span className={`border px-2 py-1 ${hasXg ? "border-home/50 text-home" : "border-accent/50 text-accent"}`}>
-        {hasXg ? "xG live" : "xG unavailable"}
+    <div className="mt-4 flex flex-wrap justify-center gap-2 text-[10px] tracking-[1.5px] text-[var(--foreground-secondary)]">
+      <span>SOURCE: {source.toUpperCase()}</span>
+      <span>·</span>
+      <span>{cached ? "CACHED" : "FRESH"} · {fetchedLabel}</span>
+      <span>·</span>
+      <span className={hasXg ? "text-[var(--foreground)]" : "text-[var(--foreground-accent)]"}>
+        {hasXg ? "xG LIVE" : "xG UNAVAILABLE"}
       </span>
     </div>
   );
 }
 
-function TeamHead({ team, color, align = "left" }: { team: Team; color: string; align?: "left" | "right" }) {
-  return (
-    <div className={`flex min-w-0 flex-1 flex-col gap-2 ${align === "right" ? "items-start text-left sm:items-end sm:text-right" : "items-start"}`}>
-      <Flag team={team} size={44} />
-      <span className="max-w-full truncate font-display text-2xl leading-tight text-text sm:text-3xl">{team.name}</span>
-      <span className="h-1 w-14" style={{ background: color }} />
-    </div>
-  );
-}
-
 function EventTimeline({ events, match }: { events: MatchEvent[]; match: Match }) {
-  const color = (e: MatchEvent) =>
-    e.type === "goal" ? "var(--danger)" : e.type === "card" ? "var(--accent)" : "var(--muted)";
-  const icon = (e: MatchEvent) => (e.type === "goal" ? "⚽" : e.type === "card" ? "▮" : e.type === "substitution" ? "⇄" : "▷");
-  const fallbackLabel = (e: MatchEvent) =>
-    e.type === "substitution" ? "Substitution" : e.type === "var" ? "VAR review" : e.type === "card" ? "Card" : "Goal";
+  const homeId = match.homeTeam.id;
   return (
-    <ol className="divide-y divide-border/70 border border-border">
-      {events.map((e, i) => (
-        <li key={`${e.minute}-${e.type}-${e.player}-${i}`} className="flex items-start gap-3 px-3 py-2 text-sm">
-          <span className="w-9 shrink-0 font-mono text-xs text-muted tabular-nums">{e.minute}&apos;</span>
-          <span className="shrink-0" style={{ color: color(e) }}>{icon(e)}</span>
-          <span className="text-text/90">
-            {e.player || e.detail || fallbackLabel(e)}
-            {e.assist && <span className="text-muted"> · assist {e.assist}</span>}
-            {e.team && (
-              <span className="ml-1 font-mono text-[10px] text-muted">
-                {e.team === match.homeTeam.id ? match.homeTeam.shortName : e.team === match.awayTeam.id ? match.awayTeam.shortName : ""}
+    <ol className="space-y-0">
+      {events.map((e, i) => {
+        const isHome = e.team === homeId;
+        const teamLabel = isHome ? match.homeTeam.shortName.toUpperCase() : match.awayTeam.shortName.toUpperCase();
+        const eventLabel =
+          e.type === "goal"
+            ? `GOAL — ${(e.player || e.detail || "Unknown").toUpperCase()}${e.detail?.includes("pen") ? " (pen.)" : ""}`
+            : (e.detail || e.type).toUpperCase();
+        return (
+          <li key={`${e.minute}-${e.type}-${e.player}-${i}`}>
+            <div className="flex items-baseline gap-4 py-3">
+              <span className="w-10 text-[11px] tabular-nums text-[var(--foreground-secondary)]">{e.minute}&apos;</span>
+              <span
+                className={`w-12 text-[11px] tracking-[2px] ${
+                  isHome ? "text-[var(--foreground-accent)]" : "text-[var(--foreground-secondary)]"
+                }`}
+              >
+                {teamLabel}
               </span>
-            )}
-          </span>
-        </li>
-      ))}
+              <span className="font-heading text-[15px] text-[var(--foreground)]">{eventLabel}</span>
+            </div>
+            <div className="h-px bg-[var(--border)]" />
+          </li>
+        );
+      })}
     </ol>
   );
 }
 
-function Lineup({ title, color, xi, subs, formation }: { title: string; color: string; xi: Player[]; subs: Player[]; formation: string }) {
+function Lineup({
+  title,
+  xi,
+  subs,
+  formation,
+}: {
+  title: string;
+  xi: Player[];
+  subs: Player[];
+  formation: string;
+}) {
   return (
-    <div className="art-panel p-4">
-      <div className="mb-3 flex items-center gap-2 border-b border-border pb-2">
-        <span className="h-5 w-1" style={{ background: color }} />
-        <span className="font-display text-lg text-text">{title}</span>
-        {formation && <span className="font-mono text-[11px] text-muted">{formation}</span>}
+    <div className="border border-[var(--border)] p-4">
+      <div className="mb-3 flex items-baseline gap-3 border-b border-[var(--border)] pb-2">
+        <span className="font-heading text-lg font-semibold text-[var(--foreground)]">{title.toUpperCase()}</span>
+        {formation && <span className="text-[11px] text-[var(--foreground-secondary)]">{formation}</span>}
       </div>
-      <ol className="divide-y divide-border/60 border border-border/80">
+      <ol>
         {xi.map((p) => (
-          <li key={p.id} className="flex items-center gap-2 px-2 py-1.5 text-[13px]">
-            <span className="w-6 text-right font-mono text-xs text-muted tabular-nums">{p.number || "·"}</span>
-            <span className="text-text/90">{p.name}</span>
-            <span className="ml-auto font-mono text-[10px] text-muted">{p.position}</span>
+          <li
+            key={p.id}
+            className="flex items-center gap-2 border-b border-[var(--border)] py-2 text-[13px] last:border-b-0"
+          >
+            <span className="w-6 text-right text-xs tabular-nums text-[var(--foreground-secondary)]">
+              {p.number || "·"}
+            </span>
+            <span className="text-[var(--foreground)]">{p.name}</span>
+            <span className="ml-auto text-[10px] text-[var(--foreground-secondary)]">{p.position}</span>
           </li>
         ))}
       </ol>
       {subs.length > 0 && (
-        <details className="mt-2">
-          <summary className="cursor-pointer border border-border px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted hover:border-home hover:text-text">
-            bench ({subs.length})
+        <details className="mt-3">
+          <summary className="cursor-pointer text-[10px] tracking-[2px] text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
+            BENCH ({subs.length})
           </summary>
-          <ol className="mt-1 divide-y divide-border/60 border border-border/80">
+          <ol className="mt-2">
             {subs.map((p) => (
-              <li key={p.id} className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-muted">
-                <span className="w-6 text-right font-mono tabular-nums">{p.number || "·"}</span>
+              <li key={p.id} className="flex items-center gap-2 py-1.5 text-[12px] text-[var(--foreground-secondary)]">
+                <span className="w-6 text-right tabular-nums">{p.number || "·"}</span>
                 <span>{p.name}</span>
               </li>
             ))}

@@ -1,24 +1,27 @@
 import type { Match } from "@/lib/types";
 
-// Head-to-head stat bars: home grows from the left in telestrator cyan, away
-// from the right in sodium amber, meeting in the middle. xG gets pride of place.
-function Bar({ label, home, away, suffix = "" }: { label: string; home: number; away: number; suffix?: string }) {
-  // Both-zero means the source omitted this stat — render nothing rather than a
-  // misleading "0 vs 0" with an empty bar.
-  if (home + away === 0) return null;
-  const total = home + away;
-  const homePct = (home / total) * 100;
+function StatRow({
+  label,
+  home,
+  away,
+  suffix = "",
+}: {
+  label: string;
+  home: number | string;
+  away: number | string;
+  suffix?: string;
+}) {
   return (
-    <div className="border-b border-border/60 py-3 last:border-b-0">
-      <div className="mb-1 flex items-center justify-between font-mono text-[13px] tabular-nums">
-        <span className="text-home">{home}{suffix}</span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-muted">{label}</span>
-        <span className="text-accent">{away}{suffix}</span>
-      </div>
-      <div className="flex h-2 overflow-hidden border border-border bg-bg">
-        <span style={{ width: `${homePct}%`, background: "var(--home)" }} />
-        <span style={{ width: `${100 - homePct}%`, background: "var(--accent)" }} />
-      </div>
+    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 border-b border-[var(--border)] py-4 last:border-b-0">
+      <span className="font-heading text-[26px] font-bold tabular-nums text-[var(--foreground)]">
+        {home}
+        {suffix}
+      </span>
+      <span className="text-center text-[10px] tracking-[2px] text-[var(--foreground-secondary)]">{label}</span>
+      <span className="text-right font-heading text-[26px] font-bold tabular-nums text-[var(--foreground-secondary)]">
+        {away}
+        {suffix}
+      </span>
     </div>
   );
 }
@@ -27,22 +30,34 @@ export function StatComparison({ match }: { match: Match }) {
   const s = match.stats;
   if (!s) {
     return (
-      <p className="border border-border p-3 font-mono text-xs text-muted">Match stats appear once the match is underway.</p>
+      <p className="text-xs text-[var(--foreground-secondary)]">
+        Match stats appear once the match is underway.
+      </p>
     );
   }
+
   const hasXg = s.xG.home > 0 || s.xG.away > 0;
+  const passAccHome = s.passes?.home ? Math.round((s.passes.home / (s.passes.home + (s.passes.away || 1))) * 100) : null;
+
   return (
     <div>
-      {hasXg && <Bar label="Expected goals" home={s.xG.home} away={s.xG.away} />}
-      <Bar label="Possession" home={s.possession.home} away={s.possession.away} suffix="%" />
-      <Bar label="Shots" home={s.shots.home} away={s.shots.away} />
-      <Bar label="On target" home={s.shotsOnTarget.home} away={s.shotsOnTarget.away} />
-      {s.corners && <Bar label="Corners" home={s.corners.home} away={s.corners.away} />}
-      {s.passes && (s.passes.home > 0 || s.passes.away > 0) && (
-        <Bar label="Passes" home={s.passes.home} away={s.passes.away} />
+      <div className="mb-4 flex items-center justify-between text-[11px] tracking-[2px]">
+        <span className="font-semibold text-[var(--foreground)]">{match.homeTeam.shortName}</span>
+        <span className="text-[var(--foreground-secondary)]">STATISTICS</span>
+        <span className="text-[var(--foreground-secondary)]">{match.awayTeam.shortName}</span>
+      </div>
+      {hasXg && (
+        <StatRow label="xG" home={s.xG.home.toFixed(2)} away={s.xG.away.toFixed(2)} />
+      )}
+      <StatRow label="POSSESSION" home={s.possession.home} away={s.possession.away} suffix="%" />
+      <StatRow label="TOTAL SHOTS" home={s.shots.home} away={s.shots.away} />
+      <StatRow label="SHOTS ON TARGET" home={s.shotsOnTarget.home} away={s.shotsOnTarget.away} />
+      {s.corners && <StatRow label="CORNERS" home={s.corners.home} away={s.corners.away} />}
+      {passAccHome !== null && s.passes && (
+        <StatRow label="PASS ACCURACY" home={`${passAccHome}%`} away={`${100 - passAccHome}%`} />
       )}
       {!hasXg && (
-        <p className="mt-2 font-mono text-[10px] text-muted">
+        <p className="mt-2 text-[10px] text-[var(--foreground-secondary)]">
           xG unavailable from this source — add an API-Football key for expected goals.
         </p>
       )}

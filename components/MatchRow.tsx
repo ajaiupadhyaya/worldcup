@@ -1,54 +1,49 @@
 import Link from "next/link";
 import type { Match } from "@/lib/types";
-import { kitColor } from "@/lib/teamColors";
-import { statusLabel, kickoffTime } from "@/lib/format";
-import { Flag } from "./Flag";
+import { kickoffTime, statusLabel } from "@/lib/format";
 import { LiveDot } from "./LiveDot";
 
-// A fixture as two stacked team lines, each wearing its kit-colour programme
-// spine on the left edge. Winner's score is full-strength; loser's is muted.
-export function MatchRow({ match }: { match: Match }) {
+export function MatchRow({ match, index = 0 }: { match: Match; index?: number }) {
   const { homeTeam, awayTeam, score, status } = match;
-  const decided = status !== "scheduled"; // show scores for live + finished
-  // Dim only a team that LOST a finished match — a side merely trailing in a
-  // live match stays bright (draws always stay bright).
-  const final = status === "finished";
-  const homeLost = final && score.home < score.away;
-  const awayLost = final && score.away < score.home;
-
-  const line = (team: typeof homeTeam, goals: number, dim: boolean) => (
-    <div className="flex items-center gap-3 py-1.5">
-      <span className="h-7 w-[3px] shrink-0" style={{ background: kitColor(team) }} />
-      <Flag team={team} size={22} />
-      <span className={`flex-1 truncate text-[15px] ${dim ? "text-muted" : "text-text"}`}>
-        {team.name}
-      </span>
-      {decided ? (
-        <span className={`font-mono text-lg tabular-nums ${dim ? "text-muted" : "text-text"}`}>
-          {goals}
-        </span>
-      ) : null}
-    </div>
-  );
+  const decided = status !== "scheduled";
+  const live = status === "live";
+  const hasXg = Boolean(match.stats && (match.stats.xG.home > 0 || match.stats.xG.away > 0));
+  const alt = index % 2 === 0;
 
   return (
     <Link
       href={`/match/${match.id}`}
-      className="art-panel-quiet block px-3 py-2 transition-colors hover:border-home hover:bg-surface"
+      className={`group relative flex h-[55px] items-center px-6 transition-colors hover:bg-[var(--row-alt)] sm:px-12 ${
+        alt ? "bg-[var(--row-alt)]" : "bg-[var(--background)]"
+      }`}
     >
-      <div className="mb-1 flex items-center justify-between border-b border-border/70 pb-1">
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
-          {match.round || match.homeTeam.group || "Match"}
+      <span className="w-10 shrink-0 text-[11px] text-[var(--foreground-secondary)]">
+        {match.homeTeam.group?.replace("Group ", "") || "—"}
+      </span>
+      <span className="w-16 shrink-0 text-[11px] tabular-nums text-[var(--foreground-secondary)]">
+        {status === "scheduled" ? kickoffTime(match.kickoff) : statusLabel(match)}
+      </span>
+      <span className="min-w-0 flex-1 truncate font-heading text-xl font-semibold tracking-[-0.02em] text-[var(--foreground)]">
+        {homeTeam.name.toUpperCase()}
+      </span>
+      <span
+        className={`w-24 shrink-0 text-center font-heading text-[22px] font-semibold tabular-nums ${
+          live ? "text-[var(--foreground-accent)]" : "text-[var(--foreground)]"
+        }`}
+      >
+        {decided ? `${score.home} — ${score.away}` : "—"}
+      </span>
+      <span className="min-w-0 flex-1 truncate text-right font-heading text-xl font-semibold tracking-[-0.02em] text-[var(--foreground)]">
+        {awayTeam.name.toUpperCase()}
+      </span>
+      <span className="ml-4 hidden w-16 shrink-0 text-right text-[9px] tracking-[1px] text-[var(--foreground-secondary)] sm:inline">
+        {hasXg ? `xG ${match.stats!.xG.home.toFixed(2)}–${match.stats!.xG.away.toFixed(2)}` : "xG —"}
+      </span>
+      {live && (
+        <span className="absolute right-4 sm:hidden">
+          <LiveDot size={6} />
         </span>
-        <span className="flex items-center gap-1.5 font-mono text-[11px]">
-          {status === "live" && <LiveDot size={6} />}
-          <span className={status === "live" ? "text-accent" : "text-muted"}>
-            {status === "scheduled" ? kickoffTime(match.kickoff) : statusLabel(match)}
-          </span>
-        </span>
-      </div>
-      {line(homeTeam, score.home, homeLost)}
-      {line(awayTeam, score.away, awayLost)}
+      )}
     </Link>
   );
 }

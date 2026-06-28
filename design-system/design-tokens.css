@@ -1,0 +1,129 @@
+/*
+ * World Cup Dashboard — Design Tokens
+ * Style: 90s Fashion Editorial × Sports Analytics
+ * Apply these to globals.css, replacing existing :root variables
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Geist+Mono:wght@100..900&display=swap');
+
+:root {
+  /* ── Surfaces */
+  --background:            #FFFFFF;
+  --surface-dark:          #1A1A1A;
+  --surface-deep:          #0A0A0A;
+  --card:                  #FFFFFF;
+  --card-foreground:       #1A1A1A;
+
+  /* ── Foreground */
+  --foreground:            #1A1A1A;
+  --foreground-secondary:  #666666;
+  --foreground-inverse:    #FFFFFF;
+  --foreground-accent:     #C8102E;
+  --muted-foreground:      #666666;
+
+  /* ── Accent (only one) */
+  --primary:               #C8102E;
+  --primary-foreground:    #FFFFFF;
+
+  /* ── Borders & Separators */
+  --border:                #E8E8E8;
+  --border-strong:         #1A1A1A;
+  --border-dark:           #333333;
+  --input:                 #E8E8E8;
+
+  /* ── Table rows */
+  --row-alt:               #FAFAFA;
+
+  /* ── Radius — NONE */
+  --radius:                0px;
+  --radius-card:           0px;
+  --radius-pill:           0px;
+
+  /* ── Typography */
+  --font-heading:          'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:             'Geist Mono', 'JetBrains Mono', 'Courier New', monospace;
+
+  /* ── Sizing scale */
+  --size-masthead:         240px;
+  --size-hero-team:        200px;
+  --size-hero-score:       120px;
+  --size-pull-quote:       80px;
+  --size-stat-large:       72px;
+  --size-stat-medium:      48px;
+  --size-stat-small:       26px;
+  --size-heading:          22px;
+  --size-body:             13px;
+  --size-label:            10px;
+  --size-caption:          9px;
+
+  /* ── Letter spacing scale */
+  --tracking-label:        3px;
+  --tracking-nav:          2px;
+  --tracking-meta:         1.5px;
+  --tracking-hero:         -8px;
+  --tracking-masthead:     -10px;
+
+  /* ── Sidebar (keep for layout compatibility) */
+  --sidebar:               #FFFFFF;
+  --sidebar-foreground:    #666666;
+  --sidebar-primary:       #1A1A1A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-border:        #E8E8E8;
+  --sidebar-accent:        #FAFAFA;
+  --sidebar-accent-foreground: #1A1A1A;
+}
+
+/* Base resets */
+*, *::before, *::after {
+  border-radius: 0 !important;   /* enforce zero radius everywhere */
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Editorial headline utility */
+.editorial-hero {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: var(--tracking-hero);
+  line-height: 0.84;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* Bleeding headline — overflows container both sides */
+.headline-bleed {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-style: italic;
+  font-size: var(--size-masthead);
+  letter-spacing: var(--tracking-masthead);
+  line-height: 0.84;
+  white-space: nowrap;
+  margin-left: -0.25%;
+}
+
+/* Section label (ALL CAPS, tracked, Geist Mono) */
+.section-label {
+  font-family: var(--font-body);
+  font-size: var(--size-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--foreground-secondary);
+  text-transform: uppercase;
+}
+
+/* Form dot */
+.form-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50% !important;  /* exception: circles only */
+}
+.form-dot--win  { background-color: var(--foreground); }
+.form-dot--draw { background-color: var(--foreground-secondary); }
+.form-dot--loss { background-color: transparent; border: 1.5px solid var(--foreground-secondary); }
+.form-dot--win-accent  { background-color: var(--foreground-accent); }

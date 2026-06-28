@@ -9,8 +9,6 @@ interface AnalysisResult {
   generatedAt: string;
 }
 
-// Free tactical breakdown. Picks the right endpoint for the match state:
-// finished -> post-match breakdown, live -> live read, scheduled -> preview.
 export function TacticalAnalysis({ match }: { match: Match }) {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,6 +20,11 @@ export function TacticalAnalysis({ match }: { match: Match }) {
       : match.status === "live"
         ? "Read the live tactical picture"
         : "Generate match preview";
+
+  const pullQuote =
+    match.status === "live"
+      ? `${match.homeTeam.shortName.toUpperCase()}\nDICTATES\nTHE TEMPO.`
+      : "THE TACTICAL\nREAD AWAITS.";
 
   async function run() {
     setLoading(true);
@@ -55,46 +58,35 @@ export function TacticalAnalysis({ match }: { match: Match }) {
   }
 
   return (
-    <section className="art-panel p-5 md:p-6">
-      <div className="mb-4 flex items-center gap-2 border-b border-border pb-3">
-        <ChalkBadge />
-        <h2 className="font-display text-2xl text-text">Tactical read</h2>
-        {result && (
-          <span className="ml-auto font-mono text-[10px] text-muted">{result.model}</span>
+    <section className="mx-auto grid max-w-[1440px] gap-8 px-6 py-10 sm:grid-cols-2 sm:px-12">
+      <h2 className="whitespace-pre-line font-heading text-[clamp(40px,6vw,72px)] font-bold leading-[0.92] tracking-[-0.02em] text-[var(--foreground)]">
+        {pullQuote}
+      </h2>
+      <div>
+        {result ? (
+          <>
+            <article className="whitespace-pre-wrap text-[13px] leading-[1.9] text-[var(--foreground-secondary)]">
+              {result.text}
+            </article>
+            <p className="mt-4 text-[10px] tracking-[2px] text-[var(--foreground-secondary)]">{result.model}</p>
+          </>
+        ) : (
+          <>
+            <p className="mb-4 text-[13px] leading-[1.9] text-[var(--foreground-secondary)]">
+              A UEFA-Pro-License read of this match — the key tactical battle, why the result is
+              unfolding the way it is, and the decisive calls — generated from free/open match data.
+            </p>
+            <button
+              onClick={run}
+              disabled={loading}
+              className="border border-[var(--border-strong)] bg-[var(--foreground)] px-4 py-2 text-[10px] tracking-[2px] text-[var(--foreground-inverse)] transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {loading ? "GENERATING…" : cta.toUpperCase()}
+            </button>
+            {error && <p className="mt-3 text-xs text-[var(--foreground-accent)]">{error}</p>}
+          </>
         )}
       </div>
-
-      {result ? (
-        <article className="max-w-[74ch] whitespace-pre-wrap border-l-2 border-home pl-4 font-[family-name:var(--font-body)] text-[15px] leading-relaxed text-text/90">
-          {result.text}
-        </article>
-      ) : (
-        <div className="slash-field border border-border p-5">
-          <p className="mb-3 max-w-prose text-sm text-muted">
-            A UEFA-Pro-License read of this match — the key tactical battle, why the
-            result is unfolding the way it is, and the decisive calls — generated from
-            free/open match data.
-          </p>
-          <button
-            onClick={run}
-            disabled={loading}
-            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
-            style={{ background: "var(--accent)" }}
-          >
-            {loading ? "drawing…" : cta}
-          </button>
-          {error && <p className="mt-3 font-mono text-xs text-danger/90">{error}</p>}
-        </div>
-      )}
     </section>
-  );
-}
-
-function ChalkBadge() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
-      <circle cx="10" cy="10" r="7" fill="none" stroke="var(--home)" strokeWidth="1.4" />
-      <path d="M6 10 L14 10 M11 7 L14 10 L11 13" fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
   );
 }

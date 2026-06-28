@@ -4,7 +4,7 @@
 // shading — that draws itself on load (stroke-dashoffset), respecting
 // prefers-reduced-motion. Pure SVG server component.
 
-const C = { chalk: "var(--chalk)", faint: "var(--chalk-faint)", home: "var(--home)", away: "var(--accent)" };
+const C = { chalk: "var(--foreground)", faint: "var(--border)", home: "var(--foreground-accent)", away: "var(--foreground-secondary)" };
 
 // Parse "4-3-3" / "4-2-3-1" into outfield line sizes (GK added separately).
 function parseFormation(f?: string): number[] {

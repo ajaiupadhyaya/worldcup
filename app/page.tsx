@@ -4,11 +4,15 @@ import { useMatches, useStandings, groupStandings } from "@/lib/hooks";
 import { byInterest, groupByDay } from "@/lib/format";
 import { qualificationByTeam, qualificationGeneratedAt } from "@/lib/qualification";
 import { hydrateStandingTeams } from "@/lib/tournament";
+import { predictions } from "@/lib/predictions";
 import { FeaturedMatch } from "@/components/FeaturedMatch";
 import { MatchRow } from "@/components/MatchRow";
-import { StandingsTable } from "@/components/StandingsTable";
-import { PitchDivider } from "@/components/PitchDivider";
+import { TickerBar } from "@/components/TickerBar";
 import { TournamentPulse } from "@/components/TournamentPulse";
+import { HomeMasthead } from "@/components/editorial/HomeMasthead";
+import { StatTrio } from "@/components/editorial/StatTrio";
+import { QualificationBars } from "@/components/editorial/QualificationBars";
+import { EditorialPull } from "@/components/editorial/EditorialPull";
 
 export default function Home() {
   const { data: matchesEnv, isLoading: loadingMatches, error: matchesError } = useMatches();
@@ -22,64 +26,72 @@ export default function Home() {
   const rest = matches.filter((m) => m.id !== featured?.id);
   const days = groupByDay(rest);
   const standings = standingsEnv ? hydrateStandingTeams(standingsEnv.data, matches) : [];
-  const groups = groupStandings(standings);
+
+  const topTeams = [...predictions.teams]
+    .sort((a, b) => b.qualify - a.qualify)
+    .slice(0, 6)
+    .map((t, i) => ({ name: t.name, rank: i + 1 }));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-7">
-      <TournamentPulse
-        matches={matches}
-        standings={standings}
-        projected={qualificationByTeam}
-        modelGeneratedAt={qualificationGeneratedAt}
-      />
+    <div>
+      <HomeMasthead />
 
-      {/* HERO — the featured match as a broadcast frame */}
       {loadingMatches && !featured ? (
-        <div className="h-48 animate-pulse rounded-[var(--radius-card)] border border-border bg-surface" />
+        <div className="h-80 animate-pulse bg-[var(--surface-featured)]" />
       ) : matchesError ? (
-        <div className="rounded-[var(--radius-card)] border border-danger/40 bg-surface p-5 text-sm text-danger/90">
+        <div className="mx-auto max-w-[1440px] px-6 py-8 text-sm text-[var(--foreground-accent)] sm:px-12">
           Couldn&apos;t load fixtures: {(matchesError as Error).message}
         </div>
       ) : featured ? (
         <FeaturedMatch summary={featured} />
       ) : (
-        <p className="text-muted">No fixtures on the board right now.</p>
+        <p className="px-6 py-8 text-[var(--foreground-secondary)] sm:px-12">No fixtures on the board right now.</p>
       )}
 
-      {/* FIXTURES */}
+      <TickerBar />
+      <StatTrio matches={matches} />
+
       {days.length > 0 && (
-        <>
-          <PitchDivider label="On the board" />
-          <div className="space-y-6">
-            {days.map((d) => (
-              <section key={d.iso}>
-                <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{d.day}</h2>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {d.matches.map((m) => (
-                    <MatchRow key={m.id} match={m} />
-                  ))}
-                </div>
-              </section>
-            ))}
+        <section id="fixtures" className="mx-auto max-w-[1440px] px-0 py-8">
+          <div className="section-rule mx-6 mb-6 pt-6 sm:mx-12">
+            <div className="flex items-baseline justify-between">
+              <h2 className="section-label">ON THE BOARD</h2>
+              {days[0] && (
+                <span className="text-[11px] tracking-[2px] text-[var(--foreground-secondary)]">
+                  {days[0].day.toUpperCase()}
+                </span>
+              )}
+            </div>
           </div>
-        </>
+          <div>
+            {days.flatMap((d) =>
+              d.matches.map((m, i) => <MatchRow key={m.id} match={m} index={i} />),
+            )}
+          </div>
+        </section>
       )}
 
-      {/* GROUPS */}
-      {(Object.keys(groups).length > 0 || standingsError) && (
-        <>
-          <PitchDivider label="Groups" />
-          {standingsError ? (
-            <p className="text-sm text-muted">Standings are unavailable right now.</p>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {Object.entries(groups).map(([group, rows]) => (
-                <StandingsTable key={group} group={group} rows={rows} />
-              ))}
-            </div>
-          )}
-        </>
+      <QualificationBars teams={topTeams} projected={qualificationByTeam} />
+
+      {standings.length > 0 && (
+        <TournamentPulse
+          matches={matches}
+          standings={standings}
+          projected={qualificationByTeam}
+          modelGeneratedAt={qualificationGeneratedAt}
+        />
       )}
+
+      {standingsError && (
+        <p className="mx-auto max-w-[1440px] px-6 py-4 text-sm text-[var(--foreground-secondary)] sm:px-12">
+          Standings are unavailable right now.
+        </p>
+      )}
+
+      <EditorialPull
+        quote={"DATA IS THE\nNEW UNIFORM."}
+        note="Probabilities computed from Expected Goals (xG), recent form, head-to-head history, and Elo ratings. Model updated after every match."
+      />
     </div>
   );
 }

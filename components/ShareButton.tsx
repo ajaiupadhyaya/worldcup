@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-// Share the auto-generated match report card. Uses the native share sheet on
-// mobile, falls back to copying the card URL.
 export function ShareButton({ matchId }: { matchId: string }) {
   const [copied, setCopied] = useState(false);
   const cardUrl = `/api/og/match/${matchId}`;
@@ -15,7 +13,7 @@ export function ShareButton({ matchId }: { matchId: string }) {
         await navigator.share({ title: "World Cup tactical report", url });
         return;
       } catch {
-        // user cancelled — fall through to copy
+        // user cancelled
       }
     }
     try {
@@ -24,8 +22,6 @@ export function ShareButton({ matchId }: { matchId: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      // Last resort: open the shareable page (not the raw OG image) so the user
-      // can copy the URL from the address bar.
       window.open(url, "_blank");
     }
   }
@@ -34,17 +30,17 @@ export function ShareButton({ matchId }: { matchId: string }) {
     <div className="flex items-center gap-2">
       <button
         onClick={share}
-        className="border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:bg-home hover:text-bg"
+        className="border border-[var(--border-strong)] px-3 py-1.5 text-[10px] tracking-[2px] text-[var(--foreground-secondary)] transition-colors hover:bg-[var(--row-alt)]"
       >
-        {copied ? "link copied" : "Share report"}
+        {copied ? "LINK COPIED" : "SHARE REPORT"}
       </button>
       <a
         href={cardUrl}
         target="_blank"
         rel="noreferrer"
-        className="border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-home hover:text-text"
+        className="border border-[var(--border)] px-3 py-1.5 text-[10px] tracking-[2px] text-[var(--foreground-secondary)] transition-colors hover:border-[var(--border-strong)]"
       >
-        View card
+        VIEW CARD
       </a>
     </div>
   );

@@ -1,7 +1,6 @@
-// A flat chalk probability bar: hairline track, telestrator-cyan fill.
 export function ProbBar({
   value,
-  color = "var(--home)",
+  color = "var(--foreground-accent)",
   label,
 }: {
   value: number;
@@ -11,8 +10,7 @@ export function ProbBar({
   const pct = Math.max(0, Math.min(1, value)) * 100;
   return (
     <div
-      className="h-1.5 w-full overflow-hidden"
-      style={{ background: "var(--chalk-faint)" }}
+      className="h-1.5 w-full overflow-hidden bg-[#ebebeb]"
       role="img"
       aria-label={label ?? `${Math.round(pct)}%`}
     >
