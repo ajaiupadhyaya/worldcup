@@ -33,7 +33,7 @@ export function BracketSlot({
 
   return (
     <div
-      className={`group border bg-[var(--paper-pure)] transition-opacity duration-300 ${
+      className={`group border bg-[var(--paper-pure)] motion-safe:transition-opacity motion-safe:duration-300 ${
         state === "dim" ? "opacity-30" : "opacity-100"
       } ${
         state === "active"
@@ -41,7 +41,8 @@ export function BracketSlot({
           : "border-[var(--border)]"
       }`}
       data-slot={match.slot}
-      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false); }}
     >
       {/* Collapsed face: most-likely team per side + advance % */}
       <button
@@ -49,9 +50,8 @@ export function BracketSlot({
         aria-expanded={open}
         aria-label={`${name(top?.id ?? "")} vs ${name(bottom?.id ?? "")} — show full distribution`}
         onClick={() => setOpen((o) => !o)}
-        onMouseEnter={() => setOpen(true)}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
+        onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpen(true); }}
+        onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpen(false); }}
         className="block w-full text-left"
       >
         <CollapsedSide

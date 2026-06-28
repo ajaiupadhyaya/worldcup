@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ROUND_ORDER, ROUND_LABELS, mostLikely, prettifyId } from "@/lib/bracketView";
+import { ROUND_ORDER, ROUND_LABELS, mostLikely, prettifyId, STAGE_BY_ROUND } from "@/lib/bracketView";
 import type { BracketSlotProb } from "@/lib/predictions";
 
 describe("ROUND_ORDER / ROUND_LABELS", () => {
@@ -37,8 +37,6 @@ describe("prettifyId", () => {
     expect(prettifyId("")).toBe("");
   });
 });
-
-import { STAGE_BY_ROUND } from "@/lib/bracketView";
 
 describe("STAGE_BY_ROUND", () => {
   it("maps each board round to the snapshot stage whose mcStdErr it shows", () => {
