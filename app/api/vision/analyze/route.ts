@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getMatch } from "@/lib/data";
 import { frameChecklist } from "@/lib/free-analysis";
+import { checkRateLimit, clientKey, rateLimitResponse } from "@/lib/rateLimit";
 import type { Match } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +20,9 @@ const CV_SERVICE_URL = process.env.CV_SERVICE_URL;
  * context). Returns a structured tactical read of the frame.
  */
 export async function POST(req: Request) {
+  const limited = await checkRateLimit("vision-analyze", clientKey(req), 8, 60);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSeconds);
+
   let form: FormData;
   try {
     form = await req.formData();

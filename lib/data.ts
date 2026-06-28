@@ -59,11 +59,11 @@ function singleMatchTtl(match: Match): number {
 
 export async function getMatches(): Promise<DataEnvelope<Match[]>> {
   const key = "matches:all";
-  const hit = cache.get<{ value: Match[]; source: DataSource }>(key);
+  const hit = await cache.get<{ value: Match[]; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
   const { value, source } = await withFallback(af.getMatches, espn.getMatches, true);
-  cache.set(key, { value, source }, matchesTtl(value));
+  await cache.set(key, { value, source }, matchesTtl(value));
   return envelope(value, source, false);
 }
 
@@ -74,7 +74,7 @@ export async function getLiveMatches(): Promise<DataEnvelope<Match[]>> {
 
 export async function getMatch(id: string): Promise<DataEnvelope<Match>> {
   const key = `match:${id}`;
-  const hit = cache.get<{ value: Match; source: DataSource }>(key);
+  const hit = await cache.get<{ value: Match; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
   // Match IDs are namespaced per provider (an ESPN event id and an API-Football
@@ -84,17 +84,17 @@ export async function getMatch(id: string): Promise<DataEnvelope<Match>> {
   // is cached, so resolving the active source is cheap.
   const listSource = (await getMatches()).source;
   const value = listSource === "api-football" ? await af.getMatch(id) : await espn.getMatch(id);
-  cache.set(key, { value, source: listSource }, singleMatchTtl(value));
+  await cache.set(key, { value, source: listSource }, singleMatchTtl(value));
   return envelope(value, listSource, false);
 }
 
 export async function getStandings(): Promise<DataEnvelope<Standing[]>> {
   const key = "standings:all";
-  const hit = cache.get<{ value: Standing[]; source: DataSource }>(key);
+  const hit = await cache.get<{ value: Standing[]; source: DataSource }>(key);
   if (hit) return envelope(hit.value, hit.source, true);
 
   const { value, source } = await withFallback(af.getStandings, espn.getStandings, true);
-  cache.set(key, { value, source }, TTL.STANDINGS);
+  await cache.set(key, { value, source }, TTL.STANDINGS);
   return envelope(value, source, false);
 }
 
@@ -113,7 +113,7 @@ export interface SourceHealth {
 
 export async function checkHealth(probe = false): Promise<SourceHealth[]> {
   const results: SourceHealth[] = [];
-  const served = cache.get<{ value: Match[]; source: DataSource }>("matches:all")?.source;
+  const served = (await cache.get<{ value: Match[]; source: DataSource }>("matches:all"))?.source;
 
   // API-Football — avoid spending quota unless an explicit probe is requested.
   if (af.hasApiFootballKey()) {

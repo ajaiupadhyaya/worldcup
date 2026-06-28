@@ -80,7 +80,7 @@ def test_real_format_output_shape():
     assert abs(sum(r["teams"][x]["reachR32"] for x in teams) - 32.0) < 1e-9
     # exactly 16 reach R16 per sim
     assert abs(sum(r["teams"][x]["reachR16"] for x in teams) - 16.0) < 1e-9
-    assert r["thirdsTableComplete"] in (True, False)
+    assert r["thirdsTableComplete"] is True
 
 
 def test_played_results_drive_standings_disjoint():

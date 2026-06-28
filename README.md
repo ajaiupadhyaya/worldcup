@@ -15,7 +15,7 @@ genuinely useful and shareable during a live tournament.
 - **Data:** API-Football free tier (optional richer source) → ESPN hidden endpoints (fallback, no auth)
 - **Analysis:** deterministic free/open-data engine (`lib/free-analysis.ts`)
 - **Frame review:** free tactical checklist; optional external frame-analysis service via `CV_SERVICE_URL`
-- **State/caching:** in-memory TTL cache (Phase 1) → Redis (Phase 5)
+- **State/caching:** Upstash Redis REST when configured, in-memory TTL fallback otherwise
 
 ## Getting started
 
@@ -36,7 +36,8 @@ All keys are optional in development:
 | --- | --- | --- |
 | `API_FOOTBALL_KEY` | Optional richer data source. Falls back to ESPN if unset. | 1 |
 | `CV_SERVICE_URL` | Optional external frame-analysis service URL. Free mode works without it. | 3 |
-| `UPSTASH_REDIS_REST_*` | Distributed cache + rate limiting | 5 |
+| `UPSTASH_REDIS_REST_URL` | Optional distributed cache + rate limiting backend. Falls back to memory if unset. | 5 |
+| `UPSTASH_REDIS_REST_TOKEN` | Optional Upstash REST token. Required with `UPSTASH_REDIS_REST_URL`. | 5 |
 
 ## Architecture (Phase 1)
 
@@ -45,7 +46,7 @@ app/api/*           Route handlers (thin — delegate to lib/data)
 lib/types.ts        Normalized domain types (the contract)
 lib/api-football.ts Primary provider client  ─┐
 lib/espn.ts         Fallback provider client  ─┤→ lib/data.ts (orchestrator:
-lib/cache.ts        In-memory TTL cache        ┘   source selection + caching)
+lib/cache.ts        Redis/memory TTL cache     ┘   source selection + caching)
 ```
 
 **Source selection:** `lib/data.ts` prefers API-Football when `API_FOOTBALL_KEY`
@@ -77,7 +78,7 @@ for every response.
 - [x] **Phase 5 — Public Web App** ("FLOODLIT CHALK" tactics-cam UI: `/`, `/match/[id]`, `/standings`)
 - [x] **Deployed** — Vercel (<https://worldcup-sable.vercel.app>), auto-deploys from GitHub `main`.
       Analysis runs without paid LLM keys; an external frame-analysis service can be added later via `CV_SERVICE_URL`.
-- [ ] Phase-5 rate limiting (Upstash) — not yet wired
+- [x] Phase-5 rate limiting — Upstash-backed when configured, memory fallback in dev
 
 ## Design
 

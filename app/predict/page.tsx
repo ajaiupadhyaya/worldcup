@@ -4,6 +4,7 @@ import { WinCupLeaderboard } from "@/components/predict/WinCupLeaderboard";
 import { SurvivalFunnel } from "@/components/predict/SurvivalFunnel";
 import { RatingsTable } from "@/components/predict/RatingsTable";
 import { CalibrationPanel } from "@/components/predict/CalibrationPanel";
+import { formatProb } from "@/lib/probability";
 
 export const metadata = { title: "Predict — Floodlit" };
 
@@ -34,6 +35,14 @@ export default function PredictPage() {
         </span>
       </div>
 
+      <ModelTrustPanel
+        generatedAt={p.generatedAt}
+        simCount={p.simCount}
+        thirdsTableComplete={p.thirdsTableComplete !== false}
+        brier={calibration.brier}
+        logloss={calibration.logloss}
+      />
+
       <Section kicker="who lifts the trophy" title="Win the Cup">
         <WinCupLeaderboard teams={p.teams} />
       </Section>
@@ -52,6 +61,49 @@ export default function PredictPage() {
           meta={{ generatedAt: p.generatedAt, simCount: p.simCount, seed: p.seed, modelVersion: p.modelVersion }}
         />
       </Section>
+    </div>
+  );
+}
+
+function ModelTrustPanel({
+  generatedAt,
+  simCount,
+  thirdsTableComplete,
+  brier,
+  logloss,
+}: {
+  generatedAt: string;
+  simCount: number;
+  thirdsTableComplete: boolean;
+  brier: number;
+  logloss: number;
+}) {
+  const generated = new Date(generatedAt);
+  const generatedLabel = Number.isFinite(generated.getTime()) ? generated.toUTCString() : "unknown";
+  return (
+    <section className="art-panel mb-8 grid gap-3 p-4 sm:grid-cols-4">
+      <TrustStat label="Snapshot" value={generatedLabel} />
+      <TrustStat label="Simulations" value={simCount.toLocaleString()} />
+      <TrustStat label="Brier / Log loss" value={`${brier.toFixed(3)} / ${logloss.toFixed(3)}`} />
+      <div className={`border px-3 py-2 font-mono text-[11px] uppercase tracking-[0.16em] ${
+        thirdsTableComplete ? "border-home/50 text-home" : "border-danger/60 text-danger"
+      }`}>
+        <div className="text-[9px] text-muted">Bracket integrity</div>
+        <div className="mt-1">{thirdsTableComplete ? "Annex C covered" : "Annex C fallback active"}</div>
+      </div>
+      <p className="sm:col-span-4 text-[12px] leading-relaxed text-muted">
+        Team percentages include Monte Carlo uncertainty; the current leader is still
+        only {formatProb(Math.max(...predictions.teams.map((t) => t.winCup)))} to win.
+      </p>
+    </section>
+  );
+}
+
+function TrustStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border border-border px-3 py-2">
+      <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted">{label}</div>
+      <div className="mt-1 font-mono text-sm tabular-nums text-text">{value}</div>
     </div>
   );
 }

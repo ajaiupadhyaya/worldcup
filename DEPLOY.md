@@ -25,6 +25,12 @@ Environment variables on the Vercel project (Production):
 | `CV_SHARED_SECRET` | the same secret set on Railway |
 | `NEXT_PUBLIC_SITE_URL` | the Vercel production URL (for correct OG image URLs) |
 | `ADMIN_TOKEN` | a random secret gating the analysis `?force=1` cache bypass |
+| `UPSTASH_REDIS_REST_URL` | optional Upstash Redis REST URL for distributed cache + rate limits |
+| `UPSTASH_REDIS_REST_TOKEN` | optional Upstash Redis REST token |
+
+If the Upstash variables are omitted, Floodlit uses the built-in in-memory TTL
+cache and per-instance rate limits. That is fine for local development; set
+Upstash in production so serverless instances share freshness and abuse limits.
 
 ## 2. Secrets
 

@@ -1,11 +1,15 @@
 import { matchForQA } from "@/lib/analysis";
 import { answerMatchQuestion } from "@/lib/free-analysis";
+import { checkRateLimit, clientKey, rateLimitResponse } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 // POST { matchId, question } -> streams a free deterministic analyst answer.
 export async function POST(req: Request) {
+  const limited = await checkRateLimit("analysis-ask", clientKey(req), 20, 60);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSeconds);
+
   let body: { matchId?: string; question?: string };
   try {
     body = await req.json();

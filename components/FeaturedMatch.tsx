@@ -15,6 +15,7 @@ export function FeaturedMatch({ summary }: { summary: Match }) {
   const { data } = useMatch(summary.id);
   const match = data?.data ?? summary;
   const live = match.status === "live";
+  const hasXg = Boolean(match.stats && (match.stats.xG.home > 0 || match.stats.xG.away > 0));
 
   return (
     <Link
@@ -38,6 +39,19 @@ export function FeaturedMatch({ summary }: { summary: Match }) {
           <span className="mt-5 inline-block border border-border px-3 py-2 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors group-hover:border-home group-hover:bg-home group-hover:text-bg">
             Open tactics-cam →
           </span>
+          <div className="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em]">
+            <span className="border border-border px-2 py-1 text-muted">
+              source: {data?.source ?? match.source}
+            </span>
+            {data && (
+              <span className="border border-border px-2 py-1 text-muted">
+                {data.cached ? "cached" : "fresh"}
+              </span>
+            )}
+            <span className={`border px-2 py-1 ${hasXg ? "border-home/50 text-home" : "border-accent/50 text-accent"}`}>
+              {hasXg ? "xG live" : "xG pending"}
+            </span>
+          </div>
         </div>
 
         {/* tactics board */}

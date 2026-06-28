@@ -1,6 +1,6 @@
 /* FLOODLIT ATLAS — modern-art football intelligence.
-   Fonts loaded in layout.tsx via next/font/google (Anton / Hanken Grotesk /
-   Spline Sans Mono). Tailwind v4, dark by default. */
+   Font stacks are local/system-only so production builds never fetch Google
+   Fonts at build time. Tailwind v4, dark by default. */
 @import "tailwindcss";
 
 :root {
@@ -17,6 +17,9 @@
   --chalk-faint: #34382e;
   --rule-strong: #d8d4c6;
   --ink-red: #c91d14;
+  --font-anton: Impact, Haettenschweiler, "Arial Narrow Bold", "Arial Narrow", sans-serif;
+  --font-hanken: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-spline-mono: "SFMono-Regular", "Roboto Mono", "Cascadia Mono", "Liberation Mono", ui-monospace, monospace;
 }
 
 @theme {

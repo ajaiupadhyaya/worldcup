@@ -58,7 +58,7 @@ export async function GET(
         statRow("Corners", s.corners?.home ?? 0, s.corners?.away ?? 0),
       ]
     : [];
-  const verdict = peekVerdict(id);
+  const verdict = await peekVerdict(id);
   const accent = "#10b981";
 
   return new ImageResponse(

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getBreakdown } from "@/lib/analysis";
+import { checkRateLimit, clientKey, rateLimitResponse } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -10,6 +11,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+  const limited = await checkRateLimit("analysis-breakdown", clientKey(req), 12, 60);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSeconds);
+
   // `?force=1` bypasses the cache. Keep it admin-gated so public callers stay
   // cache-first even though the analysis engine is free.
   const force =

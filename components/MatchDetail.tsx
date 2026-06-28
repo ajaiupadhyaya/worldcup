@@ -68,6 +68,8 @@ export function MatchDetail({ id }: { id: string }) {
         <div className="mt-5">
           <ShareButton matchId={match.id} />
         </div>
+
+        {data && <SourceBadges source={data.source} cached={data.cached} fetchedAt={data.fetchedAt} match={match} />}
       </div>
 
       {/* Tactics board + stats/events */}
@@ -116,6 +118,31 @@ export function MatchDetail({ id }: { id: string }) {
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+function SourceBadges({
+  source,
+  cached,
+  fetchedAt,
+  match,
+}: {
+  source: string;
+  cached: boolean;
+  fetchedAt: string;
+  match: Match;
+}) {
+  const fetched = new Date(fetchedAt);
+  const fetchedLabel = Number.isFinite(fetched.getTime()) ? fetched.toUTCString() : "unknown";
+  const hasXg = Boolean(match.stats && (match.stats.xG.home > 0 || match.stats.xG.away > 0));
+  return (
+    <div className="mt-4 flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.14em]">
+      <span className="border border-border px-2 py-1 text-muted">source: {source}</span>
+      <span className="border border-border px-2 py-1 text-muted">{cached ? "cached" : "fresh"} · {fetchedLabel}</span>
+      <span className={`border px-2 py-1 ${hasXg ? "border-home/50 text-home" : "border-accent/50 text-accent"}`}>
+        {hasXg ? "xG live" : "xG unavailable"}
+      </span>
     </div>
   );
 }

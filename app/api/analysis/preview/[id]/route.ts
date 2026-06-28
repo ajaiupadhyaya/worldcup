@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getPreview } from "@/lib/analysis";
+import { checkRateLimit, clientKey, rateLimitResponse } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -10,6 +11,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+  const limited = await checkRateLimit("analysis-preview", clientKey(req), 12, 60);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSeconds);
+
   // Admin-gated cache bypass (see analysis/match route) — public callers stay
   // cache-first.
   const force =

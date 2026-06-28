@@ -1,4 +1,5 @@
 import pytest
+from itertools import combinations
 
 from model.bracket import load_bracket, assign_r32, load_thirds_table, assign_thirds
 
@@ -24,6 +25,17 @@ def test_assign_resolves_refs():
 def test_assign_thirds_anchor_option_1():
     m = assign_thirds(set("EFGHIJKL"), load_thirds_table())
     assert m["1A"] == "E" and m["1E"] == "F" and m["1L"] == "K"   # Option 1 row
+
+
+def test_thirds_table_covers_every_eight_group_combination():
+    table = load_thirds_table()
+    expected = {"".join(c) for c in combinations("ABCDEFGHIJKL", 8)}
+    assert set(table) == expected
+    assert len(table) == 495
+    for key in expected:
+        assigned = assign_thirds(set(key), table)
+        assert set(assigned) == {"1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L"}
+        assert set(assigned.values()) == set(key)
 
 
 def test_assign_thirds_unknown_combo_raises():

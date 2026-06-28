@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Hanken_Grotesk, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { TickerBar } from "@/components/TickerBar";
 import { SiteNav } from "@/components/SiteNav";
-
-// Anton — scoreboard / lower-third supers. Hanken — tactical prose.
-// Spline Sans Mono — clocks, xG, formation labels, tables.
-const anton = Anton({ weight: "400", variable: "--font-anton", subsets: ["latin"] });
-const hanken = Hanken_Grotesk({ variable: "--font-hanken", subsets: ["latin"] });
-const splineMono = Spline_Sans_Mono({ variable: "--font-spline-mono", subsets: ["latin"] });
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -30,10 +23,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${anton.variable} ${hanken.variable} ${splineMono.variable} h-full`}
-    >
+    <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col tactics-grain">
         <Providers>
           {/* Persistent lower-third: live ticker + nav */}

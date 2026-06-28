@@ -42,7 +42,7 @@ function lineupSignature(match: Match): string {
 export async function getBreakdown(matchId: string, force = false): Promise<AnalysisResult> {
   const key = `analysis:breakdown:${matchId}`;
   if (!force) {
-    const hit = cache.get<AnalysisResult>(key);
+    const hit = await cache.get<AnalysisResult>(key);
     if (hit) return hit;
   }
   const { data: match } = await getMatch(matchId);
@@ -51,7 +51,7 @@ export async function getBreakdown(matchId: string, force = false): Promise<Anal
   }
   const text = buildAnalysisText(match, "breakdown");
   const res = result(matchId, "breakdown", text);
-  cache.set(key, res, DAY);
+  await cache.set(key, res, DAY);
   return res;
 }
 
@@ -60,12 +60,12 @@ export async function getPreview(matchId: string, force = false): Promise<Analys
   const sig = lineupSignature(match);
   const key = `analysis:preview:${matchId}:${sig}`;
   if (!force) {
-    const hit = cache.get<AnalysisResult>(key);
+    const hit = await cache.get<AnalysisResult>(key);
     if (hit) return hit;
   }
   const text = buildAnalysisText(match, "preview");
   const res = result(matchId, "preview", text);
-  cache.set(key, res, PREVIEW_TTL);
+  await cache.set(key, res, PREVIEW_TTL);
   return res;
 }
 
@@ -79,12 +79,12 @@ export async function getLive(matchId: string, force = false): Promise<AnalysisR
   const sig = `${match.score.home}-${match.score.away}:${match.events?.length ?? 0}:${Math.floor((match.minute ?? 0) / 5)}`;
   const key = `analysis:live:${matchId}:${sig}`;
   if (!force) {
-    const hit = cache.get<AnalysisResult>(key);
+    const hit = await cache.get<AnalysisResult>(key);
     if (hit) return hit;
   }
   const text = buildAnalysisText(match, "live");
   const res = result(matchId, "live", text);
-  cache.set(key, res, LIVE_TTL);
+  await cache.set(key, res, LIVE_TTL);
   return res;
 }
 
@@ -99,8 +99,8 @@ export async function matchForQA(matchId: string): Promise<Match> {
  * cached — never triggers a generation. Used by the OG card so rendering an
  * image is always cheap and never blocks on external services.
  */
-export function peekVerdict(matchId: string): string | null {
-  const hit = cache.get<AnalysisResult>(`analysis:breakdown:${matchId}`);
+export async function peekVerdict(matchId: string): Promise<string | null> {
+  const hit = await cache.get<AnalysisResult>(`analysis:breakdown:${matchId}`);
   if (!hit) return null;
   // First sentence of the breakdown, trimmed to a card-friendly length.
   const sentence = hit.text.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s/)[0] ?? "";
