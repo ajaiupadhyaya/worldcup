@@ -1,4 +1,4 @@
-import type { BracketSlotProb, BracketRound } from "@/lib/predictions";
+import type { BracketSlotProb, BracketRound, Stage } from "@/lib/predictions";
 
 /** Column order, left→right, for the knockout board. */
 export const ROUND_ORDER: BracketRound[] = ["R32", "R16", "QF", "SF", "F"];
@@ -23,6 +23,19 @@ export function mostLikely(dist: BracketSlotProb[]): BracketSlotProb | null {
   for (const d of dist) if (d.prob > best.prob) best = d;
   return best;
 }
+
+/**
+ * The snapshot stage whose Monte-Carlo standard error best represents a slot
+ * in each round — i.e. the uncertainty of a team *reaching* (or, for the
+ * Final, *winning*) that match. Drives the BracketSlot whisker.
+ */
+export const STAGE_BY_ROUND: Record<BracketRound, Stage> = {
+  R32: "reachR32",
+  R16: "reachR16",
+  QF: "reachQF",
+  SF: "reachSF",
+  F: "winCup",
+};
 
 /** Fallback display name from a snapshot slug id (used when no name lookup hit). */
 export function prettifyId(id: string): string {

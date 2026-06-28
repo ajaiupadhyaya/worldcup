@@ -3,8 +3,8 @@
 import { useMemo } from "react";
 import type { BracketTree, BracketMatch, BracketColumn } from "@/lib/bracket";
 import type { PredTeam } from "@/lib/predictions";
-import { formatProb } from "@/lib/probability";
-import { ROUND_LABELS, mostLikely, prettifyId } from "@/lib/bracketView";
+import { ROUND_LABELS, prettifyId } from "@/lib/bracketView";
+import { BracketSlot } from "@/components/bracket/BracketSlot";
 
 // ---------------------------------------------------------------------------
 // Public interface — intentionally narrow for UV1.
@@ -22,13 +22,17 @@ export function BracketBoard({ tree, teams, generatedAt }: BracketBoardProps) {
     () => new Map(teams.map((t) => [t.id, t.name] as const)),
     [teams],
   );
+  const stdErrByTeam = useMemo(
+    () => new Map(teams.map((t) => [t.id, t.mcStdErr] as const)),
+    [teams],
+  );
   const name = (id: string) => nameById.get(id) ?? prettifyId(id);
 
   return (
     <div className="pb-16">
       <BoardHeader generatedAt={generatedAt} />
-      <DesktopBoard tree={tree} name={name} />
-      <MobileBoard tree={tree} name={name} />
+      <DesktopBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
+      <MobileBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
     </div>
   );
 }
@@ -62,16 +66,18 @@ function BoardHeader({ generatedAt }: { generatedAt: string }) {
 function DesktopBoard({
   tree,
   name,
+  stdErrByTeam,
 }: {
   tree: BracketTree;
   name: (id: string) => string;
+  stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
   return (
     <div className="hidden overflow-x-auto px-6 pt-8 sm:px-12 lg:block">
       {/* data-bracket-desktop is a hook point for UV3 SVG connector overlay */}
       <div className="mx-auto flex min-w-[1100px] max-w-[1480px]" data-bracket-desktop>
         {tree.columns.map((col) => (
-          <RoundColumn key={col.round} col={col} name={name} />
+          <RoundColumn key={col.round} col={col} name={name} stdErrByTeam={stdErrByTeam} />
         ))}
       </div>
     </div>
@@ -81,20 +87,22 @@ function DesktopBoard({
 function RoundColumn({
   col,
   name,
+  stdErrByTeam,
 }: {
   col: BracketColumn;
   name: (id: string) => string;
+  stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
   return (
     <div className="flex flex-1 flex-col">
       <RoundHeading round={col.round} />
-      {/* data-round is a hook for UV2 path-trace highlights */}
+      {/* data-round is a hook for UV3 path-trace highlights */}
       <div
         className="flex flex-1 flex-col justify-around gap-3 py-4"
         data-round={col.round}
       >
         {col.matches.map((m) => (
-          <SlotCard key={m.slot} match={m} name={name} />
+          <BracketSlot key={m.slot} match={m} name={name} stdErrByTeam={stdErrByTeam} />
         ))}
       </div>
     </div>
@@ -107,9 +115,11 @@ function RoundColumn({
 function MobileBoard({
   tree,
   name,
+  stdErrByTeam,
 }: {
   tree: BracketTree;
   name: (id: string) => string;
+  stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
   return (
     <div className="px-6 pt-8 lg:hidden">
@@ -118,7 +128,7 @@ function MobileBoard({
           <RoundHeading round={col.round} />
           <div className="mt-3 flex flex-col gap-3">
             {col.matches.map((m) => (
-              <SlotCard key={m.slot} match={m} name={name} />
+              <BracketSlot key={m.slot} match={m} name={name} stdErrByTeam={stdErrByTeam} />
             ))}
           </div>
         </section>
@@ -139,81 +149,3 @@ function RoundHeading({ round }: { round: BracketMatch["round"] }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Inline slot card — PLACEHOLDER replaced by <BracketSlot> in UV2.
-// Shows most-likely team per side + advance probability.
-// data-slot is the hook for UV3 path-trace + connector targeting.
-// ---------------------------------------------------------------------------
-function SlotCard({
-  match,
-  name,
-}: {
-  match: BracketMatch;
-  name: (id: string) => string;
-}) {
-  const top = mostLikely(match.sides[0]);
-  const bottom = mostLikely(match.sides[1]);
-  const adv = mostLikely(match.winner);
-  return (
-    /* data-slot: UV3 reads this to draw connector lines between feeders */
-    <div
-      className="border border-[var(--border)] bg-[var(--paper-pure)]"
-      data-slot={match.slot}
-    >
-      <SlotSide
-        entry={top}
-        advancing={!!adv && adv.id === top?.id}
-        advProb={adv?.prob ?? 0}
-        name={name}
-      />
-      <div className="h-px bg-[var(--border)]" />
-      <SlotSide
-        entry={bottom}
-        advancing={!!adv && adv.id === bottom?.id}
-        advProb={adv?.prob ?? 0}
-        name={name}
-      />
-    </div>
-  );
-}
-
-function SlotSide({
-  entry,
-  advancing,
-  advProb,
-  name,
-}: {
-  entry: { id: string; prob: number } | null;
-  advancing: boolean;
-  advProb: number;
-  name: (id: string) => string;
-}) {
-  return (
-    <div
-      className={`flex items-center justify-between gap-2 px-3 py-2 ${
-        advancing
-          ? "border-l-2 border-[var(--foreground-accent)]"
-          : "border-l-2 border-transparent"
-      }`}
-    >
-      <span
-        className={`truncate font-heading text-[13px] font-semibold tracking-[-0.01em] ${
-          advancing
-            ? "text-[var(--foreground)]"
-            : "text-[var(--foreground-secondary)]"
-        }`}
-      >
-        {entry ? name(entry.id).toUpperCase() : "—"}
-      </span>
-      <span
-        className={`shrink-0 text-[11px] tabular-nums ${
-          advancing
-            ? "text-[var(--foreground-accent)]"
-            : "text-[var(--foreground-faint)]"
-        }`}
-      >
-        {advancing ? formatProb(advProb) : entry ? formatProb(entry.prob) : ""}
-      </span>
-    </div>
-  );
-}

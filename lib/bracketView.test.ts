@@ -37,3 +37,17 @@ describe("prettifyId", () => {
     expect(prettifyId("")).toBe("");
   });
 });
+
+import { STAGE_BY_ROUND } from "@/lib/bracketView";
+
+describe("STAGE_BY_ROUND", () => {
+  it("maps each board round to the snapshot stage whose mcStdErr it shows", () => {
+    expect(STAGE_BY_ROUND).toEqual({
+      R32: "reachR32",
+      R16: "reachR16",
+      QF: "reachQF",
+      SF: "reachSF",
+      F: "winCup",
+    });
+  });
+});
