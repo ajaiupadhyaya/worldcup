@@ -57,7 +57,7 @@ import { computeLayout, slotState, championLadder } from "@/lib/bracketView";
 import type { BracketTree, BracketMatch } from "@/lib/bracket";
 
 function mkMatch(p: Partial<BracketMatch> & Pick<BracketMatch, "slot" | "round">): BracketMatch {
-  return { sides: [[], []], winner: [], feeders: null, ...p };
+  return { sides: [[], []], winner: [], feeders: [null, null], ...p };
 }
 function mkTree(rounds: Partial<BracketTree["rounds"]>): BracketTree {
   const full = { R32: [], R16: [], QF: [], SF: [], F: [], ...rounds } as BracketTree["rounds"];

@@ -6,9 +6,8 @@ export interface BracketMatch {
   round: BracketRound;
   sides: [BracketSlotProb[], BracketSlotProb[]];
   winner: BracketSlotProb[];
-  /** Feeder slot ids for connector lines (R16+); [null, null] for R32; null
-   *  when the match is constructed without topology (e.g. in tests). */
-  feeders: [string | null, string | null] | null;
+  /** Feeder slot ids for connector lines (R16+); [null, null] for R32. */
+  feeders: [string | null, string | null];
 }
 
 export interface BracketColumn {

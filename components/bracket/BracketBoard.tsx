@@ -122,12 +122,11 @@ function DesktopBoard({
   );
 
   // Canvas dimensions
-  const r32Nodes = layout.filter((n) => n.col === 0);
-  const rows = r32Nodes.length > 0 ? r32Nodes.length : 1;
-  const height = rows * ROW_H + ROW_H; // extra row for headings
+  const rows = Math.max(1, ...layout.map((n) => n.row + 1));
+  const height = rows * ROW_H;
   const width = (ROUND_ORDER.length - 1) * COL_W + SLOT_W + 32;
 
-  const cy = (row: number) => row * ROW_H + ROW_H / 2 + ROW_H; // offset for headings row
+  const cy = (row: number) => row * ROW_H + ROW_H / 2;
   const leftX = (col: number) => col * COL_W;
   const rightX = (col: number) => col * COL_W + SLOT_W;
 
