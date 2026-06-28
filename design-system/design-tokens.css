@@ -1,38 +1,43 @@
 /*
- * World Cup Dashboard — Design Tokens
+ * World Cup Dashboard — Design Tokens  ("Dossier MMXXVI")
  * Style: 90s Fashion Editorial × Sports Analytics
- * Apply these to globals.css, replacing existing :root variables
+ * Signature: Bodoni Moda (high-contrast Didone) × Geist Mono, photographic
+ * paper ⇄ ink spreads, one vermilion accent, CMYK-misregistration + film grain.
+ * The source of truth is app/globals.css — this file mirrors it for reference.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Geist+Mono:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Geist+Mono:wght@100..900&display=swap');
 
 :root {
-  /* ── Surfaces */
-  --background:            #FFFFFF;
-  --surface-dark:          #1A1A1A;
-  --surface-deep:          #0A0A0A;
-  --card:                  #FFFFFF;
-  --card-foreground:       #1A1A1A;
+  /* ── Surfaces : photographic paper ⇄ ink */
+  --background:            #F4F3F0;
+  --paper-pure:            #FCFCFA;
+  --surface-dark:          #131318;
+  --surface-deep:          #0B0B0F;
+  --surface-featured:      #161620;
+  --card:                  #FCFCFA;
+  --card-foreground:       #131318;
 
   /* ── Foreground */
-  --foreground:            #1A1A1A;
-  --foreground-secondary:  #666666;
-  --foreground-inverse:    #FFFFFF;
-  --foreground-accent:     #C8102E;
-  --muted-foreground:      #666666;
+  --foreground:            #131318;
+  --foreground-secondary:  #6B6A6E;
+  --foreground-faint:      #A3A29C;
+  --foreground-inverse:    #F4F3F0;
+  --foreground-accent:     #ED3419;
+  --muted-foreground:      #6B6A6E;
 
-  /* ── Accent (only one) */
-  --primary:               #C8102E;
-  --primary-foreground:    #FFFFFF;
+  /* ── Accent (only one : 90s-print vermilion) */
+  --primary:               #ED3419;
+  --primary-foreground:    #F4F3F0;
 
   /* ── Borders & Separators */
-  --border:                #E8E8E8;
-  --border-strong:         #1A1A1A;
-  --border-dark:           #333333;
-  --input:                 #E8E8E8;
+  --border:                #D9D7D0;
+  --border-strong:         #131318;
+  --border-dark:           #2C2C34;
+  --input:                 #D9D7D0;
 
   /* ── Table rows */
-  --row-alt:               #FAFAFA;
+  --row-alt:               #ECEAE4;
 
   /* ── Radius — NONE */
   --radius:                0px;
@@ -40,7 +45,7 @@
   --radius-pill:           0px;
 
   /* ── Typography */
-  --font-heading:          'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-heading:          'Bodoni Moda', 'Didot', 'Times New Roman', serif;
   --font-body:             'Geist Mono', 'JetBrains Mono', 'Courier New', monospace;
 
   /* ── Sizing scale */

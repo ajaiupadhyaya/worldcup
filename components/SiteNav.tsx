@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "HOME" },
-  { href: "/#fixtures", label: "MATCHES" },
-  { href: "/standings", label: "STANDINGS" },
-  { href: "/predict", label: "PREDICT" },
+  { href: "/", label: "INDEX" },
+  { href: "/#fixtures", label: "FIXTURES" },
+  { href: "/standings", label: "TABLES" },
+  { href: "/predict", label: "FORECAST" },
   { href: "/scenarios", label: "SCENARIOS" },
 ];
 
@@ -19,40 +19,58 @@ function isActive(pathname: string, href: string): boolean {
 
 export function SiteNav() {
   const pathname = usePathname();
-  // Pin to a fixed editorial dateline timezone so server (UTC) and client (local)
-  // render identical text — avoids a React #418 hydration mismatch near midnight.
+  // Pinned editorial dateline timezone keeps server (UTC) and client (local)
+  // identical — avoids a React #418 hydration mismatch near midnight.
   const today = new Date()
     .toLocaleDateString("en-GB", {
       timeZone: "America/New_York",
-      day: "numeric",
-      month: "long",
+      day: "2-digit",
+      month: "short",
       year: "numeric",
     })
     .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border-strong)] bg-[var(--background)]">
-      <div className="mx-auto flex h-[60px] max-w-[1440px] items-center justify-between px-6 sm:px-12">
-        <Link href="/" className="font-heading text-[22px] font-bold text-[var(--foreground)]">
-          WC
+    <header className="sticky top-0 z-50 border-b border-[var(--border-strong)] bg-[var(--background)]/95 backdrop-blur-sm">
+      <div className="h-[2px] w-full bg-[var(--foreground-accent)]" />
+      <div className="mx-auto flex h-[58px] max-w-[1480px] items-center justify-between gap-6 px-4 sm:px-8">
+        <Link href="/" className="group flex shrink-0 items-baseline gap-2 leading-none">
+          <span className="font-heading text-[24px] font-black italic tracking-[-0.03em] text-[var(--foreground)] misreg-soft">
+            WC
+          </span>
+          <span className="hidden text-[8px] tracking-[0.3em] text-[var(--foreground-secondary)] sm:inline">
+            MMXXVI
+          </span>
         </Link>
-        <nav className="flex min-w-0 flex-1 items-center justify-end gap-6 overflow-x-auto md:gap-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+
+        <nav className="flex min-w-0 flex-1 items-center justify-end gap-5 overflow-x-auto md:gap-9 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {LINKS.map((l) => {
             const active = isActive(pathname, l.href);
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`shrink-0 text-[11px] tracking-[2px] transition-colors ${
-                  active ? "text-[var(--foreground-accent)]" : "text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
+                className={`group relative shrink-0 py-1 text-[10.5px] tracking-[0.2em] transition-colors duration-300 ${
+                  active
+                    ? "text-[var(--foreground)]"
+                    : "text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
                 }`}
               >
                 {l.label}
+                <span
+                  className={`absolute -bottom-0.5 left-0 h-[1.5px] bg-[var(--foreground-accent)] transition-all duration-300 ease-out ${
+                    active ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </Link>
             );
           })}
         </nav>
-        <span suppressHydrationWarning className="hidden shrink-0 text-[10px] tracking-[1.5px] text-[var(--foreground-secondary)] lg:inline">
+
+        <span
+          suppressHydrationWarning
+          className="hidden shrink-0 text-[9px] tracking-[0.22em] text-[var(--foreground-secondary)] lg:inline"
+        >
           {today}
         </span>
       </div>

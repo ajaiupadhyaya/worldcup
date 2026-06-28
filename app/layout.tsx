@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Grain } from "@/components/editorial/Grain";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main className="w-full flex-1">{children}</main>
           <SiteFooter />
         </Providers>
+        <Grain />
       </body>
     </html>
   );

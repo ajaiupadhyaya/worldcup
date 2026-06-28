@@ -13,6 +13,7 @@ import { HomeMasthead } from "@/components/editorial/HomeMasthead";
 import { StatTrio } from "@/components/editorial/StatTrio";
 import { QualificationBars } from "@/components/editorial/QualificationBars";
 import { EditorialPull } from "@/components/editorial/EditorialPull";
+import { Reveal } from "@/components/editorial/Reveal";
 
 export default function Home() {
   const { data: matchesEnv, isLoading: loadingMatches, error: matchesError } = useMatches();
@@ -52,45 +53,48 @@ export default function Home() {
       <StatTrio matches={matches} />
 
       {days.length > 0 && (
-        <section id="fixtures" className="mx-auto max-w-[1440px] px-0 py-8">
-          <div className="section-rule mx-6 mb-6 pt-6 sm:mx-12">
-            <div className="flex items-baseline justify-between">
-              <h2 className="section-label">ON THE BOARD</h2>
-              {days[0] && (
-                <span className="text-[11px] tracking-[2px] text-[var(--foreground-secondary)]">
-                  {days[0].day.toUpperCase()}
-                </span>
-              )}
-            </div>
+        <section id="fixtures" className="mx-auto max-w-[1480px] scroll-mt-20 px-0 py-12">
+          <div className="section-rule mx-6 mb-2 flex items-baseline justify-between pt-5 sm:mx-12 lg:mx-20">
+            <h2 className="section-label">The Fixtures — On the Board</h2>
+            {days[0] && (
+              <span className="text-[10px] tracking-[0.2em] text-[var(--foreground-secondary)]">
+                {days[0].day.toUpperCase()}
+              </span>
+            )}
           </div>
-          <div>
+          <Reveal>
             {days.flatMap((d) =>
               d.matches.map((m, i) => <MatchRow key={m.id} match={m} index={i} />),
             )}
-          </div>
+          </Reveal>
         </section>
       )}
 
-      <QualificationBars teams={topTeams} projected={qualificationByTeam} />
+      <Reveal>
+        <QualificationBars teams={topTeams} projected={qualificationByTeam} />
+      </Reveal>
 
       {standings.length > 0 && (
-        <TournamentPulse
-          matches={matches}
-          standings={standings}
-          projected={qualificationByTeam}
-          modelGeneratedAt={qualificationGeneratedAt}
-        />
+        <Reveal>
+          <TournamentPulse
+            matches={matches}
+            standings={standings}
+            projected={qualificationByTeam}
+            modelGeneratedAt={qualificationGeneratedAt}
+          />
+        </Reveal>
       )}
 
       {standingsError && (
-        <p className="mx-auto max-w-[1440px] px-6 py-4 text-sm text-[var(--foreground-secondary)] sm:px-12">
+        <p className="mx-auto max-w-[1480px] px-6 py-4 text-sm text-[var(--foreground-secondary)] sm:px-12">
           Standings are unavailable right now.
         </p>
       )}
 
       <EditorialPull
+        dark
         quote={"DATA IS THE\nNEW UNIFORM."}
-        note="Probabilities computed from Expected Goals (xG), recent form, head-to-head history, and Elo ratings. Model updated after every match."
+        note="Probabilities computed from Expected Goals (xG), recent form, head-to-head history, and Elo ratings. The model is updated after every match."
       />
     </div>
   );

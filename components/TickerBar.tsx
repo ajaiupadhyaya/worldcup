@@ -11,27 +11,38 @@ export function TickerBar() {
   const live = matches.filter((m) => m.status === "live");
   const scheduled = matches.filter((m) => m.status === "scheduled");
   const finished = matches.filter((m) => m.status === "finished");
-  const ticker = (live.length ? live : scheduled.length ? scheduled : finished).slice(0, 8);
+  const source = live.length ? live : scheduled.length ? scheduled : finished;
+  const ticker = source.slice(0, 10);
 
   if (pathname !== "/" || ticker.length === 0) return null;
 
-  const items = ticker.map((m) => {
-    const score =
-      m.status === "live" || m.status === "finished"
-        ? `${m.homeTeam.shortName} ${m.score.home}–${m.score.away} ${m.awayTeam.shortName}`
-        : `${m.homeTeam.shortName} v ${m.awayTeam.shortName} ${statusLabel(m)}`;
-    return score;
-  });
+  const label = live.length ? "LIVE" : scheduled.length ? "NEXT" : "RESULTS";
+
+  const items = ticker.map((m) =>
+    m.status === "live" || m.status === "finished"
+      ? `${m.homeTeam.shortName} ${m.score.home}–${m.score.away} ${m.awayTeam.shortName}`
+      : `${m.homeTeam.shortName} v ${m.awayTeam.shortName} · ${statusLabel(m)}`,
+  );
+
+  // Duplicate the run so the marquee loops seamlessly across the -50% shift.
+  const run = [...items, ...items];
 
   return (
-    <div className="overflow-hidden bg-[var(--foreground-accent)]">
-      <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-6 py-3 sm:px-12">
-        <span className="shrink-0 text-[9px] font-bold tracking-[3px] text-[var(--foreground-inverse)]">
-          LIVE
-        </span>
-        <span className="text-[var(--foreground-inverse)] opacity-60">|</span>
-        <div className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-[10px] tracking-[1.5px] text-[var(--foreground-inverse)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {items.join("   ·   ")}
+    <div className="marquee flex items-stretch overflow-hidden border-y border-[var(--surface-deep)] bg-[var(--foreground-accent)] text-[var(--foreground-inverse)]">
+      <div className="flex shrink-0 items-center gap-2 border-r border-[var(--foreground-inverse)]/25 px-5">
+        {live.length > 0 && (
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--foreground-inverse)] live-dot" aria-hidden />
+        )}
+        <span className="text-[9px] font-bold tracking-[0.3em]">{label}</span>
+      </div>
+      <div className="relative flex min-w-0 flex-1 items-center overflow-hidden py-2.5">
+        <div className="marquee-track">
+          {run.map((item, i) => (
+            <span key={i} className="px-5 text-[10px] tracking-[0.18em]">
+              {item}
+              <span className="ml-5 text-[var(--foreground-inverse)]/45">/</span>
+            </span>
+          ))}
         </div>
       </div>
     </div>

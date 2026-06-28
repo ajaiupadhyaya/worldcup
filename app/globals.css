@@ -1,26 +1,43 @@
-/* World Cup Dashboard — 90s Fashion Editorial × Sports Analytics */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Geist+Mono:wght@100..900&display=swap");
+/* World Cup MMXXVI — "Dossier" : 90s Fashion Editorial × Sports Analytics */
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Geist+Mono:wght@100..900&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --surface-dark: #1a1a1a;
-  --surface-deep: #0a0a0a;
-  --surface-featured: #111111;
-  --row-alt: #fafafa;
-  --foreground: #1a1a1a;
-  --foreground-secondary: #666666;
-  --foreground-inverse: #ffffff;
-  --foreground-accent: #c8102e;
-  --border: #e8e8e8;
-  --border-strong: #1a1a1a;
-  --border-dark: #333333;
-  --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+  /* ── Surfaces : photographic paper ⇄ ink */
+  --background: #f4f3f0;
+  --paper-pure: #fcfcfa;
+  --row-alt: #eceae4;
+  --surface-dark: #131318;
+  --surface-deep: #0b0b0f;
+  --surface-featured: #161620;
+
+  /* ── Foreground */
+  --foreground: #131318;
+  --foreground-secondary: #6b6a6e;
+  --foreground-faint: #a3a29c;
+  --foreground-inverse: #f4f3f0;
+  --foreground-inverse-dim: #8d8b93;
+
+  /* ── The one accent : 90s-print vermilion */
+  --foreground-accent: #ed3419;
+  --accent-deep: #c2260f;
+
+  /* ── Borders */
+  --border: #d9d7d0;
+  --border-strong: #131318;
+  --border-dark: #2c2c34;
+
+  /* ── Type */
+  --font-heading: "Bodoni Moda", "Didot", "Times New Roman", serif;
   --font-body: "Geist Mono", "JetBrains Mono", "Courier New", monospace;
   --radius: 0px;
   --radius-card: 0px;
 
-  /* Tailwind-compat aliases used across components */
+  /* ── Misregistration offset (animatable) */
+  --misreg-x: 0.045em;
+  --misreg-y: 0.04em;
+
+  /* Tailwind-compat aliases (keep older components working) */
   --bg: var(--background);
   --surface: var(--row-alt);
   --surface-2: var(--background);
@@ -61,6 +78,7 @@
 html {
   background: var(--background);
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -70,108 +88,173 @@ body {
   font-family: var(--font-body);
   font-feature-settings: "tnum" 1;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.font-display {
-  font-family: var(--font-heading);
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
-.font-heading {
-  font-family: var(--font-heading);
-}
+.font-display, .font-heading { font-family: var(--font-heading); }
+.font-mono { font-family: var(--font-body); }
 
-.font-mono {
-  font-family: var(--font-body);
-}
+a { color: inherit; text-decoration: none; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Editorial utilities */
+/* ─────────────────────────────────────────────────────────
+   Editorial type
+   ───────────────────────────────────────────────────────── */
 .headline-bleed {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 800;
   font-style: italic;
-  letter-spacing: -0.04em;
-  line-height: 0.84;
+  letter-spacing: -0.035em;
+  line-height: 0.82;
   white-space: nowrap;
+}
+
+.kicker {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--foreground-secondary);
 }
 
 .section-label {
   font-family: var(--font-body);
   font-size: 10px;
-  letter-spacing: 3px;
+  letter-spacing: 0.3em;
   color: var(--foreground-secondary);
   text-transform: uppercase;
 }
 
-.section-rule {
-  border-top: 2px solid var(--border-strong);
-}
-
-.section-rule-light {
-  border-top: 1px solid var(--border);
-}
+.section-rule { border-top: 2px solid var(--border-strong); }
+.section-rule-light { border-top: 1px solid var(--border); }
 
 .stat-large {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 800;
   font-style: italic;
   letter-spacing: -0.03em;
 }
 
-.form-dot {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50% !important;
+/* Oversized margin folio numeral */
+.folio {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 0.8;
+  color: var(--foreground-faint);
+  letter-spacing: -0.04em;
 }
 
-.form-dot--win {
-  background-color: var(--foreground);
+/* ─────────────────────────────────────────────────────────
+   Signature : CMYK misregistration ghost
+   A hard-offset vermilion duplicate behind ink type — a
+   misprinted-glossy effect that shifts on hover / parent hover.
+   ───────────────────────────────────────────────────────── */
+.misreg {
+  text-shadow: var(--misreg-x) var(--misreg-y) 0 var(--foreground-accent);
+  transition: text-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.misreg:hover,
+.group:hover .misreg {
+  --misreg-x: 0.1em;
+  --misreg-y: 0.085em;
+}
+.misreg-soft {
+  text-shadow: 0.03em 0.028em 0 var(--foreground-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .misreg { transition: none; }
 }
 
-.form-dot--win-accent {
-  background-color: var(--foreground-accent);
+/* ─────────────────────────────────────────────────────────
+   Motion
+   ───────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
+.reveal.is-visible { opacity: 1; transform: none; }
 
-.form-dot--draw {
-  background-color: var(--foreground-secondary);
+@keyframes rise-in {
+  from { transform: translateY(108%); }
+  to { transform: translateY(0); }
 }
+.rise-in { animation: rise-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-.form-dot--loss {
-  background-color: transparent;
-  border: 1.5px solid var(--foreground-secondary);
+@keyframes wipe-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
 }
+.wipe-in { animation: wipe-in 1.1s cubic-bezier(0.76, 0, 0.24, 1) both; }
 
-/* Panel — flat editorial surface, no shadows */
-.art-panel {
-  border: 1px solid var(--border);
-  background: var(--background);
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-
-.art-panel-quiet {
-  border: 1px solid var(--border);
-  background: var(--background);
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 38s linear infinite;
 }
+.marquee:hover .marquee-track { animation-play-state: paused; }
 
-@keyframes live-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
-}
-
-.live-dot {
-  animation: live-pulse 2s ease-in-out infinite;
-  background: var(--foreground-accent);
+@keyframes bar-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .live-dot {
-    animation: none;
-    opacity: 1;
-  }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .rise-in, .wipe-in { animation: none; }
+  .marquee-track { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Film grain — kills the flat-digital look (print texture)
+   ───────────────────────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+/* ─────────────────────────────────────────────────────────
+   Form dots
+   ───────────────────────────────────────────────────────── */
+.form-dot {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50% !important;
+}
+.form-dot--win { background-color: var(--foreground); }
+.form-dot--win-accent { background-color: var(--foreground-accent); }
+.form-dot--draw { background-color: var(--foreground-secondary); }
+.form-dot--loss { background-color: transparent; border: 1.5px solid var(--foreground-secondary); }
+
+/* Panels */
+.art-panel { border: 1px solid var(--border); background: var(--paper-pure); }
+.art-panel-quiet { border: 1px solid var(--border); background: var(--background); }
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.live-dot {
+  animation: live-pulse 1.6s ease-in-out infinite;
+  background: var(--foreground-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; opacity: 1; }
 }
 
 :focus-visible {
@@ -179,19 +262,8 @@ a {
   outline-offset: 2px;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground-secondary);
-}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+::-webkit-scrollbar-thumb:hover { background: var(--foreground-secondary); }
+::selection { background: var(--foreground-accent); color: var(--foreground-inverse); }
