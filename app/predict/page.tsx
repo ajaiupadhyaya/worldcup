@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { predictions, ratings, calibration } from "@/lib/predictions";
 import { WinCupLeaderboard } from "@/components/predict/WinCupLeaderboard";
 import { SurvivalFunnel } from "@/components/predict/SurvivalFunnel";
@@ -52,6 +53,13 @@ export default function PredictPage() {
 
       <Section kicker="probability of reaching each round" title="The Bracket">
         <SurvivalFunnel teams={p.teams} />
+        <Link
+          href="/bracket"
+          className="mt-6 inline-flex items-center gap-2 text-[11px] tracking-[3px] text-[var(--foreground-accent)] transition-opacity hover:opacity-70"
+        >
+          VIEW THE FULL DRAW
+          <span aria-hidden>→</span>
+        </Link>
       </Section>
 
       <Section kicker="elo + attack / defense strength" title="Ratings">
