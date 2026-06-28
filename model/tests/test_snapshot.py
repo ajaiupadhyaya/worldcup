@@ -41,11 +41,16 @@ def test_team_keys_include_reachR32_and_groups_bracket():
             ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")}},
            "groups": [{"group": "C", "teams": [{"id": "Brazil",
                        "finishProbs": {"p1": .6, "p2": .25, "p3": .1, "p4": .05}}]}],
-           "bracket": [{"slot": "M104", "teamProbs": [{"id": "Brazil", "prob": .12}]}],
+           "bracket": [{"slot": "M104", "round": "F",
+                        "sides": [[{"id": "brazil", "prob": .5}],
+                                  [{"id": "france", "prob": .5}]],
+                        "winner": [{"id": "brazil", "prob": .12}]}],
            "simCount": 100, "seed": 1}
     obj = build_predictions(sim, fixtures=[], generated_at="2026-06-20T00:00:00Z", inputs_hash="x")
     assert obj["groups"][0]["group"] == "C"
     assert obj["bracket"][0]["slot"] == "M104"
+    assert obj["bracket"][0]["round"] == "F"
+    assert obj["bracket"][0]["winner"][0]["id"] == "brazil"
     assert obj["teams"][0]["reachR32"] == 0.5
     assert obj["teams"][0]["id"] == "brazil"
 

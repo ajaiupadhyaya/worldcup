@@ -63,24 +63,41 @@ def test_real_format_exactly_one_champion_and_stage_monotonicity():
 def test_real_format_output_shape():
     t = _twelve_group_tournament()
     teams = [tm for v in t.groups.values() for tm in v]
-    r = simulate(t, _flat_strengths(teams), sims=40, seed=3)
-    # per-stage mcStdErr is a dict keyed by every STAGE
+    r = simulate(t, _flat_strengths(teams), sims=200, seed=3)
     stats = r["teams"]["A1"]
     assert set(stats["mcStdErr"]) == set(STAGES)
     assert all(v >= 0.0 for v in stats["mcStdErr"].values())
-    # every team carries reachR32 plus all STAGES
     assert "reachR32" in stats
     for k in STAGES:
         assert 0.0 <= stats[k] <= 1.0
-    # bracket advancement array is present and well-formed
-    assert isinstance(r["bracket"], list)
-    for slot in r["bracket"]:
-        assert "slot" in slot and isinstance(slot["teamProbs"], list)
-    # 32 teams enter R32 in each sim (sum of reachR32 over all teams == 32)
     assert abs(sum(r["teams"][x]["reachR32"] for x in teams) - 32.0) < 1e-9
-    # exactly 16 reach R16 per sim
     assert abs(sum(r["teams"][x]["reachR16"] for x in teams) - 16.0) < 1e-9
     assert r["thirdsTableComplete"] is True
+
+    # Bracket: exactly 31 slots M73..M104 with M103 (third-place) omitted.
+    bracket = r["bracket"]
+    slots = [s["slot"] for s in bracket]
+    assert len(bracket) == 31
+    assert slots == [f"M{n}" for n in range(73, 105) if n != 103]
+    rounds = {s["slot"]: s["round"] for s in bracket}
+    assert rounds["M73"] == "R32" and rounds["M88"] == "R32"
+    assert rounds["M89"] == "R16" and rounds["M96"] == "R16"
+    assert rounds["M97"] == "QF" and rounds["M100"] == "QF"
+    assert rounds["M101"] == "SF" and rounds["M102"] == "SF"
+    assert rounds["M104"] == "F"
+    for s in bracket:
+        assert len(s["sides"]) == 2
+        for lst in (*s["sides"], s["winner"]):
+            assert all(0.005 <= e["prob"] <= 1.0 for e in lst)
+            assert len(lst) <= 12
+            assert sum(e["prob"] for e in lst) <= 1.0 + 1e-9
+
+    # Champion single source of truth: M104 winner distribution == winCup.
+    win_by_id = {tt["id"]: r["teams"][nm]["winCup"]
+                 for nm, tt in [(nm, {"id": nm.lower()}) for nm in teams]}
+    m104 = next(s for s in bracket if s["slot"] == "M104")
+    for e in m104["winner"]:
+        assert abs(e["prob"] - win_by_id[e["id"]]) < 1e-9
 
 
 def test_played_results_drive_standings_disjoint():

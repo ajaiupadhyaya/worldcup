@@ -61,6 +61,22 @@ def assign_thirds(qualifying_groups: set[str], table: dict | None = None) -> dic
     return {slot: code[1] for slot, code in row.items()}  # "3E" -> "E"
 
 
+def build_topology() -> dict:
+    """Slim, web-facing knockout topology (no thirds_table). 3rd@ refs collapse
+    to the generic best-third placeholder '3X' (actual occupancy is data-driven
+    via the bracket slot distributions)."""
+    r32 = []
+    for tie in load_bracket():
+        def _ref(r: str) -> str:
+            return "3X" if r.startswith("3rd@") else r
+        r32.append({
+            "slot": tie["slot"],
+            "homeRef": _ref(tie["home_ref"]),
+            "awayRef": _ref(tie["away_ref"]),
+        })
+    return {"r32": r32, "progression": load_progression()}
+
+
 def validate_thirds_table(table: dict | None = None) -> bool:
     """Real structural validation of the Annex-C table (not a key count).
 

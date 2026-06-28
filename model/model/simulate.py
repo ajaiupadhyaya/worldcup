@@ -20,6 +20,32 @@ _MATCH_STAGE = {
     104: "winCup",                                # M104 winner -> champion
 }
 
+_ROUND_OF = {
+    **{f"M{m}": "R32" for m in range(73, 89)},
+    **{f"M{m}": "R16" for m in range(89, 97)},
+    **{f"M{m}": "QF" for m in range(97, 101)},
+    "M101": "SF", "M102": "SF",
+    "M104": "F",
+}
+
+
+def _bump(d: dict, slot: str, team: str) -> None:
+    s = d.setdefault(slot, {})
+    s[team] = s.get(team, 0) + 1
+
+
+def _dist(counts: dict[str, int], sims: int) -> list[dict]:
+    """{team: n} -> [{id, prob>=0.005}], sorted desc, capped at 12."""
+    out: list[dict] = []
+    for tm, n in sorted(counts.items(), key=lambda x: (-x[1], x[0])):
+        p = n / sims
+        if p < 0.005:
+            break
+        out.append({"id": _slug(tm), "prob": p})
+        if len(out) >= 12:
+            break
+    return out
+
 
 @dataclass
 class Tournament:
@@ -67,7 +93,9 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
     all_teams = [team for g in t.groups.values() for team in g]
     counts = {team: {k: 0 for k in STAGES} for team in all_teams}
     finish = {team: [0, 0, 0, 0] for team in all_teams}   # 1st..4th tallies
-    slot_team: dict[str, dict[str, int]] = {}
+    side0: dict[str, dict[str, int]] = {}   # who reaches each slot's home side
+    side1: dict[str, dict[str, int]] = {}   # who reaches each slot's away side
+    winner_cnt: dict[str, dict[str, int]] = {}  # who advances/wins each slot
     rng = np.random.default_rng(seed)
 
     template = load_bracket()
@@ -139,6 +167,9 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
             r32_entrants.extend((h, a))
             w = sim_knockout(s, h, a, rng)
             results[slot] = w
+            _bump(side0, slot, h)
+            _bump(side1, slot, a)
+            _bump(winner_cnt, slot, w)
 
         # reachR32 -> all 32 R32 entrants; reachR16 -> the 16 R32-tie winners.
         for tm in r32_entrants:
@@ -152,12 +183,14 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
             a_src, b_src = progression[m]
             if a_src not in results or b_src not in results:
                 continue
-            w = sim_knockout(s, results[a_src], results[b_src], rng)
+            ha, aw = results[a_src], results[b_src]
+            w = sim_knockout(s, ha, aw, rng)
             results[m] = w
             stage = _MATCH_STAGE[int(m[1:])]
             counts[w][stage] += 1
-            slot_team.setdefault(m, {})
-            slot_team[m][w] = slot_team[m].get(w, 0) + 1
+            _bump(side0, m, ha)
+            _bump(side1, m, aw)
+            _bump(winner_cnt, m, w)
 
     out_teams: dict[str, dict] = {}
     for team, c in counts.items():
@@ -190,12 +223,12 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
     bracket_out = [
         {
             "slot": slot,
-            "teamProbs": [
-                {"id": _slug(tm), "prob": n / sims}
-                for tm, n in sorted(d.items(), key=lambda x: (-x[1], x[0]))
-            ],
+            "round": _ROUND_OF[slot],
+            "sides": [_dist(side0.get(slot, {}), sims),
+                      _dist(side1.get(slot, {}), sims)],
+            "winner": _dist(winner_cnt.get(slot, {}), sims),
         }
-        for slot, d in sorted(slot_team.items(), key=lambda x: int(x[0][1:]))
+        for slot in sorted(winner_cnt, key=lambda k: int(k[1:]))
     ]
 
     return {

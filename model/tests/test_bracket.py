@@ -67,3 +67,17 @@ def test_thirds_table_pinned_official_rows():
 def test_validate_thirds_table_true_on_shipped():
     from model.bracket import validate_thirds_table
     assert validate_thirds_table() is True
+
+
+def test_build_topology_shape_and_thirds_placeholder():
+    from model.bracket import build_topology
+    topo = build_topology()
+    assert set(topo) == {"r32", "progression"}
+    assert len(topo["r32"]) == 16
+    tie = topo["r32"][0]
+    assert set(tie) == {"slot", "homeRef", "awayRef"}
+    refs = {(t["slot"], t["awayRef"]) for t in topo["r32"]}
+    assert ("M79", "3X") in refs               # 1A vs best-third -> placeholder
+    assert all(not r.startswith("3rd@")
+               for t in topo["r32"] for r in (t["homeRef"], t["awayRef"]))
+    assert topo["progression"]["M89"] == ["M74", "M77"]

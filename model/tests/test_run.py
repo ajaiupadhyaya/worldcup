@@ -59,6 +59,11 @@ def test_main_writes_valid_snapshots(tmp_path: Path):
         assert k in cal, f"calibration missing {k}"
     assert isinstance(cal["reliability"], list)
 
+    topo = json.loads((tmp_path / "topology.json").read_text())
+    assert set(topo) == {"r32", "progression"}
+    assert len(topo["r32"]) == 16
+    assert topo["progression"]["M89"] == ["M74", "M77"]
+
     # determinism: a second run with same seed produces identical predictions
     main(_args(tmp_path / "b"))
     b = json.loads((tmp_path / "b" / "predictions" / "latest.json").read_text())

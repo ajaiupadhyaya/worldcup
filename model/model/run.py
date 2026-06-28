@@ -11,6 +11,7 @@ from model.espn import parse_scoreboard, fetch_fixtures, Fixture
 from model.history import Match, load_results
 from model.market import blend
 from model.predict import score_matrix, outcome_probs, top_scores
+from model.bracket import build_topology
 from model.simulate import Tournament, simulate
 from model.snapshot import (
     build_calibration,
@@ -144,6 +145,8 @@ def main(argv: list[str] | None = None) -> int:
     validate_predictions(pred)
     write_json(pred, data / "predictions" / "latest.json")
     write_json(pred, data / "predictions" / "history" / f"{a.generated_at.replace(':', '-')}.json")
+    # Slim topology for the web (never imports model/data/bracket_2026.json).
+    write_json(build_topology(), data / "topology.json")
 
     # Ratings: attack/defense from the fit + Elo over the as_of-filtered history.
     # `style` is left empty here (per-team ESPN season stats aren't fetched in
