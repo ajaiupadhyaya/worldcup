@@ -53,7 +53,7 @@ describe("data/topology.json", () => {
   it("progression feeders union with R32 slots covers exactly BRACKET_SLOTS", () => {
     const progKeys = Object.keys(topology.progression);
     expect(progKeys.length).toBe(15); // M89..M104 minus M103
-    for (const [slot, feeders] of Object.entries(topology.progression)) {
+    for (const feeders of Object.values(topology.progression)) {
       expect(feeders).toHaveLength(2);
       for (const f of feeders) expect(BRACKET_SLOTS).toContain(f);
     }
