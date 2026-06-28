@@ -25,6 +25,49 @@ export function mostLikely(dist: BracketSlotProb[]): BracketSlotProb | null {
   return best;
 }
 
+/** One side of a collapsed match face: who is shown + their match-win odds. */
+export interface FaceSide {
+  /** Most-likely occupant of this side (null when the side is empty). */
+  entry: BracketSlotProb | null;
+  /** P(this team wins THIS match), read from the shared winner distribution. */
+  winProb: number;
+  /** True for the single side projected to advance. */
+  advancing: boolean;
+}
+
+export interface CollapsedFace {
+  top: FaceSide;
+  bottom: FaceSide;
+}
+
+/**
+ * The two-line collapsed face of a knockout match. Both sides are measured on
+ * the SAME axis — each shown team's probability of *winning this match*, taken
+ * from `match.winner` — so the displayed numbers are directly comparable and
+ * the advancing side is always the larger one. (The previous face mixed
+ * occupancy probability for the non-advancing side with win probability for the
+ * advancing side, which rendered settled R32 underdogs as "100%" and made later
+ * rounds look like the lower number advanced.)
+ */
+export function collapsedFace(match: {
+  sides: [BracketSlotProb[], BracketSlotProb[]];
+  winner: BracketSlotProb[];
+}): CollapsedFace {
+  const top = mostLikely(match.sides[0]);
+  const bottom = mostLikely(match.sides[1]);
+  const winProb = (id: string | null | undefined): number =>
+    id ? match.winner.find((w) => w.id === id)?.prob ?? 0 : 0;
+  const topWin = winProb(top?.id);
+  const bottomWin = winProb(bottom?.id);
+  // Whichever shown team is likelier to win advances; ties resolve to the top
+  // side. A missing side never advances, and both sides are never advancing.
+  const topAdvancing = !!top && topWin >= bottomWin;
+  return {
+    top: { entry: top, winProb: topWin, advancing: topAdvancing },
+    bottom: { entry: bottom, winProb: bottomWin, advancing: !!bottom && !topAdvancing },
+  };
+}
+
 /**
  * The snapshot stage whose Monte-Carlo standard error best represents a slot
  * in each round — i.e. the uncertainty of a team *reaching* (or, for the

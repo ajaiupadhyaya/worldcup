@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ROUND_ORDER, ROUND_LABELS, mostLikely, prettifyId, STAGE_BY_ROUND } from "@/lib/bracketView";
+import { ROUND_ORDER, ROUND_LABELS, mostLikely, prettifyId, STAGE_BY_ROUND, collapsedFace } from "@/lib/bracketView";
 import type { BracketSlotProb } from "@/lib/predictions";
 
 describe("ROUND_ORDER / ROUND_LABELS", () => {
@@ -27,6 +27,69 @@ describe("mostLikely", () => {
   it("returns null for an empty or missing distribution", () => {
     expect(mostLikely([])).toBeNull();
     expect(mostLikely(undefined as unknown as BracketSlotProb[])).toBeNull();
+  });
+});
+
+describe("collapsedFace", () => {
+  // R32: each side is a single certain occupant (prob 1.0). The face must show
+  // each side's *match-win* probability, never the 1.0 occupancy prob.
+  it("shows match-win probabilities (not occupancy) for a settled R32 match", () => {
+    const face = collapsedFace({
+      sides: [
+        [{ id: "south-africa", prob: 1.0 }],
+        [{ id: "canada", prob: 1.0 }],
+      ],
+      winner: [
+        { id: "canada", prob: 0.7955 },
+        { id: "south-africa", prob: 0.2045 },
+      ],
+    });
+    expect(face.top.entry?.id).toBe("south-africa");
+    expect(face.top.winProb).toBeCloseTo(0.2045);
+    expect(face.top.advancing).toBe(false);
+    expect(face.bottom.entry?.id).toBe("canada");
+    expect(face.bottom.winProb).toBeCloseTo(0.7955);
+    expect(face.bottom.advancing).toBe(true);
+  });
+
+  // Later rounds: both sides must be measured the same way so the advancing
+  // side is ALWAYS the one with the higher displayed number.
+  it("makes the advancing side the higher number in an uncertain QF match", () => {
+    const face = collapsedFace({
+      sides: [
+        [{ id: "france", prob: 0.457 }, { id: "germany", prob: 0.3495 }],
+        [{ id: "morocco", prob: 0.4821 }, { id: "canada", prob: 0.2852 }],
+      ],
+      winner: [
+        { id: "morocco", prob: 0.3197 },
+        { id: "france", prob: 0.2164 },
+        { id: "germany", prob: 0.1622 },
+        { id: "canada", prob: 0.1254 },
+      ],
+    });
+    expect(face.top.entry?.id).toBe("france");
+    expect(face.top.winProb).toBeCloseTo(0.2164);
+    expect(face.bottom.entry?.id).toBe("morocco");
+    expect(face.bottom.winProb).toBeCloseTo(0.3197);
+    // Morocco (0.32) advances over France (0.22): higher number wins.
+    expect(face.bottom.advancing).toBe(true);
+    expect(face.top.advancing).toBe(false);
+    expect(face.bottom.winProb).toBeGreaterThan(face.top.winProb);
+  });
+
+  it("never marks both sides advancing; degrades safely on empty sides", () => {
+    const empty = collapsedFace({ sides: [[], []], winner: [] });
+    expect(empty.top.entry).toBeNull();
+    expect(empty.bottom.entry).toBeNull();
+    expect(empty.top.advancing).toBe(false);
+    expect(empty.bottom.advancing).toBe(false);
+
+    const oneSide = collapsedFace({
+      sides: [[{ id: "spain", prob: 1 }], []],
+      winner: [{ id: "spain", prob: 1 }],
+    });
+    expect(oneSide.top.advancing).toBe(true);
+    expect(oneSide.bottom.advancing).toBe(false);
   });
 });
 

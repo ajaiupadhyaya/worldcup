@@ -5,7 +5,7 @@ import type { BracketMatch } from "@/lib/bracket";
 import type { BracketSlotProb, PredTeam } from "@/lib/predictions";
 import { formatProb } from "@/lib/probability";
 import { ProbBar } from "@/components/predict/ProbBar";
-import { mostLikely, STAGE_BY_ROUND } from "@/lib/bracketView";
+import { collapsedFace, STAGE_BY_ROUND } from "@/lib/bracketView";
 
 export type SlotState = "active" | "dim" | "idle";
 
@@ -25,9 +25,7 @@ export function BracketSlot({
   state?: SlotState;
 }) {
   const [open, setOpen] = useState(false);
-  const adv = mostLikely(match.winner);
-  const top = mostLikely(match.sides[0]);
-  const bottom = mostLikely(match.sides[1]);
+  const { top, bottom } = collapsedFace(match);
   const stage = STAGE_BY_ROUND[match.round];
   const stdErr = (id: string) => stdErrByTeam.get(id)?.[stage];
 
@@ -48,24 +46,24 @@ export function BracketSlot({
       <button
         type="button"
         aria-expanded={open}
-        aria-label={`${name(top?.id ?? "")} vs ${name(bottom?.id ?? "")} — show full distribution`}
+        aria-label={`${name(top.entry?.id ?? "")} vs ${name(bottom.entry?.id ?? "")} — show full distribution`}
         onClick={() => setOpen((o) => !o)}
         onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpen(true); }}
         onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpen(false); }}
         className="block w-full text-left"
       >
         <CollapsedSide
-          entry={top}
-          advancing={!!adv && adv.id === top?.id}
-          advProb={adv?.prob ?? 0}
+          entry={top.entry}
+          advancing={top.advancing}
+          winProb={top.winProb}
           name={name}
           selectedTeamId={selectedTeamId}
         />
         <div className="h-px bg-[var(--border)]" />
         <CollapsedSide
-          entry={bottom}
-          advancing={!!adv && adv.id === bottom?.id}
-          advProb={adv?.prob ?? 0}
+          entry={bottom.entry}
+          advancing={bottom.advancing}
+          winProb={bottom.winProb}
           name={name}
           selectedTeamId={selectedTeamId}
         />
@@ -108,13 +106,14 @@ export function BracketSlot({
 function CollapsedSide({
   entry,
   advancing,
-  advProb,
+  winProb,
   name,
   selectedTeamId,
 }: {
   entry: BracketSlotProb | null;
   advancing: boolean;
-  advProb: number;
+  /** P(this side's team wins the match) — shown on both sides, same axis. */
+  winProb: number;
   name: (id: string) => string;
   selectedTeamId?: string | null;
 }) {
@@ -145,11 +144,7 @@ function CollapsedSide({
             : "text-[var(--foreground-faint)]"
         }`}
       >
-        {advancing
-          ? formatProb(advProb)
-          : entry
-            ? formatProb(entry.prob)
-            : ""}
+        {entry ? formatProb(winProb) : ""}
       </span>
     </div>
   );
