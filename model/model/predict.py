@@ -50,7 +50,9 @@ def _corrected_flat(lh: float, la: float, rho: float, max_goals: int = 10):
     Returns (flat_probs, n_cols) for rng.choice over flattened cells.
     """
     m = score_matrix(lh, la, rho, max_goals)
-    return m.ravel(), m.shape[1]
+    flat = m.ravel().astype(float)
+    flat = flat / flat.sum()  # fresh copy (isolated from cache) + renormalized after tail truncation
+    return flat, m.shape[1]
 
 
 def sample_scoreline(lh: float, la: float, rho: float, rng) -> tuple[int, int]:
