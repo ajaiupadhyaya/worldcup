@@ -160,9 +160,24 @@ def test_validate_rejects_bracket_list_oversum():
         validate_predictions(obj)
 
 
+def test_partial_tournament_skips_qualify_reachR32_guard():
+    """Regression: partial field (reachR32 total < 31.5) must NOT raise even when
+    qualify=1.0 and reachR32=0.0 for a team.  If the guard were made unconditional
+    this test would fail."""
+    stages = {"qualify": 1.0, "reachR32": 0.0, "reachR16": 0.0,
+              "reachQF": 0.0, "reachSF": 0.0, "reachFinal": 0.0, "winCup": 0.0}
+    team = {"id": "brazil", "name": "Brazil", **stages,
+            "mcStdErr": {k: 0.0 for k in stages}}
+    # total reachR32 = 0.0 < 31.5 → partial field → guard is skipped
+    validate_predictions({"generatedAt": "x", "modelVersion": "v", "seed": 1,
+                          "teams": [team]})  # must not raise
+
+
 def test_calibration_nonregression_gate():
     import pytest
     from model.snapshot import validate_calibration_nonregression
+    # Illustrative values to exercise the function arithmetic;
+    # the live baseline is model/data/calibration_baseline.json (fw=0.4).
     base = {"brier": 0.5226, "logloss": 0.8865, "eps": 0.01}
     validate_calibration_nonregression({"brier": 0.52, "logloss": 0.88}, base)  # ok
     with pytest.raises(ValueError):
