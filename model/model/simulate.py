@@ -9,9 +9,6 @@ from model.knockout import sim_knockout
 
 STAGES = ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")
 
-# Annex C: the eight R32 winner-slots that face a best-third-placed team.
-_THIRDS_SLOTS = ("1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L")
-
 # Match-number -> stage credited to that knockout match's winner. The R32 ties
 # (M73-M88) credit reachR16 to their winners; the round feeders below credit the
 # stage the survivor *reaches*. Exactly one winCup and two reachFinal per sim.
@@ -51,24 +48,18 @@ def _slug(name: str) -> str:
     return name.lower().replace("'", "").replace(" ", "-")
 
 
-def _thirds_assignment(qual_third_groups, third_team, qual_third_order):
-    """Annex C winnerSlot -> qualifying third-placed team.
+def _thirds_assignment(qual_third_groups, third_team):
+    """Annex C winner-slot -> qualifying third-placed team.
 
-    Tries the official `assign_thirds` table first. Because the shipped table
-    has only two anchor rows, most simulated qualifier sets miss it and raise
-    KeyError; we then degrade by seeding the eight qualifying third TEAMS into
-    the eight winner-slots in a deterministic order. Returns (mapping, complete).
+    Uses the complete FIFA-verified table; for any valid eight-group set a row
+    exists, so a miss is a genuine data error and we fail loud (KeyError) rather
+    than silently degrading. Callers only invoke this when exactly eight groups
+    supply thirds (a structurally complete field).
     """
     from model.bracket import assign_thirds
 
-    try:
-        slot_group = assign_thirds(qual_third_groups)
-        return {slot: third_team[grp] for slot, grp in slot_group.items()}, True
-    except KeyError:
-        # Deterministic fallback: qualifying third teams in standings-rank order,
-        # paired with the eight fixed winner-slots in their canonical order.
-        teams_in_order = [third_team[g] for g in qual_third_order]
-        return dict(zip(_THIRDS_SLOTS, teams_in_order)), False
+    slot_group = assign_thirds(qual_third_groups)
+    return {slot: third_team[grp] for slot, grp in slot_group.items()}
 
 
 def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
@@ -86,7 +77,8 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
     played_lookup = {(h, a): (hg, ag) for (h, a, hg, ag) in t.played}
     group_of = {team: g for g, teams in t.groups.items() for team in teams}
 
-    thirds_table_complete = True
+    from model.bracket import validate_thirds_table
+    thirds_table_complete = validate_thirds_table()
 
     for _ in range(sims):
         results_by_group: dict[str, list] = {g: [] for g in t.groups}
@@ -122,16 +114,17 @@ def simulate(t: Tournament, s: Strengths, *, sims: int, seed: int) -> dict:
                 third_rows.append((g, table[2]))
                 third_team[g] = table[2].team
 
-        # Best 8 of the 12 third-placed rows -> qualifying GROUPS (in rank order).
+        # Best 8 of the 12 third-placed rows -> qualifying GROUPS.
         best8 = best_thirds(third_rows, take=8)        # team names, ranked
         team_to_group = {row.team: g for g, row in third_rows}
-        qual_third_order = [team_to_group[tm] for tm in best8]   # groups, ranked
-        qual_third_groups = set(qual_third_order)
+        qual_third_groups = {team_to_group[tm] for tm in best8}
 
-        thirds_by_slot, complete = _thirds_assignment(
-            qual_third_groups, third_team, qual_third_order
-        )
-        thirds_table_complete = thirds_table_complete and complete
+        # Only a structurally complete field (exactly 8 third-supplying groups)
+        # can be assigned via Annex C; partial sims leave thirds unfilled.
+        if len(qual_third_groups) == 8:
+            thirds_by_slot = _thirds_assignment(qual_third_groups, third_team)
+        else:
+            thirds_by_slot = {}
 
         # Resolve R32 ties slot-by-slot; keep only fully-fillable ties.
         results: dict[str, str] = {}
