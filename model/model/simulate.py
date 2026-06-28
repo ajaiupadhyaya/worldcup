@@ -6,6 +6,7 @@ from model.bracket import load_bracket, load_progression
 from model.dixoncoles import Strengths, expected_goals
 from model.groups import best_thirds, standings
 from model.knockout import sim_knockout
+from model.predict import sample_scoreline
 
 STAGES = ("qualify", "reachR32", "reachR16", "reachQF", "reachSF", "reachFinal", "winCup")
 
@@ -29,7 +30,7 @@ class Tournament:
 
 def _sim_score(s: Strengths, h: str, a: str, rng: np.random.Generator) -> tuple[int, int]:
     lh, la = expected_goals(s, h, a, neutral=True)
-    return int(rng.poisson(lh)), int(rng.poisson(la))
+    return sample_scoreline(lh, la, s.rho, rng)
 
 
 def _resolve_ref(ref: str, winners, runners, thirds_by_slot):
