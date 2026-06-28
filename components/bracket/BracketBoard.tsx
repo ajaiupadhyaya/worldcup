@@ -1,23 +1,32 @@
 "use client";
 
 import { useMemo } from "react";
-import type { BracketTree, BracketMatch, BracketColumn } from "@/lib/bracket";
+import type { BracketTree, BracketMatch } from "@/lib/bracket";
 import type { PredTeam } from "@/lib/predictions";
-import { ROUND_LABELS, prettifyId } from "@/lib/bracketView";
+import {
+  ROUND_ORDER,
+  ROUND_LABELS,
+  prettifyId,
+  computeLayout,
+  slotState,
+} from "@/lib/bracketView";
 import { BracketSlot } from "@/components/bracket/BracketSlot";
+import { ChampionPanel } from "@/components/bracket/ChampionPanel";
+import { TeamPathProvider, useTeamPath } from "@/components/bracket/TeamPathProvider";
 
-// ---------------------------------------------------------------------------
-// Public interface — intentionally narrow for UV1.
-// UV2 adds `selectedTeam?: string` (path-trace) and swaps SlotCard for
-// <BracketSlot>. UV3 adds SVG connector props. UV4 adds mobile scroll state.
-// ---------------------------------------------------------------------------
-export interface BracketBoardProps {
+// Desktop canvas geometry (deterministic from computeLayout).
+const ROW_H = 80;   // px per logical row unit
+const COL_W = 260;  // px between column left-edges
+const SLOT_W = 224; // px wide for each slot card
+const SLOT_H = 64;  // px tall (for vertical centering within row)
+
+export function BracketBoard({
+  tree,
+  teams,
+}: {
   tree: BracketTree;
   teams: PredTeam[];
-  generatedAt: string;
-}
-
-export function BracketBoard({ tree, teams, generatedAt }: BracketBoardProps) {
+}) {
   const nameById = useMemo(
     () => new Map(teams.map((t) => [t.id, t.name] as const)),
     [teams],
@@ -29,39 +38,72 @@ export function BracketBoard({ tree, teams, generatedAt }: BracketBoardProps) {
   const name = (id: string) => nameById.get(id) ?? prettifyId(id);
 
   return (
-    <div className="pb-16">
-      <BoardHeader generatedAt={generatedAt} />
-      <DesktopBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
-      <MobileBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
-    </div>
+    <TeamPathProvider tree={tree}>
+      <div className="pb-16">
+        <BoardHeader generatedAt={tree.generatedAt} />
+        <ChampionPanel champion={tree.champion} name={name} />
+        <PathClearBanner name={name} />
+        <DesktopBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
+        <MobileBoard tree={tree} name={name} stdErrByTeam={stdErrByTeam} />
+      </div>
+    </TeamPathProvider>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Header: editorial masthead + dateline + uncertainty disclaimer
+// Header: editorial masthead + AS OF dateline + uncertainty disclaimer
 // ---------------------------------------------------------------------------
 function BoardHeader({ generatedAt }: { generatedAt: string }) {
+  const asOf = (() => {
+    try {
+      const d = new Date(generatedAt);
+      return Number.isFinite(d.getTime()) ? d.toUTCString() : generatedAt;
+    } catch {
+      return generatedAt;
+    }
+  })();
   return (
     <header className="overflow-hidden px-6 pt-8 sm:px-12">
       <h1 className="headline-bleed text-[clamp(64px,12vw,168px)] text-[var(--foreground)]">
         THE DRAW
       </h1>
       <p className="mt-4 text-[10px] tracking-[3px] text-[var(--foreground-secondary)]">
-        ROUND OF 32 → FINAL · MONTE-CARLO PROJECTION
+        AS OF {asOf} · MONTE-CARLO PROJECTION
       </p>
-      <p className="mt-1 text-[10px] tracking-[2px] text-[var(--foreground-faint)]">
-        AS OF {generatedAt}
-      </p>
-      <p className="mt-2 max-w-[520px] text-[11px] leading-[1.7] text-[var(--foreground-secondary)]">
-        Projections are probabilistic — every percentage reflects simulated
-        frequency, not certainty. Results will differ.
+      <p className="mt-2 max-w-prose text-[12px] leading-[1.8] text-[var(--foreground-faint)]">
+        Every figure is a simulated frequency, not a certainty — sides and
+        advance odds carry Monte-Carlo error (±1σ whiskers shown). Tap a team
+        to trace its road through the bracket.
       </p>
     </header>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Desktop layout: rounds as horizontal columns (connectors land in UV3)
+// "Viewing X's road — clear" affordance when a team is selected
+// ---------------------------------------------------------------------------
+function PathClearBanner({ name }: { name: (id: string) => string }) {
+  const { selectedTeamId, selectTeam } = useTeamPath();
+  if (!selectedTeamId) return null;
+  return (
+    <div className="mx-auto mt-4 flex max-w-[1480px] items-center gap-3 px-6 sm:px-12">
+      <span className="text-[11px] tracking-[0.12em] text-[var(--foreground-accent)]">
+        VIEWING {name(selectedTeamId).toUpperCase()}&apos;S ROAD
+      </span>
+      <button
+        type="button"
+        onClick={() => selectTeam(selectedTeamId)}
+        className="border border-[var(--foreground-accent)] px-2 py-0.5 text-[10px] tracking-[0.12em] text-[var(--foreground-accent)] hover:bg-[var(--foreground-accent)] hover:text-[var(--foreground-inverse)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--foreground-accent)] motion-safe:transition-colors"
+        aria-label={`Clear road trace for ${name(selectedTeamId)}`}
+      >
+        CLEAR
+      </button>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Desktop: absolute-canvas layout + SVG connector elbows + path-trace
 // ---------------------------------------------------------------------------
 function DesktopBoard({
   tree,
@@ -72,45 +114,119 @@ function DesktopBoard({
   name: (id: string) => string;
   stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
+  const { tracedSlots, selectedTeamId, selectTeam } = useTeamPath();
+  const layout = useMemo(() => computeLayout(tree), [tree]);
+  const pos = useMemo(
+    () => new Map(layout.map((n) => [n.slot, n])),
+    [layout],
+  );
+
+  // Canvas dimensions
+  const r32Nodes = layout.filter((n) => n.col === 0);
+  const rows = r32Nodes.length > 0 ? r32Nodes.length : 1;
+  const height = rows * ROW_H + ROW_H; // extra row for headings
+  const width = (ROUND_ORDER.length - 1) * COL_W + SLOT_W + 32;
+
+  const cy = (row: number) => row * ROW_H + ROW_H / 2 + ROW_H; // offset for headings row
+  const leftX = (col: number) => col * COL_W;
+  const rightX = (col: number) => col * COL_W + SLOT_W;
+
   return (
-    <div className="hidden overflow-x-auto px-6 pt-8 sm:px-12 lg:block">
-      {/* data-bracket-desktop is a hook point for UV3 SVG connector overlay */}
-      <div className="mx-auto flex min-w-[1100px] max-w-[1480px]" data-bracket-desktop>
-        {tree.columns.map((col) => (
-          <RoundColumn key={col.round} col={col} name={name} stdErrByTeam={stdErrByTeam} />
+    <div
+      className="hidden overflow-x-auto px-6 pt-10 sm:px-12 lg:block"
+      aria-label="Bracket canvas"
+    >
+      {/* Round headings row */}
+      <div
+        className="relative mx-auto flex"
+        style={{ width, height: ROW_H }}
+      >
+        {ROUND_ORDER.map((round, col) => (
+          <div
+            key={round}
+            className="absolute"
+            style={{ left: leftX(col), width: SLOT_W }}
+          >
+            <RoundHeading round={round} />
+          </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-function RoundColumn({
-  col,
-  name,
-  stdErrByTeam,
-}: {
-  col: BracketColumn;
-  name: (id: string) => string;
-  stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
-}) {
-  return (
-    <div className="flex flex-1 flex-col">
-      <RoundHeading round={col.round} />
-      {/* data-round is a hook for UV3 path-trace highlights */}
+      {/* Absolute canvas for slots + SVG connectors */}
       <div
-        className="flex flex-1 flex-col justify-around gap-3 py-4"
-        data-round={col.round}
+        className="relative mx-auto"
+        style={{ width, height }}
       >
-        {col.matches.map((m) => (
-          <BracketSlot key={m.slot} match={m} name={name} stdErrByTeam={stdErrByTeam} />
-        ))}
+        {/* SVG connector elbows — behind slots */}
+        <svg
+          className="pointer-events-none absolute inset-0"
+          width={width}
+          height={height}
+          aria-hidden
+        >
+          {layout.flatMap((n) => {
+            if (!n.feeders) return [];
+            return n.feeders.map((f) => {
+              const fn = pos.get(f);
+              if (!fn) return null;
+              const x1 = rightX(fn.col);
+              const y1 = cy(fn.row);
+              const x2 = leftX(n.col);
+              const y2 = cy(n.row);
+              const midX = (x1 + x2) / 2;
+              const active =
+                !!tracedSlots &&
+                tracedSlots.has(n.slot) &&
+                tracedSlots.has(f);
+              return (
+                <path
+                  key={`${f}->${n.slot}`}
+                  d={`M ${x1} ${y1} H ${midX} V ${y2} H ${x2}`}
+                  fill="none"
+                  stroke={
+                    active
+                      ? "var(--foreground-accent)"
+                      : "var(--border)"
+                  }
+                  strokeWidth={active ? 2 : 1}
+                  className="motion-safe:transition-[stroke,stroke-width] motion-safe:duration-300"
+                />
+              );
+            });
+          })}
+        </svg>
+
+        {/* Slot cards */}
+        {layout.map((n) => {
+          const match = tree.bySlot[n.slot];
+          return (
+            <div
+              key={n.slot}
+              className="absolute"
+              style={{
+                left: leftX(n.col),
+                top: n.row * ROW_H + (ROW_H - SLOT_H) / 2,
+                width: SLOT_W,
+              }}
+            >
+              <BracketSlot
+                match={match}
+                name={name}
+                stdErrByTeam={stdErrByTeam}
+                selectedTeamId={selectedTeamId}
+                onSelectTeam={selectTeam}
+                state={slotState(n.slot, tracedSlots)}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Mobile layout: rounds stacked (round selector + scroll-snap land in UV4)
+// Mobile: stacked rounds (round selector + scroll-snap land in UV4)
 // ---------------------------------------------------------------------------
 function MobileBoard({
   tree,
@@ -121,18 +237,31 @@ function MobileBoard({
   name: (id: string) => string;
   stdErrByTeam: Map<string, PredTeam["mcStdErr"]>;
 }) {
+  const { tracedSlots, selectedTeamId, selectTeam } = useTeamPath();
   return (
     <div className="px-6 pt-8 lg:hidden">
-      {tree.columns.map((col) => (
-        <section key={col.round} className="mb-8">
-          <RoundHeading round={col.round} />
-          <div className="mt-3 flex flex-col gap-3">
-            {col.matches.map((m) => (
-              <BracketSlot key={m.slot} match={m} name={name} stdErrByTeam={stdErrByTeam} />
-            ))}
-          </div>
-        </section>
-      ))}
+      {ROUND_ORDER.map((round) => {
+        const matches = tree.rounds[round];
+        if (!matches || matches.length === 0) return null;
+        return (
+          <section key={round} className="mb-8">
+            <RoundHeading round={round} />
+            <div className="mt-3 flex flex-col gap-3">
+              {matches.map((m) => (
+                <BracketSlot
+                  key={m.slot}
+                  match={m}
+                  name={name}
+                  stdErrByTeam={stdErrByTeam}
+                  selectedTeamId={selectedTeamId}
+                  onSelectTeam={selectTeam}
+                  state={slotState(m.slot, tracedSlots)}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
@@ -144,8 +273,9 @@ function RoundHeading({ round }: { round: BracketMatch["round"] }) {
   return (
     <div className="section-rule-light flex items-baseline justify-between pb-1 pt-2">
       <span className="section-label">{ROUND_LABELS[round]}</span>
-      <span className="text-[9px] tracking-[0.2em] text-[var(--foreground-faint)]">{round}</span>
+      <span className="text-[9px] tracking-[0.2em] text-[var(--foreground-faint)]">
+        {round}
+      </span>
     </div>
   );
 }
-

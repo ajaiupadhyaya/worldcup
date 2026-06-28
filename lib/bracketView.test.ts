@@ -49,3 +49,66 @@ describe("STAGE_BY_ROUND", () => {
     });
   });
 });
+
+// ---------------------------------------------------------------------------
+// UV3 additions
+// ---------------------------------------------------------------------------
+import { computeLayout, slotState, championLadder } from "@/lib/bracketView";
+import type { BracketTree, BracketMatch } from "@/lib/bracket";
+
+function mkMatch(p: Partial<BracketMatch> & Pick<BracketMatch, "slot" | "round">): BracketMatch {
+  return { sides: [[], []], winner: [], feeders: null, ...p };
+}
+function mkTree(rounds: Partial<BracketTree["rounds"]>): BracketTree {
+  const full = { R32: [], R16: [], QF: [], SF: [], F: [], ...rounds } as BracketTree["rounds"];
+  const bySlot: BracketTree["bySlot"] = {};
+  for (const r of Object.values(full)) for (const m of r) bySlot[m.slot] = m;
+  return { rounds: full, bySlot, columns: [], champion: [], generatedAt: "2026-06-28T00:00:00Z" };
+}
+
+describe("computeLayout", () => {
+  it("places R32 on base rows and each parent at the mean row of its feeders", () => {
+    const tree = mkTree({
+      R32: [
+        mkMatch({ slot: "M73", round: "R32" }),
+        mkMatch({ slot: "M74", round: "R32" }),
+        mkMatch({ slot: "M75", round: "R32" }),
+        mkMatch({ slot: "M76", round: "R32" }),
+      ],
+      R16: [
+        mkMatch({ slot: "M89", round: "R16", feeders: ["M73", "M75"] }),
+        mkMatch({ slot: "M90", round: "R16", feeders: ["M74", "M76"] }),
+      ],
+    });
+    const layout = computeLayout(tree);
+    const byId = new Map(layout.map((n) => [n.slot, n]));
+    expect(byId.get("M73")).toMatchObject({ col: 0, row: 0 });
+    expect(byId.get("M75")).toMatchObject({ col: 0, row: 2 });
+    // M89 feeds from rows 0 and 2 -> row 1; M90 from 1 and 3 -> row 2
+    expect(byId.get("M89")).toMatchObject({ col: 1, row: 1 });
+    expect(byId.get("M90")).toMatchObject({ col: 1, row: 2 });
+  });
+});
+
+describe("slotState", () => {
+  it("is idle when nothing is traced", () => {
+    expect(slotState("M73", null)).toBe("idle");
+    expect(slotState("M73", new Set())).toBe("idle");
+  });
+  it("is active on the traced path and dim elsewhere", () => {
+    const traced = new Set(["M73", "M89"]);
+    expect(slotState("M73", traced)).toBe("active");
+    expect(slotState("M74", traced)).toBe("dim");
+  });
+});
+
+describe("championLadder", () => {
+  it("returns the top-N title odds, descending", () => {
+    const champ = [
+      { id: "brazil", prob: 0.12 },
+      { id: "argentina", prob: 0.2 },
+      { id: "france", prob: 0.15 },
+    ];
+    expect(championLadder(champ, 2).map((e) => e.id)).toEqual(["argentina", "france"]);
+  });
+});

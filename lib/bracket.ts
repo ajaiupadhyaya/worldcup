@@ -6,8 +6,9 @@ export interface BracketMatch {
   round: BracketRound;
   sides: [BracketSlotProb[], BracketSlotProb[]];
   winner: BracketSlotProb[];
-  /** Feeder slot ids for connector lines (R16+); [null, null] for R32. */
-  feeders: [string | null, string | null];
+  /** Feeder slot ids for connector lines (R16+); [null, null] for R32; null
+   *  when the match is constructed without topology (e.g. in tests). */
+  feeders: [string | null, string | null] | null;
 }
 
 export interface BracketColumn {
@@ -18,7 +19,13 @@ export interface BracketColumn {
 
 export interface BracketTree {
   columns: BracketColumn[];
+  /** Round-keyed map for absolute-canvas layout and mobile stacking. */
+  rounds: Record<BracketRound, BracketMatch[]>;
   bySlot: Record<string, BracketMatch>;
+  /** M104 winner distribution — single source of truth for the ChampionPanel. */
+  champion: BracketSlotProb[];
+  /** ISO timestamp of the predictions snapshot that built this tree. */
+  generatedAt: string;
 }
 
 const ROUND_LABELS: Record<BracketRound, string> = {
@@ -40,6 +47,7 @@ const slotNum = (slot: string): number => {
 export function buildBracketTree(
   bracket: BracketSlot[] | undefined,
   topology: Topology,
+  generatedAt = "",
 ): BracketTree {
   const bySlot: Record<string, BracketMatch> = {};
   for (const s of bracket ?? []) {
@@ -59,7 +67,14 @@ export function buildBracketTree(
       .filter((m) => m.round === round)
       .sort((a, b) => slotNum(a.slot) - slotNum(b.slot)),
   })).filter((col) => col.matches.length > 0);
-  return { columns, bySlot };
+
+  // Build the round-keyed index (sorted, same order as columns)
+  const rounds = Object.fromEntries(
+    BRACKET_ROUNDS.map((r) => [r, Object.values(bySlot).filter((m) => m.round === r).sort((a, b) => slotNum(a.slot) - slotNum(b.slot))]),
+  ) as Record<BracketRound, BracketMatch[]>;
+
+  const champion: BracketSlotProb[] = bySlot["M104"]?.winner ?? [];
+  return { columns, rounds, bySlot, champion, generatedAt };
 }
 
 /** Every slot id where `teamId` appears on a side OR in the winner list —

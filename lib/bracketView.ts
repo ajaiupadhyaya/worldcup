@@ -1,4 +1,5 @@
 import type { BracketSlotProb, BracketRound, Stage } from "@/lib/predictions";
+import type { BracketTree } from "@/lib/bracket";
 
 /** Column order, left→right, for the knockout board. */
 export const ROUND_ORDER: BracketRound[] = ["R32", "R16", "QF", "SF", "F"];
@@ -44,4 +45,63 @@ export function prettifyId(id: string): string {
     .split("-")
     .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
     .join(" ");
+}
+
+// ---------------------------------------------------------------------------
+// UV3: Layout geometry + path-state helpers
+// ---------------------------------------------------------------------------
+
+/** One positioned node in the deterministic bracket canvas. */
+export interface LayoutNode {
+  slot: string;
+  round: BracketRound;
+  col: number;
+  row: number;
+  /**
+   * Both feeder slot ids as strings (never null here) or null when the match
+   * has no feeders (R32 or synthetic test fixtures).
+   */
+  feeders: [string, string] | null;
+}
+
+/**
+ * Deterministic bracket geometry without DOM measurement: R32 matches take
+ * their array index as base row; every later match sits at the mean row of
+ * its two feeders. col = ROUND_ORDER index. Used for absolute positioning and
+ * SVG connector elbows.
+ */
+export function computeLayout(tree: BracketTree): LayoutNode[] {
+  const rowBySlot = new Map<string, number>();
+  const nodes: LayoutNode[] = [];
+  ROUND_ORDER.forEach((round, col) => {
+    const matches = tree.rounds[round] ?? [];
+    matches.forEach((m, i) => {
+      let row: number;
+      const [f0, f1] = m.feeders ?? [null, null];
+      if (f0 && f1) {
+        const ra = rowBySlot.get(f0);
+        const rb = rowBySlot.get(f1);
+        row = ra != null && rb != null ? (ra + rb) / 2 : i;
+      } else {
+        row = i;
+      }
+      rowBySlot.set(m.slot, row);
+      const feeders: [string, string] | null = f0 && f1 ? [f0, f1] : null;
+      nodes.push({ slot: m.slot, round, col, row, feeders });
+    });
+  });
+  return nodes;
+}
+
+export type SlotVisual = "active" | "dim" | "idle";
+
+/** Visual state of a slot given the active path trace (null/empty => idle). */
+export function slotState(slot: string, traced: Set<string> | null): SlotVisual {
+  if (!traced || traced.size === 0) return "idle";
+  return traced.has(slot) ? "active" : "dim";
+}
+
+/** Top-N title odds (the M104 winner distribution), descending. */
+export function championLadder(champion: BracketSlotProb[], topN = 6): BracketSlotProb[] {
+  return [...champion].sort((a, b) => b.prob - a.prob).slice(0, topN);
 }

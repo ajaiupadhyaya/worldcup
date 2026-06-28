@@ -23,12 +23,11 @@ export default function BracketPage() {
     return <BracketEmpty />;
   }
 
-  const tree = buildBracketTree(bracket, topology);
+  const tree = buildBracketTree(bracket, topology, predictions.generatedAt);
   return (
     <BracketBoard
       tree={tree}
       teams={predictions.teams}
-      generatedAt={predictions.generatedAt}
     />
   );
 }
